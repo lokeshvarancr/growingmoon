@@ -1104,7 +1104,7 @@ export default function JourneyPassportView({
                     value={inlineNewGoalTitle}
                     onChange={(e) => setInlineNewGoalTitle(e.target.value)}
                     placeholder="e.g. Launch Beta to 100 users, Validate with 15 founders..."
-                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 bg-white text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
+                    className="flex-1 min-w-0 px-4 h-11 rounded-full border border-gray-200 bg-white text-sm focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
                     required
                   />
                   <input
@@ -1112,12 +1112,12 @@ export default function JourneyPassportView({
                     value={inlineNewGoalDate}
                     onChange={(e) => setInlineNewGoalDate(e.target.value)}
                     placeholder="Target date (e.g. Nov 2026)"
-                    className="sm:w-44 px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs focus:outline-none focus:border-gm-accent"
+                    className="sm:w-56 min-w-0 px-4 h-11 rounded-full border border-gray-200 bg-white text-sm focus:outline-none focus:border-gm-accent"
                   />
                   <button
                     type="submit"
                     disabled={isAddingGoal || !inlineNewGoalTitle.trim()}
-                    className="px-4.5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 shadow-xs"
+                    className="px-5 h-11 flex-shrink-0 whitespace-nowrap rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 shadow-xs"
                   >
                     {isAddingGoal ? (
                       <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1255,7 +1255,7 @@ export default function JourneyPassportView({
 
       {/* ── Edit Journey Modal ──────────────────────────────────── */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditModalOpen(false)}
@@ -1360,7 +1360,7 @@ export default function JourneyPassportView({
 
       {/* ── Edit About Modal ────────────────────────────────────── */}
       {isEditAboutModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditAboutModalOpen(false)}
@@ -1422,7 +1422,7 @@ export default function JourneyPassportView({
 
       {/* ── Edit Goals Modal ────────────────────────────────────── */}
       {isEditGoalsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditGoalsModalOpen(false)}
@@ -1556,7 +1556,7 @@ export default function JourneyPassportView({
 
       {/* ── Delete Confirmation Modal ────────────────────────────── */}
       {deletingTimelineItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => !isDeletingTimelineItem && setDeletingTimelineItem(null)}

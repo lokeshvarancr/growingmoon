@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { JourneyUpdate } from '@/types';
 import { getFounderById } from '@/lib/mock-data/founders';
@@ -170,6 +170,15 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       addToast('Journey link copied!', 'success');
     }
   };
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxIndex(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightboxIndex]);
 
   // ── Common Reusable Header (Used by Multi-Media & Text-Only Cards) ──
   const renderAuthorHeader = () => (
@@ -1054,7 +1063,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       {/* ── 3/4 BOTTOM SHEET MODAL (Available for all post types) ─────── */}
       {isDiscussionOpen && (
         <div
-          className="fixed inset-0 z-50 flex flex-col justify-end"
+          className="fixed inset-0 z-50 !mt-0 flex flex-col justify-end"
           role="dialog"
           aria-modal="true"
         >
@@ -1133,7 +1142,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       {lightboxIndex !== null && currentMedia && (
         <div
           onClick={() => setLightboxIndex(null)}
-          className="fixed inset-0 z-50 bg-[#0E0D0C]/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in"
+          className="fixed inset-0 z-50 !mt-0 bg-[#0E0D0C]/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in"
         >
           <div
             onClick={(e) => e.stopPropagation()}

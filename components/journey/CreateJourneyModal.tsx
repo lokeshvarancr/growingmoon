@@ -120,7 +120,7 @@ export default function CreateJourneyModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto select-none">
+    <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4 sm:p-6 overflow-y-auto select-none">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md transition-opacity animate-fade-in"

@@ -231,7 +231,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-fade-in"
       onClick={onClose}
     >
       <div

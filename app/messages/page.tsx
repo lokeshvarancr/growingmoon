@@ -964,7 +964,7 @@ function MessagesContent() {
 
         {/* Delete Entire Chat Confirmation Modal */}
         {showDeleteChatModal && otherFounder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gm-ink/45 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4 bg-gm-ink/45 backdrop-blur-md">
             <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-gray-100 text-left animate-slide-up">
               <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center mb-3">
                 <Trash2 className="w-5 h-5 stroke-[2]" />

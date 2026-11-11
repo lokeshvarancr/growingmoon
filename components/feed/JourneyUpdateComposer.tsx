@@ -636,7 +636,7 @@ export default function JourneyUpdateComposer({
 
       {/* ── Sub-modal: Add New Update Type ─────────────────────── */}
       {isNewTypeModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewTypeModalOpen(false)}
@@ -681,7 +681,7 @@ export default function JourneyUpdateComposer({
 
       {/* ── Sub-modal: Create New Journey ──────────────────────── */}
       {isNewJourneyModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewJourneyModalOpen(false)}

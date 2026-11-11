@@ -801,28 +801,28 @@ export default function FounderProfilePage() {
       </div>
 
       {/* Ethereal Serene Landscape Graphic */}
-      <div className="h-24 -mx-6 -mb-6 mt-4 relative overflow-hidden pointer-events-none select-none">
+      <div className="h-24 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 mt-4 relative overflow-hidden pointer-events-none select-none">
         <svg viewBox="0 0 320 120" preserveAspectRatio="none" className="w-full h-full">
           <defs>
             <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
-              <stop offset="50%" stopColor="#EDE9FE" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#DDD6FE" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="#FBE4D8" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#F6C6AF" stopOpacity="0.7" />
             </linearGradient>
             <linearGradient id="duneGrad1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#EDE9FE" />
-              <stop offset="100%" stopColor="#C4B5FD" />
+              <stop offset="0%" stopColor="#FBE4D8" />
+              <stop offset="100%" stopColor="#F0A281" />
             </linearGradient>
             <linearGradient id="duneGrad2" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#DDD6FE" />
-              <stop offset="100%" stopColor="#A78BFA" />
+              <stop offset="0%" stopColor="#F6C6AF" />
+              <stop offset="100%" stopColor="#E2552C" />
             </linearGradient>
           </defs>
           <rect width="320" height="120" fill="url(#skyGrad)" />
           {/* Crescent Moon */}
           <path
             d="M 285 24 A 10 10 0 1 0 293 38 A 12 12 0 1 1 285 24 Z"
-            fill="#F5F3FF"
+            fill="#FFF3E2"
             opacity="0.95"
           />
           {/* Back Dune */}
@@ -839,10 +839,10 @@ export default function FounderProfilePage() {
           />
           {/* Lone Founder Silhouette */}
           <g transform="translate(296, 68) scale(0.65)">
-            <circle cx="5" cy="5" r="2.5" fill="#312E81" />
+            <circle cx="5" cy="5" r="2.5" fill="#16161A" />
             <path
               d="M 5 8 L 5 18 M 5 11 L 2 15 M 5 11 L 8 15 M 5 18 L 3 26 M 5 18 L 7 26"
-              stroke="#312E81"
+              stroke="#16161A"
               strokeWidth="1.6"
               strokeLinecap="round"
             />
@@ -966,7 +966,7 @@ export default function FounderProfilePage() {
         
         {/* ── 1. PROFILE HEADER SECTION ──────────────────────────── */}
         <section className="relative flex flex-col items-start gap-6 sm:gap-8 rounded-[36px] bg-white shadow-card p-6 sm:p-10 animate-slide-up" data-testid="profile-header">
-          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-[36px]"><div className="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent opacity-30" /><div className="absolute -right-10 -top-28 w-72 h-72 rounded-full bg-white" /></div>
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-[36px]"><div className="absolute -right-20 -top-32 w-96 h-96 rounded-full bg-gm-accent/[0.10] blur-[90px]" /></div>
           <div className="relative flex flex-col sm:flex-row items-start sm:items-end gap-5 sm:gap-8 min-w-0 w-full">
             
             {/* Avatar with Green Active Dot */}
@@ -1721,7 +1721,7 @@ export default function FounderProfilePage() {
 
       {/* ── Modal 1: Edit Profile (Full Profile & Waypoints) ─────── */}
       {isEditProfileOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditProfileOpen(false)}
@@ -1905,7 +1905,7 @@ export default function FounderProfilePage() {
 
       {/* ── Modal 2: Edit About Me (Independent Modal) ──────────── */}
       {isEditAboutOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditAboutOpen(false)}
@@ -1972,7 +1972,7 @@ export default function FounderProfilePage() {
 
       {/* ── Modal 3: Manage Interests (Independent Modal, Max 5) ── */}
       {isEditInterestsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditInterestsOpen(false)}
@@ -2153,7 +2153,7 @@ export default function FounderProfilePage() {
 
       {/* ── Modal 7: Profile QR Code Modal ────────────────────────── */}
       {isQrModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md animate-fade-in"
             onClick={() => setIsQrModalOpen(false)}

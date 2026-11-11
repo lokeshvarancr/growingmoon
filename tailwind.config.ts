@@ -74,6 +74,9 @@ const config: Config = {
         sans: ["var(--font-text)", "ui-sans-serif", "sans-serif"],
         display: ["var(--font-display)", "Georgia", "serif"],
       },
+      spacing: {
+        "4.5": "1.125rem",
+      },
       borderRadius: {
         "2xl": "1.1rem",
         "3xl": "1.6rem",

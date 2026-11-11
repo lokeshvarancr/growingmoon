@@ -1,0 +1,46 @@
+{
+  "summary": "Frontend-only visual-redesign regression test of Growing Moon (Next.js prod build) at 1920/768/390 via Playwright on the public preview URL. Auth simulated with a localStorage bypass (gm_user + gm_access_token); backend is unreachable, as expected. Almost every requested flow works. Landing: hero, Journey Passport, Résumé vs Journey and CTA sections, footer links, nav links all OK. Login/Register: fields, show/hide password, Forgot-password modal open/close, Google/LinkedIn buttons, Register link all OK. Desktop shell: search goes to /search?q=design, Home/Explore/Messages/Notifications links work, account menu has all 6 items, the dark-mode toggle adds/removes html.dark and the theme persists. Mobile 390: bottom nav (Home, Explore, Create, Notifications, Profile) routes correctly, top search icon and messages icon work. Home: category pills, inline composer (type pills, close X, More options opens the full composer), Saved Snippets banner + Back to all posts, Connections modal, Create a New Journey modal and Suggest Feature (Product Suggestions) modal all OK. Post cards u1/u2/u3 after Reset Demo Data + window.next.router.push: Follow/Following, Read more/Show less, Fuel, Save, Passport link, Community Thread sheet + Close, three-dot menu (Copy Link / Report Post), Report modal all OK. Lightbox (u3) opens and prev/next/close work. Profile: QR modal opens/closes, more menu shows Copy Profile Link / Message Member / Report Member, Message goes to /messages?user=arjun_sharma. Passport Timeline/About/Goals tabs switch. 404 page links go to /home and /discover. The Reset Demo Data toast appears and its X dismisses it. No horizontal overflow and no JS pageerrors on 13 routes at 390 and 768. Reduced-motion: hero is visible (opacity 1, transform none). Issues found are minor, listed below.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "JourneyPostCard lightbox on /updates/[id]", "issue": "The lightbox overlay leaves a ~24px strip of page visible at the top. RCA: the overlay is rendered as a sibling inside the parent `max-w-2xl mx-auto space-y-6` (app/updates/[id]/page.tsx:111). Tailwind space-y-6 puts margin-top:24px on the fixed overlay (computed marginTop=24px, rect.top=24). Pre-existing, but it shows clearly in the new design. Fix: render the lightbox/report/thread overlays with createPortal(document.body), or add `!mt-0` to the overlay. The same risk applies wherever the card sits in a space-y-* list.", "selector": "div.fixed.inset-0.z-50 (contains button[title='Close (Esc)'])", "priority": "MEDIUM"},
+      {"component": "JourneyPostCard lightbox", "issue": "The close button title says 'Close (Esc)', but pressing Escape does nothing because no keydown handler exists. Pre-existing.", "selector": "button[title='Close (Esc)']", "priority": "LOW"},
+      {"component": "Feature Suggestion FAB (AppShell)", "issue": "At 768px (md, where the mobile nav is hidden) the fixed FAB (bottom-6 right-6) covers the 'Post & Save' primary button at the bottom of /updates/new, and also covers content on profile empty states.", "selector": "[data-testid='feature-suggestion-fab']", "priority": "MEDIUM"},
+      {"component": "Passport Goals tab (desktop 1920)", "issue": "In the add-goal row, the 'Add Goal' button is clipped at the card's right edge and the 'Target date (e.g. Nov 2026)' placeholder is truncated. The goals card is also narrower than the hero above it.", "selector": "/passport/arjun_sharma > Goals tab", "priority": "LOW"}
+    ],
+    "integration_issues": [
+      {"flow": "Profile Follow/Connect (/profile/arjun_sharma)", "issue": "Clicking '+ Follow' or 'Connect' changes nothing because liveProfile is null while the API is down. Pre-existing: the diff vs c4a0100 changes only classNames. Not a redesign regression.", "affected_selectors": ["[data-testid='profile-header'] button"]}
+    ],
+    "design_issues": [
+      {"screen": "Profile About card", "issues": ["A leftover purple wave gradient and stick-figure/spinner decoration at the bottom of the About card clashes with the ember palette (visible at 768 and 1920)"]},
+      {"screen": "Home left sidebar", "issues": ["The avatar fallback is hardcoded 'YD' (app/home/page.tsx:424) while the top bar shows the user's real initials (pre-existing)"]},
+      {"screen": "Desktop TopBar", "issues": ["The Notifications dot always shows (hardcoded), whereas the mobile nav uses unreadNotificationCount (pre-existing)"]},
+      {"screen": "Dark mode", "issues": ["In dark mode the post card 'Passport' button and the toasts stay light/cream; readable but inconsistent with the dark surfaces"]},
+      {"screen": "/discover at 390", "issues": ["The filter icon button sits over the end of the horizontally scrolling category pill row, partly covering the 'Learning' pill"]},
+      {"screen": "Post composer modal", "issues": ["Uses the browser's native date input rather than a styled date picker"]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Render JourneyPostCard overlays (lightbox, report, thread) via a portal or add !mt-0 so the space-y-6 parent doesn't offset the fixed overlay by 24px",
+    "Add Escape-key handling to the lightbox to match its 'Close (Esc)' title",
+    "Move the Suggest Feature FAB so it doesn't cover the primary CTA on /updates/new at md widths (e.g. hide it on /updates/new or add bottom padding)",
+    "Fix the clipped 'Add Goal' button and placeholder in the Passport Goals tab at desktop",
+    "Restyle the leftover purple decoration in the Profile About card to the ember palette",
+    "Optional: use currentUser.avatar instead of hardcoded 'YD'; bind the desktop notification dot to unreadNotificationCount; style the Passport button and toasts for dark mode"
+  ],
+  "critical_code_review_comments": [
+    "app/home/page.tsx (1030 lines), components/feed/JourneyPostCard.tsx (1194) and app/profile/[username]/page.tsx (2232) are very large and should be split",
+    "Most interactive elements in home, post card, profile, passport, login and settings have no data-testid; tests had to rely on text and title attributes",
+    "globals.css forces `.bg-white` to the surface color with !important. This works, but it hides intent and makes hardcoded light components (toasts, Passport button) inconsistent in dark mode",
+    "html { scroll-behavior: smooth } is not disabled under prefers-reduced-motion"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped as requested)", "frontend": "~93% (all requested flows functional; 4 minor UI bugs, 2 of them pre-existing)"},
+  "test_credentials": "/app/memory/test_credentials.md DOES NOT EXIST. Used a localStorage bypass instead: gm_user={id:'test-u1',username:'arjun_sharma',...} and gm_access_token='test-token'. getMe fails with a network error, so the session is kept.",
+  "seed_data_creation": "None. Only client-side localStorage was changed, using the Settings > Reset Demo Data button.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Next.js prod app at /app, served on port 3000. Backend is unavailable, so feeds and API lists stay in skeleton/empty state. Auth bypass: set localStorage gm_user (JSON with id) and gm_access_token before navigating. Posts u1/u2/u3 exist only after Settings > 'Reset Demo Data to Initial State' followed by window.next.router.push('/updates/uX'). Use :visible locators on post cards because some variants render hidden duplicates. /onboarding redirects to /home by design. At 768 the mobile nav is hidden (md:hidden) and the top nav shows icons only.",
+  "rca of the issue": "Lightbox top strip: JourneyPostCard returns a fragment that contains the fixed overlay. The parent's Tailwind `space-y-6` selector (> * + *) gives the overlay margin-top:24px, which offsets a position:fixed element even with inset-0. Reproduce: Reset Demo Data, push /updates/u3, click the hero image, then check getComputedStyle(overlay).marginTop === '24px'. Mitigation: portal the overlay to document.body or add !m-0."
+}

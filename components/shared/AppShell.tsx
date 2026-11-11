@@ -26,7 +26,7 @@ export default function AppShell({ children, rightSidebar, leftSidebar }: AppShe
         <div className="absolute top-1/2 -left-56 w-[520px] h-[520px] rounded-full bg-gm-moss/[0.06] blur-[120px]" />
       </div>
 
-      <div className="flex flex-col min-h-screen pb-28 md:pb-10">
+      <div className="flex flex-col min-h-screen pb-28">
         <TopBar />
 
         <div className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-6">

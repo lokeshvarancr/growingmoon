@@ -130,7 +130,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-gm-ink/45 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+    <div className="fixed inset-0 z-50 !mt-0 bg-gm-ink/45 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
       <div className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-7 shadow-modal border border-gm-ink/5 animate-slide-up relative overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">

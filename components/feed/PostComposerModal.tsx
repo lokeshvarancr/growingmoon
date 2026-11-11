@@ -434,7 +434,7 @@ export default function PostComposerModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto select-none">
+    <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-3 sm:p-5 overflow-y-auto select-none">
       {/* ── Backdrop Overlay ────────────────────────────────────── */}
       <div
         className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md transition-opacity animate-fade-in"
@@ -941,7 +941,7 @@ export default function PostComposerModal({
 
       {/* ── Sub-modal: Add New Update Type ─────────────────────── */}
       {isNewTypeModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewTypeModalOpen(false)}
@@ -986,7 +986,7 @@ export default function PostComposerModal({
 
       {/* ── Sub-modal: Create New Journey ──────────────────────── */}
       {isNewJourneyModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewJourneyModalOpen(false)}

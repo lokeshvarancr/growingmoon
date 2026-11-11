@@ -1000,9 +1000,9 @@ export default function ExploreView() {
         )}
 
         {/* ── 3. FILTER PILLS ROW + FILTERS BUTTON (Direct Match to Reference UI) ── */}
-        <div className="flex items-center justify-between gap-1.5 -mx-3 sm:-mx-5 lg:mx-0 px-1 sm:px-1.5">
+        <div className="flex items-center justify-between gap-2">
           {/* Scrollable Category Pills with full rounded pill radius */}
-          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 scrollbar-none flex-1">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none flex-1 min-w-0">
             {CATEGORIES.map((cat) => {
               const isActive = activeTab === cat.id;
               return (
@@ -1010,10 +1010,10 @@ export default function ExploreView() {
                   key={cat.id}
                   type="button"
                   onClick={() => setActiveTab(cat.id)}
-                  className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs transition-all cursor-pointer select-none active:scale-95 ${
+                  className={`whitespace-nowrap px-4 h-10 rounded-full text-[13px] transition-all cursor-pointer select-none active:scale-95 ${
                     isActive
-                      ? 'bg-gm-ink text-white shadow-xs font-bold'
-                      : 'bg-gray-100 hover:bg-gray-200/80 text-gray-700 font-semibold hover:text-gm-ink'
+                      ? 'bg-gm-ink text-gm-paper shadow-float font-semibold'
+                      : 'bg-gm-ink/[0.04] hover:bg-gm-ink/[0.08] text-gray-600 font-medium hover:text-gm-ink'
                   }`}
                 >
                   {cat.label}
@@ -1026,7 +1026,7 @@ export default function ExploreView() {
           <button
             type="button"
             onClick={() => setIsFilterModalOpen(true)}
-            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200/80 text-gray-700 hover:text-gm-ink transition-all cursor-pointer shadow-2xs flex-shrink-0 active:scale-95 flex items-center justify-center"
+            className="w-10 h-10 mb-1 rounded-full bg-gm-ink text-gm-paper hover:bg-gm-accent transition-all cursor-pointer flex-shrink-0 active:scale-95 flex items-center justify-center"
             title="Filters"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 stroke-[2]" />
@@ -1295,7 +1295,7 @@ export default function ExploreView() {
 
       {/* ── Filter Modal ───────────────────────────────────────── */}
       {isFilterModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsFilterModalOpen(false)}

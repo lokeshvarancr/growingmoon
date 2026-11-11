@@ -332,7 +332,7 @@ function LoginForm() {
 
       {/* ── FORGOT PASSWORD MODAL ─────────────────────────────────────────── */}
       {isForgotModalOpen && (
-        <div className="fixed inset-0 z-50 bg-gm-ink/40 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+        <div className="fixed inset-0 z-50 !mt-0 bg-gm-ink/40 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white rounded-[28px] max-w-sm w-full p-7 shadow-modal border border-gm-ink/5 animate-slide-up relative">
             <button
               type="button"
