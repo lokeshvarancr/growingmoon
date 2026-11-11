@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/lib/state/AppContext';
+import { MoonPhase } from './AestheticLoader';
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -21,8 +22,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   // Stable SSR & initial hydration shell (100% server/client HTML match)
   if (!mounted || (isAuthLoading && !isAuthenticated)) {
     return (
-      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center select-none">
-        <div className="w-8 h-8 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin" />
+      <div className="min-h-screen bg-gm-paper flex items-center justify-center select-none" data-testid="auth-guard-loading">
+        <MoonPhase px={36} />
       </div>
     );
   }

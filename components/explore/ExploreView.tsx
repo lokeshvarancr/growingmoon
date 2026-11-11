@@ -43,7 +43,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-2',
     badge: 'Learning',
     badgeIcon: '🎸',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Learning',
     titleMain: 'Acoustic Guitar',
@@ -60,7 +60,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-1',
     badge: 'Building',
     badgeIcon: '🚀',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Validating',
     titleMain: 'Startup MVP',
@@ -77,7 +77,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-3',
     badge: 'Creative',
     badgeIcon: '📷',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Exploring',
     titleMain: 'Street Photography',
@@ -94,7 +94,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-4',
     badge: 'Education',
     badgeIcon: '📚',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Preparing for',
     titleMain: 'GRE Examination',
@@ -111,7 +111,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-5',
     badge: 'Fitness',
     badgeIcon: '🏃',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1483721074573-500b58e7f1f3?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Training for',
     titleMain: 'Half Marathon',
@@ -128,7 +128,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-6',
     badge: 'Career',
     badgeIcon: '💼',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Switching to',
     titleMain: 'Product Leadership',
@@ -145,7 +145,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-7',
     badge: 'Lifestyle',
     badgeIcon: '🥗',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Exploring',
     titleMain: 'Mediterranean Diet',
@@ -162,7 +162,7 @@ const EXPLORE_CARDS: ExploreCard[] = [
     id: 'e-8',
     badge: 'Creative',
     badgeIcon: '✏️',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80',
     titleLead: 'Practising',
     titleMain: 'Digital Illustration',
@@ -441,7 +441,7 @@ export default function ExploreView() {
         : post.category?.toLowerCase() === 'learning'
         ? '📖'
         : '✨',
-    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl:
       post.media?.[0]?.url ||
       'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
@@ -753,7 +753,7 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full relative rounded-[20px] sm:rounded-[22px] overflow-hidden bg-slate-950 aspect-[3/4.5] sm:aspect-[3/4.2] flex flex-col justify-between p-3.5 sm:p-4 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
+            className="w-full relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-slate-950 aspect-[3/4.5] sm:aspect-[3/4.2] flex flex-col justify-between p-3.5 sm:p-4 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
           >
             <img
               src={item.imageUrl || 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80'}
@@ -797,9 +797,9 @@ export default function ExploreView() {
                     {item.authorName.split(' ')[0]}
                   </span>
                 </div>
-                <span className="inline-flex items-center gap-1 bg-white text-[#141724] font-black text-[10.5px] px-3 py-1.5 rounded-full shadow-xs group-hover:bg-white/90 group-hover:scale-[1.02] active:scale-95 transition-all">
+                <span className="inline-flex items-center gap-1 bg-white text-gm-ink font-black text-[10.5px] px-3 py-1.5 rounded-full shadow-xs group-hover:bg-white/90 group-hover:scale-[1.02] active:scale-95 transition-all">
                   <span>Explore</span>
-                  <ArrowRight className="w-3 h-3 text-[#6258DB] stroke-[2.5]" />
+                  <ArrowRight className="w-3 h-3 text-gm-accent stroke-[2.5]" />
                 </span>
               </div>
             </div>
@@ -812,7 +812,7 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full bg-white rounded-[20px] sm:rounded-[22px] border border-black/[0.07] shadow-xs overflow-hidden flex flex-col justify-between group cursor-pointer select-none hover:border-black/15 transition-all"
+            className="w-full bg-white rounded-[24px] sm:rounded-[28px] shadow-card overflow-hidden flex flex-col justify-between group cursor-pointer select-none hover:shadow-card-hover hover:-translate-y-1 transition-all duration-500"
           >
             {/* Top Image */}
             <div className="relative h-24 sm:h-28 w-full overflow-hidden bg-slate-900 flex-shrink-0">
@@ -831,7 +831,7 @@ export default function ExploreView() {
             {/* Content */}
             <div className="p-3 flex flex-col justify-between flex-1 space-y-2">
               <div className="space-y-0.5">
-                <h3 className="font-black text-xs sm:text-[13px] text-[#141724] leading-snug line-clamp-1 group-hover:text-[#6258DB] transition-colors">
+                <h3 className="font-black text-xs sm:text-[13px] text-gm-ink leading-snug line-clamp-1 group-hover:text-gm-accent transition-colors">
                   {item.title}
                 </h3>
                 <p className="text-gray-500 text-[10px] sm:text-[10.5px] font-normal leading-relaxed line-clamp-2">
@@ -854,7 +854,7 @@ export default function ExploreView() {
                     {item.authorName.split(' ')[0]}
                   </span>
                 </div>
-                <span className="text-[10px] font-black text-[#6258DB] group-hover:underline flex items-center gap-0.5 transition-colors">
+                <span className="text-[10px] font-black text-gm-accent group-hover:underline flex items-center gap-0.5 transition-colors">
                   <span>Explore</span>
                   <ArrowRight className="w-3 h-3 stroke-[2.5]" />
                 </span>
@@ -869,16 +869,16 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full bg-white rounded-[20px] sm:rounded-[22px] border border-black/[0.07] shadow-xs p-3.5 flex flex-col justify-between group cursor-pointer select-none hover:border-black/15 transition-all"
+            className="w-full bg-white rounded-[24px] sm:rounded-[28px] shadow-card p-3.5 flex flex-col justify-between group cursor-pointer select-none hover:shadow-card-hover hover:-translate-y-1 transition-all duration-500"
           >
             <div className="space-y-1.5">
               <div className="flex items-center gap-1">
                 <span className="text-xs">{item.badgeIcon}</span>
-                <span className="text-[9.5px] font-black uppercase tracking-wider text-[#6258DB]">
+                <span className="text-[9.5px] font-black uppercase tracking-wider text-gm-accent">
                   {item.badge}
                 </span>
               </div>
-              <h3 className="font-black text-xs sm:text-[13.5px] text-[#141724] leading-snug group-hover:text-[#6258DB] transition-colors line-clamp-2">
+              <h3 className="font-black text-xs sm:text-[13.5px] text-gm-ink leading-snug group-hover:text-gm-accent transition-colors line-clamp-2">
                 {item.title}
               </h3>
               <p className="text-gray-500 text-[10px] sm:text-[10.5px] font-normal leading-relaxed line-clamp-2">
@@ -901,7 +901,7 @@ export default function ExploreView() {
                   {item.authorName.split(' ')[0]}
                 </span>
               </div>
-              <span className="text-[10px] font-black text-[#6258DB] group-hover:underline flex items-center gap-0.5 transition-colors">
+              <span className="text-[10px] font-black text-gm-accent group-hover:underline flex items-center gap-0.5 transition-colors">
                 <span>Explore</span>
                 <ArrowRight className="w-3 h-3 stroke-[2.5]" />
               </span>
@@ -915,7 +915,7 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full relative rounded-[20px] sm:rounded-[22px] overflow-hidden bg-slate-950 aspect-[16/11] sm:aspect-[16/10] flex flex-col justify-between p-3 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
+            className="w-full relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-slate-950 aspect-[16/11] sm:aspect-[16/10] flex flex-col justify-between p-3 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
           >
             <img
               src={item.imageUrl || 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80'}
@@ -966,7 +966,7 @@ export default function ExploreView() {
         
         {/* ── 1. PAGE HEADER: Title & Subtitle ───────────────────── */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#141724] tracking-tight leading-tight">
+          <h1 className="text-[40px] sm:text-[56px] leading-[1.02] font-extrabold text-gm-ink tracking-tight leading-tight">
             Explore
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 font-normal mt-1 leading-relaxed">
@@ -981,11 +981,11 @@ export default function ExploreView() {
 
         {/* ── 2. ACTIVE SEARCH INDICATOR (When query active) ──────── */}
         {searchQuery.trim() !== '' && (
-          <div className="flex items-center justify-between gap-2 bg-indigo-50/70 border border-indigo-100 rounded-2xl px-3.5 py-2">
-            <div className="flex items-center gap-2 text-xs text-[#141724]">
-              <Search className="w-3.5 h-3.5 text-[#6258DB]" />
+          <div className="flex items-center justify-between gap-2 bg-gm-accent-soft border border-gm-accent-line rounded-full px-3.5 py-2">
+            <div className="flex items-center gap-2 text-xs text-gm-ink">
+              <Search className="w-3.5 h-3.5 text-gm-accent" />
               <span>
-                Search results for: <strong className="text-[#6258DB]">&ldquo;{searchQuery}&rdquo;</strong>
+                Search results for: <strong className="text-gm-accent">&ldquo;{searchQuery}&rdquo;</strong>
               </span>
             </div>
             <button
@@ -1012,8 +1012,8 @@ export default function ExploreView() {
                   onClick={() => setActiveTab(cat.id)}
                   className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs transition-all cursor-pointer select-none active:scale-95 ${
                     isActive
-                      ? 'bg-[#141724] text-white shadow-xs font-bold'
-                      : 'bg-gray-100 hover:bg-gray-200/80 text-gray-700 font-semibold hover:text-[#141724]'
+                      ? 'bg-gm-ink text-white shadow-xs font-bold'
+                      : 'bg-gray-100 hover:bg-gray-200/80 text-gray-700 font-semibold hover:text-gm-ink'
                   }`}
                 >
                   {cat.label}
@@ -1026,7 +1026,7 @@ export default function ExploreView() {
           <button
             type="button"
             onClick={() => setIsFilterModalOpen(true)}
-            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200/80 text-gray-700 hover:text-[#141724] transition-all cursor-pointer shadow-2xs flex-shrink-0 active:scale-95 flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200/80 text-gray-700 hover:text-gm-ink transition-all cursor-pointer shadow-2xs flex-shrink-0 active:scale-95 flex items-center justify-center"
             title="Filters"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 stroke-[2]" />
@@ -1036,7 +1036,7 @@ export default function ExploreView() {
         {/* ── 4A. MOBILE & TABLET EDITORIAL MASONRY ── */}
         <div className="block lg:hidden -mx-3 sm:-mx-5 lg:mx-0 px-1 sm:px-1.5">
           {isLoading ? (
-            <div className="py-12 bg-white rounded-3xl border border-black/[0.04] shadow-xs">
+            <div className="py-12 bg-white rounded-3xl shadow-card">
               <AestheticLoader
                 title="Exploring community journeys..."
                 subtitle="Loading initial 30 milestones from builders and learners ahead of you."
@@ -1054,17 +1054,17 @@ export default function ExploreView() {
               </div>
             </div>
           ) : (
-            <div className="p-8 text-center bg-white rounded-[20px] border border-black/[0.08] shadow-2xs">
-              <div className="w-10 h-10 rounded-full bg-purple-50 text-[#6258DB] flex items-center justify-center mx-auto mb-2 text-lg">
+            <div className="p-8 text-center bg-white rounded-[20px] shadow-card">
+              <div className="w-10 h-10 rounded-full bg-purple-50 text-gm-accent flex items-center justify-center mx-auto mb-2 text-lg">
                 🌱
               </div>
-              <p className="text-xs font-bold text-[#141724]">No journey updates found</p>
+              <p className="text-xs font-bold text-gm-ink">No journey updates found</p>
               <p className="text-[11px] text-gray-500 mt-0.5">Be the first to share your milestone.</p>
               <div className="mt-3 flex items-center justify-center gap-2">
                 <button
                   type="button"
                   onClick={() => router.push('/updates/new')}
-                  className="px-3.5 py-1.5 rounded-full bg-[#6258DB] text-white text-xs font-bold cursor-pointer hover:bg-[#5246D2] transition-colors"
+                  className="px-3.5 py-1.5 rounded-full bg-gm-accent text-white text-xs font-bold cursor-pointer hover:bg-gm-accent-deep transition-colors"
                 >
                   Share Milestone +
                 </button>
@@ -1086,7 +1086,7 @@ export default function ExploreView() {
 
         {/* ── 4B. DESKTOP CARDS GRID (Active on Desktop >= lg) ── */}
         {isLoading ? (
-          <div className="hidden lg:block py-16 bg-white rounded-3xl border border-black/[0.04] shadow-xs">
+          <div className="hidden lg:block py-16 bg-white rounded-3xl shadow-card">
             <AestheticLoader
               title="Exploring community journeys..."
               subtitle="Loading initial 30 milestones from builders and learners ahead of you."
@@ -1117,7 +1117,7 @@ export default function ExploreView() {
                 <div
                   key={card.id}
                   onClick={handleCardClick}
-                  className="bg-white rounded-xl sm:rounded-2xl border border-black/[0.06] shadow-[0_10px_28px_-6px_rgba(98,88,219,0.15),0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_18px_36px_-6px_rgba(98,88,219,0.24)] transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer group select-none relative"
+                  className="bg-white rounded-xl sm:rounded-2xl border border-black/[0.06] shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer group select-none relative"
                 >
                   
                   {/* ── Top Half: Hero Image with Floating Badge & Serif Overlay (Tall aspect ratio) ── */}
@@ -1130,7 +1130,7 @@ export default function ExploreView() {
                     />
 
                     {/* Floating Top-Right Category Badge */}
-                    <div className="absolute top-3.5 right-3.5 bg-[#181528]/75 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 border border-white/20">
+                    <div className="absolute top-3.5 right-3.5 bg-gm-ink/75 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 border border-white/20">
                       <span>{card.badgeIcon}</span>
                       <span>{card.badge}</span>
                     </div>
@@ -1145,7 +1145,7 @@ export default function ExploreView() {
                       </span>
                       
                       <div className="flex items-center gap-2 mt-0.5">
-                        <h2 className="font-serif italic font-bold text-2xl sm:text-[27px] text-white leading-tight drop-shadow-md">
+                        <h2 className="font-serif italic font-bold text-3xl sm:text-[27px] text-white leading-tight drop-shadow-md">
                           {card.titleMain}
                         </h2>
 
@@ -1169,7 +1169,7 @@ export default function ExploreView() {
                         />
                         <defs>
                           <linearGradient id="neon-wave" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#6258DB" />
+                            <stop stopColor="#E2552C" />
                             <stop offset="0.5" stopColor="#A855F7" />
                             <stop offset="1" stopColor="#EC4899" />
                           </linearGradient>
@@ -1196,7 +1196,7 @@ export default function ExploreView() {
                           alt={card.authorName}
                           className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-100 flex-shrink-0 shadow-xs"
                         />
-                        <span className="font-extrabold text-sm sm:text-[15px] text-[#141724] truncate tracking-tight hover:underline">
+                        <span className="font-extrabold text-sm sm:text-[15px] text-gm-ink truncate tracking-tight hover:underline">
                           {card.authorName}
                         </span>
                       </div>
@@ -1207,8 +1207,8 @@ export default function ExploreView() {
                           onClick={(e) => handleToggleFollow(e, card)}
                           className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer flex-shrink-0 ${
                             isFollowed
-                              ? 'bg-[#6258DB] text-white hover:bg-[#5246D2]'
-                              : 'bg-[#F0EFFE] text-[#6258DB] hover:bg-[#E4E1FE]'
+                              ? 'bg-gm-accent text-white hover:bg-gm-accent-deep'
+                              : 'bg-gm-accent-soft text-gm-accent hover:bg-[#E4E1FE]'
                           }`}
                         >
                           <UserPlus className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -1219,8 +1219,8 @@ export default function ExploreView() {
 
                     {/* Row 2: Purple Accent Bar + Two-Line Heading */}
                     <div className="flex items-stretch gap-2.5 my-3.5 pt-3 border-t border-gray-100/90">
-                      <div className="w-1 bg-[#6258DB] rounded-full flex-shrink-0 min-h-[36px]" />
-                      <p className="text-xs sm:text-[13px] font-semibold text-[#141724] leading-relaxed line-clamp-2">
+                      <div className="w-1 bg-gm-accent rounded-full flex-shrink-0 min-h-[36px]" />
+                      <p className="text-xs sm:text-[13px] font-semibold text-gm-ink leading-relaxed line-clamp-2">
                         {card.heading} <span className="inline-block ml-0.5">{card.emoji}</span>
                       </p>
                     </div>
@@ -1232,7 +1232,7 @@ export default function ExploreView() {
                         e.stopPropagation();
                         handleCardClick();
                       }}
-                      className="w-full py-2.5 px-4 rounded-full bg-[#F0EFFE] hover:bg-[#6258DB] text-[#6258DB] hover:text-white font-extrabold text-xs sm:text-[13px] flex items-center justify-center gap-1.5 transition-all shadow-xs group/btn cursor-pointer active:scale-98"
+                      className="w-full py-2.5 px-4 rounded-full bg-gm-accent-soft hover:bg-gm-accent text-gm-accent hover:text-white font-extrabold text-xs sm:text-[13px] flex items-center justify-center gap-1.5 transition-all shadow-xs group/btn cursor-pointer active:scale-98"
                     >
                       <span className="truncate">{card.actionLabel}</span>
                       <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform flex-shrink-0" />
@@ -1245,11 +1245,11 @@ export default function ExploreView() {
             })}
           </div>
         ) : (
-          <div className="hidden lg:block p-12 text-center bg-white rounded-3xl border border-gray-100 shadow-xs">
-            <div className="w-12 h-12 rounded-full bg-purple-50 text-[#6258DB] flex items-center justify-center mx-auto mb-3 text-xl">
+          <div className="hidden lg:block p-12 text-center bg-white rounded-3xl shadow-card">
+            <div className="w-12 h-12 rounded-full bg-purple-50 text-gm-accent flex items-center justify-center mx-auto mb-3 text-xl">
               🌱
             </div>
-            <p className="text-base font-bold text-[#141724]">No journey updates found</p>
+            <p className="text-base font-bold text-gm-ink">No journey updates found</p>
             <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
               Be the first to share an inspiring milestone in this category with the community!
             </p>
@@ -1257,7 +1257,7 @@ export default function ExploreView() {
               <button
                 type="button"
                 onClick={() => router.push('/updates/new')}
-                className="px-4 py-2 rounded-full bg-[#6258DB] text-white text-xs font-bold hover:bg-[#5246D2] transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-full bg-gm-accent text-white text-xs font-bold hover:bg-gm-accent-deep transition-colors cursor-pointer"
               >
                 Share a Milestone +
               </button>
@@ -1280,7 +1280,7 @@ export default function ExploreView() {
         <div ref={sentinelRef} className="py-8 flex flex-col items-center justify-center text-center">
           {isLoadingMore && (
             <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
-              <div className="w-4 h-4 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin" />
+              <div className="w-4 h-4 rounded-full border-2 border-gm-accent border-t-transparent animate-spin" />
               <span>Fetching more journey updates...</span>
             </div>
           )}
@@ -1297,12 +1297,12 @@ export default function ExploreView() {
       {isFilterModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsFilterModalOpen(false)}
           />
-          <div className="relative bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 max-w-sm w-full z-10 space-y-4 animate-in zoom-in-95 duration-150">
+          <div className="relative bg-white rounded-[32px] p-7 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 space-y-4 animate-slide-up">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-[#141724]">Filter Explore</h3>
+              <h3 className="text-sm font-bold text-gm-ink">Filter Explore</h3>
               <button
                 type="button"
                 onClick={() => setIsFilterModalOpen(false)}
@@ -1339,7 +1339,7 @@ export default function ExploreView() {
                       onClick={() => setSelectedTagFilter(tag)}
                       className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
                         isSelected
-                          ? 'bg-[#141724] text-white'
+                          ? 'bg-gm-ink text-white'
                           : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                       }`}
                     >
@@ -1364,7 +1364,7 @@ export default function ExploreView() {
               <button
                 type="button"
                 onClick={() => setIsFilterModalOpen(false)}
-                className="px-4 py-1.5 bg-[#6258DB] text-white text-xs font-bold rounded-full shadow-sm cursor-pointer"
+                className="px-4 py-1.5 bg-gm-accent text-white text-xs font-bold rounded-full shadow-sm cursor-pointer"
               >
                 Apply
               </button>

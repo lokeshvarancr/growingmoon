@@ -468,7 +468,7 @@ export default function FounderProfilePage() {
           <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3">
             <AlertCircle className="w-6 h-6 stroke-[2]" />
           </div>
-          <h2 className="text-base font-bold text-[#141724]">
+          <h2 className="text-xl font-bold text-gm-ink">
             Unable to load profile
           </h2>
           <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
@@ -478,7 +478,7 @@ export default function FounderProfilePage() {
             <button
               type="button"
               onClick={loadProfile}
-              className="px-4 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+              className="px-4 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Try Again</span>
@@ -739,10 +739,10 @@ export default function FounderProfilePage() {
 
   // ── RENDER HELPERS: About Card ─────────────────────────────────
   const renderAboutCard = () => (
-    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs relative overflow-hidden flex flex-col justify-between">
+    <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card relative overflow-hidden flex flex-col justify-between">
       <div>
         <div className="flex items-center justify-between mb-2.5 relative z-10">
-          <h3 className="text-sm font-bold text-[#141724]">About</h3>
+          <h3 className="text-sm font-bold text-gm-ink">About</h3>
           {isOwner && (
             <button
               type="button"
@@ -750,7 +750,7 @@ export default function FounderProfilePage() {
                 setTempAbout(aboutText);
                 setIsEditAboutOpen(true);
               }}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-[#6258DB] hover:text-[#5247CE] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-gm-accent hover:text-gm-accent-deep transition-colors cursor-pointer"
               title="Edit About"
             >
               <Pencil className="w-3 h-3" />
@@ -772,7 +772,7 @@ export default function FounderProfilePage() {
               <button
                 type="button"
                 onClick={() => setIsAboutExpanded(!isAboutExpanded)}
-                className="text-xs font-bold text-[#6258DB] hover:underline inline-flex items-center gap-1 relative z-10 mt-2 cursor-pointer"
+                className="text-xs font-bold text-gm-accent hover:underline inline-flex items-center gap-1 relative z-10 mt-2 cursor-pointer"
               >
                 <span>{isAboutExpanded ? 'Show less ↑' : 'Read more →'}</span>
               </button>
@@ -790,7 +790,7 @@ export default function FounderProfilePage() {
                   setTempAbout('');
                   setIsEditAboutOpen(true);
                 }}
-                className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-[#6258DB] hover:underline cursor-pointer"
+                className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-gm-accent hover:underline cursor-pointer"
               >
                 <Plus className="w-3 h-3" />
                 <span>Add Introduction</span>
@@ -854,10 +854,10 @@ export default function FounderProfilePage() {
 
   // ── RENDER HELPERS: Interests Card (Max 5 Limit) ───────────────
   const renderInterestsCard = () => (
-    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs">
+    <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-bold text-[#141724]">Interests</h3>
+          <h3 className="text-sm font-bold text-gm-ink">Interests</h3>
           {interests.length > 0 && (
             <span className="text-[10px] font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
               {interests.length}/5
@@ -873,7 +873,7 @@ export default function FounderProfilePage() {
               setInterestsError(null);
               setIsEditInterestsOpen(true);
             }}
-            className="text-xs font-semibold text-[#6258DB] hover:underline cursor-pointer inline-flex items-center gap-1"
+            className="text-xs font-semibold text-gm-accent hover:underline cursor-pointer inline-flex items-center gap-1"
           >
             <Pencil className="w-3 h-3" />
             <span>{interests.length === 0 ? 'Add' : 'Edit'}</span>
@@ -895,7 +895,7 @@ export default function FounderProfilePage() {
                 setInterestsError(null);
                 setIsEditInterestsOpen(true);
               }}
-              className="mt-3 inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-[#EEEDFE] hover:bg-[#E0DEFD] text-xs font-bold text-[#6258DB] transition-all cursor-pointer"
+              className="mt-3 inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-gm-accent-soft hover:bg-[#E0DEFD] text-xs font-bold text-gm-accent transition-all cursor-pointer"
             >
               <Plus className="w-3 h-3" />
               <span>Add Interests</span>
@@ -908,7 +908,7 @@ export default function FounderProfilePage() {
           <div className="flex flex-wrap gap-2">
             {interests.map((tag, idx) => {
               const dotColors = [
-                'bg-[#6258DB]',
+                'bg-gm-accent',
                 'bg-[#FF9900]',
                 'bg-[#06B6D4]',
                 'bg-[#10B981]',
@@ -919,7 +919,7 @@ export default function FounderProfilePage() {
               return (
                 <div
                   key={tag}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-200/80 text-xs font-medium text-[#141724]"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-200/80 text-xs font-medium text-gm-ink"
                 >
                   <span className={`w-2 h-2 rounded-full ${dotColor}`} />
                   <span>{tag}</span>
@@ -965,11 +965,12 @@ export default function FounderProfilePage() {
       <div className="space-y-6 sm:space-y-8">
         
         {/* ── 1. PROFILE HEADER SECTION ──────────────────────────── */}
-        <section className="flex flex-col sm:flex-row items-start justify-between gap-5">
-          <div className="flex items-start gap-4 sm:gap-6 min-w-0 flex-1">
+        <section className="relative flex flex-col items-start gap-6 sm:gap-8 rounded-[36px] bg-white shadow-card p-6 sm:p-10 animate-slide-up" data-testid="profile-header">
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-[36px]"><div className="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent opacity-30" /><div className="absolute -right-10 -top-28 w-72 h-72 rounded-full bg-white" /></div>
+          <div className="relative flex flex-col sm:flex-row items-start sm:items-end gap-5 sm:gap-8 min-w-0 w-full">
             
             {/* Avatar with Green Active Dot */}
-            <div className="relative flex-shrink-0 w-20 h-20 sm:w-28 sm:h-28">
+            <div className="relative flex-shrink-0 w-24 h-24 sm:w-36 sm:h-36">
               <img
                 src={
                   (founder as any)?.avatarImage ||
@@ -977,7 +978,7 @@ export default function FounderProfilePage() {
                   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
                 }
                 alt={profileName || 'Founder'}
-                className="w-full h-full rounded-full object-cover shadow-sm ring-1 ring-black/[0.04] aspect-square"
+                className="w-full h-full rounded-full object-cover shadow-card-hover ring-4 ring-gm-paper aspect-square"
               />
               <span
                 className="absolute bottom-1 right-1 w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 rounded-full bg-[#10B981] border-2 sm:border-3 border-white shadow-xs"
@@ -987,19 +988,19 @@ export default function FounderProfilePage() {
 
             {/* Profile Info: Name, Location, Bio */}
             <div className="min-w-0 flex-1">
-              <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-[#141724] tracking-tight leading-tight">
+              <h1 className="text-[44px] sm:text-[64px] font-extrabold text-gm-ink leading-[0.95]">
                 {profileName || 'Anonymous Builder'}
               </h1>
 
               {profileLocation ? (
-                <p className="text-xs text-gray-500 font-medium mt-1 flex items-center gap-1">
+                <p className="text-[13px] text-gray-500 font-medium mt-3 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                   <span>{profileLocation}</span>
                 </p>
               ) : null}
 
               {profileBio ? (
-                <p className="text-xs sm:text-[13px] text-gray-600 mt-2.5 max-w-xl leading-relaxed font-normal">
+                <p className="text-sm sm:text-base text-gray-600 mt-3 max-w-xl leading-relaxed font-normal">
                   {profileBio}
                 </p>
               ) : isOwner ? (
@@ -1010,7 +1011,7 @@ export default function FounderProfilePage() {
                   <button
                     type="button"
                     onClick={() => setIsEditProfileOpen(true)}
-                    className="mt-1 text-xs font-bold text-[#6258DB] hover:underline cursor-pointer"
+                    className="mt-1 text-xs font-bold text-gm-accent hover:underline cursor-pointer"
                   >
                     + Add Bio
                   </button>
@@ -1020,24 +1021,24 @@ export default function FounderProfilePage() {
           </div>
 
           {/* Action Buttons: Follow, Connect, Edit Profile & More Options */}
-          <div className="flex items-center gap-2 self-start flex-shrink-0">
+          <div className="relative flex flex-wrap items-center gap-2 w-full pt-6 border-t border-gm-ink/[0.06]">
             {isOwner ? (
               <button
                 type="button"
                 onClick={() => setIsEditProfileOpen(true)}
-                className="px-4 py-1.5 rounded-full border border-gray-300 hover:border-gray-400 bg-white text-xs font-semibold text-[#141724] shadow-2xs hover:bg-gray-50 transition-all cursor-pointer"
+                className="px-5 h-10 inline-flex items-center rounded-full border border-gray-300 hover:border-gray-400 bg-white text-xs font-semibold text-gm-ink shadow-2xs hover:bg-gray-50 transition-all cursor-pointer"
               >
                 Edit Profile
               </button>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={handleToggleFollow}
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                  className={`px-5 h-10 inline-flex items-center rounded-full text-xs font-semibold transition-all cursor-pointer ${
                     liveProfile?.is_following
                       ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      : 'bg-[#6258DB] hover:bg-[#5247CE] text-white shadow-xs'
+                      : 'bg-gm-accent hover:bg-gm-accent-deep text-white shadow-xs'
                   }`}
                 >
                   {liveProfile?.is_following ? 'Following' : '+ Follow'}
@@ -1045,14 +1046,14 @@ export default function FounderProfilePage() {
                 <button
                   type="button"
                   onClick={handleConnectionAction}
-                  className={`px-4 py-1.5 rounded-full border text-xs font-semibold transition-all cursor-pointer ${
+                  className={`px-5 h-10 inline-flex items-center rounded-full border text-xs font-semibold transition-all cursor-pointer ${
                     liveProfile?.connection_status === 'connected'
                       ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
                       : liveProfile?.connection_status === 'pending-sent'
                       ? 'border-amber-300 bg-amber-50 text-amber-700'
                       : liveProfile?.connection_status === 'pending-received'
-                      ? 'border-[#6258DB] bg-[#EEEDFE] text-[#6258DB]'
-                      : 'border-gray-300 hover:border-gray-400 bg-white text-[#141724]'
+                      ? 'border-gm-accent bg-gm-accent-soft text-gm-accent'
+                      : 'border-gray-300 hover:border-gray-400 bg-white text-gm-ink'
                   }`}
                 >
                   {liveProfile?.connection_status === 'connected'
@@ -1073,10 +1074,10 @@ export default function FounderProfilePage() {
                     }
                     router.push(`/messages?user=${encodeURIComponent(liveProfile?.username || username)}`);
                   }}
-                  className="px-3.5 sm:px-4 py-1.5 rounded-full border border-gray-200 hover:border-[#6258DB] bg-white hover:bg-[#EEEDFE]/40 text-xs font-semibold text-[#141724] hover:text-[#6258DB] flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs active:scale-95"
+                  className="px-3.5 sm:px-5 h-10 inline-flex items-center rounded-full border border-gray-200 hover:border-gm-accent bg-white hover:bg-gm-accent-soft/40 text-xs font-semibold text-gm-ink hover:text-gm-accent flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs active:scale-95"
                   title="Direct Message"
                 >
-                  <MessageSquare className="w-3.5 h-3.5 text-[#6258DB]" />
+                  <MessageSquare className="w-3.5 h-3.5 text-gm-accent" />
                   <span>Message</span>
                 </button>
               </div>
@@ -1086,10 +1087,10 @@ export default function FounderProfilePage() {
             <button
               type="button"
               onClick={() => setIsQrModalOpen(true)}
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-xs font-semibold text-gray-700 flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer select-none active:scale-95"
+              className="px-3 sm:px-4 h-10 inline-flex items-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-xs font-semibold text-gray-700 flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer select-none active:scale-95"
               title="Show Profile QR Code"
             >
-              <QrCode className="w-3.5 h-3.5 text-[#6258DB]" />
+              <QrCode className="w-3.5 h-3.5 text-gm-accent" />
               <span className="hidden sm:inline">QR Code</span>
             </button>
 
@@ -1097,7 +1098,7 @@ export default function FounderProfilePage() {
               <button
                 type="button"
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                className="w-8 h-8 rounded-full border border-gray-200/90 hover:border-gray-300 flex items-center justify-center text-gray-500 hover:text-black transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-full border border-gray-200/90 hover:border-gray-300 flex items-center justify-center text-gray-500 hover:text-black transition-colors cursor-pointer"
                 title="More options"
               >
                 <MoreHorizontal className="w-4 h-4" />
@@ -1106,7 +1107,7 @@ export default function FounderProfilePage() {
               {isMoreMenuOpen && (
                 <>
                   <div className="fixed inset-0 z-30" onClick={() => setIsMoreMenuOpen(false)} />
-                  <div className="absolute right-0 top-10 bg-white text-gray-800 rounded-2xl shadow-xl border border-gray-100 p-1.5 z-40 min-w-[170px] text-xs font-medium animate-in fade-in zoom-in-95">
+                  <div className="absolute right-0 top-12 bg-white text-gray-800 rounded-2xl shadow-modal border border-gm-ink/5 p-1.5 z-40 min-w-[170px] text-xs font-medium animate-slide-up">
                     <button
                       type="button"
                       onClick={() => {
@@ -1160,7 +1161,7 @@ export default function FounderProfilePage() {
                           }}
                           className="w-full text-left px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 flex items-center gap-2 cursor-pointer font-medium"
                         >
-                          <MessageSquare className="w-3.5 h-3.5 text-[#6258DB]" />
+                          <MessageSquare className="w-3.5 h-3.5 text-gm-accent" />
                           <span>Message {liveProfile?.name ? liveProfile.name.split(' ')[0] : 'Member'}</span>
                         </button>
                         <button
@@ -1193,10 +1194,10 @@ export default function FounderProfilePage() {
                 
                 {/* Handwritten Script Annotation on Left */}
                 <div className="absolute left-2 top-2 z-20 flex flex-col items-start select-none">
-                  <span className="font-handwriting text-2xl sm:text-[26px] text-[#141724] font-medium leading-none">
+                  <span className="font-handwriting text-2xl sm:text-[26px] text-gm-ink font-medium leading-none">
                     Right now,
                   </span>
-                  <span className="font-handwriting text-2xl sm:text-[26px] text-[#141724] font-medium leading-none mt-1">
+                  <span className="font-handwriting text-2xl sm:text-[26px] text-gm-ink font-medium leading-none mt-1">
                     I&apos;m here
                   </span>
                   {/* Hand-drawn curved arrow pointing to the planet */}
@@ -1290,7 +1291,7 @@ export default function FounderProfilePage() {
                 {focus1 && (
                   <>
                     <div className="absolute left-[235px] top-6 text-center w-36 pointer-events-none select-none">
-                      <span className="font-handwriting text-lg text-[#141724] font-bold block leading-tight">
+                      <span className="font-handwriting text-lg text-gm-ink font-bold block leading-tight">
                         {focus1}
                       </span>
                     </div>
@@ -1306,7 +1307,7 @@ export default function FounderProfilePage() {
                 {focus2 && (
                   <>
                     <div className="absolute left-[355px] top-12 text-center w-36 pointer-events-none select-none">
-                      <span className="font-handwriting text-lg text-[#141724] font-bold block leading-tight">
+                      <span className="font-handwriting text-lg text-gm-ink font-bold block leading-tight">
                         {focus2}
                       </span>
                     </div>
@@ -1322,7 +1323,7 @@ export default function FounderProfilePage() {
                 {focus3 && (
                   <>
                     <div className="absolute left-[475px] top-12 text-center w-36 pointer-events-none select-none">
-                      <span className="font-handwriting text-lg text-[#141724] font-bold block leading-tight">
+                      <span className="font-handwriting text-lg text-gm-ink font-bold block leading-tight">
                         {focus3}
                       </span>
                     </div>
@@ -1345,7 +1346,7 @@ export default function FounderProfilePage() {
             <button
               type="button"
               onClick={() => setIsEditProfileOpen(true)}
-              className="mt-2 text-xs font-bold text-[#6258DB] hover:underline inline-flex items-center gap-1 cursor-pointer"
+              className="mt-2 text-xs font-bold text-gm-accent hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
               <Plus className="w-3 h-3" />
               <span>Set Focus Waypoints</span>
@@ -1361,7 +1362,7 @@ export default function FounderProfilePage() {
               <div className="flex items-start gap-3">
                 <Sparkles className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-serif italic text-sm sm:text-[15px] font-semibold text-[#141724]">
+                  <h4 className="font-serif italic text-sm sm:text-[15px] font-semibold text-gm-ink">
                     I can help with
                   </h4>
                   <p className="text-xs text-gray-500 leading-relaxed mt-1.5 font-normal">
@@ -1378,7 +1379,7 @@ export default function FounderProfilePage() {
                   ≈
                 </span>
                 <div>
-                  <h4 className="font-serif italic text-sm sm:text-[15px] font-semibold text-[#141724]">
+                  <h4 className="font-serif italic text-sm sm:text-[15px] font-semibold text-gm-ink">
                     I&apos;m figuring out
                   </h4>
                   <p className="text-xs text-gray-500 leading-relaxed mt-1.5 font-normal">
@@ -1395,7 +1396,7 @@ export default function FounderProfilePage() {
                   🌱
                 </span>
                 <div>
-                  <h4 className="font-serif italic text-sm sm:text-[15px] font-semibold text-[#141724]">
+                  <h4 className="font-serif italic text-sm sm:text-[15px] font-semibold text-gm-ink">
                     I&apos;m open to
                   </h4>
                   <p className="text-xs text-gray-500 leading-relaxed mt-1.5 font-normal">
@@ -1413,7 +1414,7 @@ export default function FounderProfilePage() {
             <button
               type="button"
               onClick={() => setIsEditProfileOpen(true)}
-              className="mt-1.5 text-xs font-bold text-[#6258DB] hover:underline cursor-pointer"
+              className="mt-1.5 text-xs font-bold text-gm-accent hover:underline cursor-pointer"
             >
               + Add Collaboration Details
             </button>
@@ -1431,7 +1432,7 @@ export default function FounderProfilePage() {
           {/* Header Row */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-baseline gap-2.5">
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#141724]">
+              <h2 className="font-serif text-[26px] sm:text-[32px] font-bold text-gm-ink">
                 My Journeys
               </h2>
               <span className="text-xs text-gray-400 font-medium">
@@ -1443,7 +1444,7 @@ export default function FounderProfilePage() {
               <button
                 type="button"
                 onClick={() => setIsNewJourneyOpen(true)}
-                className="bg-[#6258DB] hover:bg-[#5247CE] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
+                className="bg-gm-accent hover:bg-gm-accent-deep text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                 <span>New Journey</span>
@@ -1453,11 +1454,11 @@ export default function FounderProfilePage() {
 
           {/* Minimalistic, Content-Rich Journey Cards (Twitter/LinkedIn style) */}
           {journeysList.length === 0 ? (
-            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-black/[0.04] text-center my-2">
+            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-dashed border-gm-ink/15 text-center my-2">
               <div className="w-12 h-12 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center mx-auto mb-3">
                 <Compass className="w-6 h-6 stroke-[1.8]" />
               </div>
-              <h3 className="text-sm sm:text-base font-bold text-[#141724]">
+              <h3 className="text-sm sm:text-base font-bold text-gm-ink">
                 Your journeys will appear here once you create or join one.
               </h3>
               <p className="text-xs text-gray-500 mt-1 max-w-md mx-auto leading-relaxed font-normal">
@@ -1467,7 +1468,7 @@ export default function FounderProfilePage() {
                 <button
                   type="button"
                   onClick={() => setIsNewJourneyOpen(true)}
-                  className="mt-4 px-4 py-2 rounded-xl bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
+                  className="mt-4 px-4 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                   <span>Create Your First Journey</span>
@@ -1479,14 +1480,14 @@ export default function FounderProfilePage() {
               {journeysList.map((j) => (
                 <div
                   key={j.id}
-                  className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.07] hover:border-[#6258DB]/30 shadow-2xs hover:shadow-xs transition-all relative overflow-hidden"
+                  className="bg-white rounded-3xl p-5 sm:p-6 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden"
                 >
                   {/* Top Header Row: Category, Visibility, Updates count, Title, Chevron Arrow */}
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       {/* Badges row */}
                       <div className="flex items-center gap-2 flex-wrap mb-2">
-                        <span className="text-[11px] font-bold text-[#6258DB] bg-[#EEEDFE] px-2.5 py-0.5 rounded-full">
+                        <span className="text-[11px] font-bold text-gm-accent bg-gm-accent-soft px-2.5 py-0.5 rounded-full">
                           {j.category}
                         </span>
                         {j.visibility === 'Public' ? (
@@ -1510,7 +1511,7 @@ export default function FounderProfilePage() {
                         href={j.link}
                         className="group/title inline-block"
                       >
-                        <h3 className="text-base sm:text-lg font-bold text-[#141724] group-hover/title:text-[#6258DB] transition-colors leading-snug">
+                        <h3 className="text-base sm:text-lg font-bold text-gm-ink group-hover/title:text-gm-accent transition-colors leading-snug">
                           {j.title}
                         </h3>
                       </Link>
@@ -1526,7 +1527,7 @@ export default function FounderProfilePage() {
                       <div className="flex items-center gap-3 sm:gap-4 mt-2.5 flex-wrap text-xs text-gray-500">
                         {/* From -> To Date */}
                         <div className="inline-flex items-center gap-1.5 bg-gray-100/90 text-gray-700 font-medium px-2.5 py-1 rounded-lg text-[11px]">
-                          <Calendar className="w-3.5 h-3.5 text-[#6258DB] flex-shrink-0" />
+                          <Calendar className="w-3.5 h-3.5 text-gm-accent flex-shrink-0" />
                           <span>From: <strong className="text-gray-900 font-semibold">{j.fromDate}</strong></span>
                           <span className="text-gray-400">→</span>
                           <span>To: <strong className="text-gray-900 font-semibold">{j.toDate}</strong></span>
@@ -1548,7 +1549,7 @@ export default function FounderProfilePage() {
                     <Link
                       href={j.link}
                       aria-label={`View full timeline for ${j.title}`}
-                      className="w-9 h-9 rounded-full bg-gray-50 hover:bg-[#6258DB] text-gray-400 hover:text-white flex items-center justify-center transition-all flex-shrink-0 mt-0.5 shadow-2xs group/arrow hover:scale-105 active:scale-95"
+                      className="w-9 h-9 rounded-full bg-gray-50 hover:bg-gm-accent text-gray-400 hover:text-white flex items-center justify-center transition-all flex-shrink-0 mt-0.5 shadow-2xs group/arrow hover:scale-105 active:scale-95"
                     >
                       <ChevronRight className="w-4 h-4 group-hover/arrow:translate-x-0.5 transition-transform" />
                     </Link>
@@ -1561,13 +1562,13 @@ export default function FounderProfilePage() {
                         <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
                           Journey Updates
                         </span>
-                        <span className="text-[10px] font-bold text-[#6258DB] bg-[#EEEDFE] px-2 py-0.2 rounded-full">
+                        <span className="text-[10px] font-bold text-gm-accent bg-gm-accent-soft px-2 py-0.2 rounded-full">
                           {j.posts.length}
                         </span>
                       </div>
                       <Link
                         href={j.link}
-                        className="text-xs font-semibold text-[#6258DB] hover:underline flex items-center gap-1"
+                        className="text-xs font-semibold text-gm-accent hover:underline flex items-center gap-1"
                       >
                         <span>Full timeline</span>
                         <ChevronRight className="w-3 h-3" />
@@ -1652,22 +1653,22 @@ export default function FounderProfilePage() {
                             <Link
                               key={post.id}
                               href={`/updates/${post.id}`}
-                              className="w-[260px] sm:w-[280px] h-[210px] flex-shrink-0 snap-start rounded-2xl relative overflow-hidden group/card shadow-2xs hover:shadow-md transition-all border border-[#6258DB]/15 bg-gradient-to-br from-[#FAF9F6] via-white to-[#F5F3FF] p-4 flex flex-col justify-between"
+                              className="w-[260px] sm:w-[280px] h-[210px] flex-shrink-0 snap-start rounded-2xl relative overflow-hidden group/card shadow-2xs hover:shadow-md transition-all border border-gm-accent/15 bg-gradient-to-br from-gm-paper via-white to-[#F5F3FF] p-4 flex flex-col justify-between"
                             >
                               {/* Top Header Info */}
                               <div>
                                 <div className="flex items-center justify-between gap-2 mb-2">
-                                  <span className="text-[10px] font-bold text-[#6258DB] bg-[#EEEDFE] px-2 py-0.5 rounded-full border border-[#6258DB]/10">
+                                  <span className="text-[10px] font-bold text-gm-accent bg-gm-accent-soft px-2 py-0.5 rounded-full border border-gm-accent/10">
                                     {post.category || 'Update'}
                                   </span>
                                   <span className="text-[10px] font-medium text-gray-500 bg-white/70 px-2 py-0.5 rounded-md border border-gray-100 flex items-center gap-1">
-                                    <Calendar className="w-2.5 h-2.5 text-[#6258DB]" />
+                                    <Calendar className="w-2.5 h-2.5 text-gm-accent" />
                                     <span>{postDateDisplay}</span>
                                   </span>
                                 </div>
 
                                 {post.headline && (
-                                  <h4 className="text-xs font-bold text-[#141724] group-hover/card:text-[#6258DB] line-clamp-1 mb-1 transition-colors leading-snug">
+                                  <h4 className="text-xs font-bold text-gm-ink group-hover/card:text-gm-accent line-clamp-1 mb-1 transition-colors leading-snug">
                                     {post.headline}
                                   </h4>
                                 )}
@@ -1688,7 +1689,7 @@ export default function FounderProfilePage() {
                                     <span>{post.comments_count}</span>
                                   </span>
                                 </div>
-                                <span className="text-[10px] font-bold text-[#6258DB] group-hover/card:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                                <span className="text-[10px] font-bold text-gm-accent group-hover/card:translate-x-0.5 transition-transform flex items-center gap-0.5">
                                   <span>Read</span>
                                   <span>→</span>
                                 </span>
@@ -1698,11 +1699,11 @@ export default function FounderProfilePage() {
                         })}
                       </div>
                     ) : (
-                      <div className="w-full bg-[#FAF9F6] rounded-2xl p-4 border border-dashed border-gray-200 text-center flex items-center justify-between text-xs text-gray-500">
+                      <div className="w-full bg-gm-paper rounded-2xl p-4 border border-dashed border-gray-200 text-center flex items-center justify-between text-xs text-gray-500">
                         <span className="italic">No updates posted to this journey yet.</span>
                         <Link
                           href={j.link}
-                          className="font-bold text-[#6258DB] hover:underline flex items-center gap-1"
+                          className="font-bold text-gm-accent hover:underline flex items-center gap-1"
                         >
                           <span>Open journey</span>
                           <span>→</span>
@@ -1722,16 +1723,16 @@ export default function FounderProfilePage() {
       {isEditProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditProfileOpen(false)}
           />
           <form
             onSubmit={handleEditProfileSubmit}
-            className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-lg w-full z-10 space-y-4 animate-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto"
+            className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-lg w-full z-10 space-y-4 animate-slide-up max-h-[90vh] overflow-y-auto"
           >
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
-                <h3 className="text-base font-bold text-[#141724]">
+                <h3 className="text-base font-bold text-gm-ink">
                   Edit Profile & Focus Areas
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -1760,7 +1761,7 @@ export default function FounderProfilePage() {
                   type="text"
                   value={profileName}
                   onChange={(e) => setProfileName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                   required
                 />
               </div>
@@ -1774,7 +1775,7 @@ export default function FounderProfilePage() {
                   value={profileLocation}
                   onChange={(e) => setProfileLocation(e.target.value)}
                   placeholder="e.g. Bengaluru, India"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
 
@@ -1787,7 +1788,7 @@ export default function FounderProfilePage() {
                   value={profileBio}
                   onChange={(e) => setProfileBio(e.target.value)}
                   placeholder="Tell people who you are and what you're working towards..."
-                  className="w-full p-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] resize-none"
+                  className="w-full p-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent resize-none"
                 />
               </div>
             </div>
@@ -1806,7 +1807,7 @@ export default function FounderProfilePage() {
                   value={canHelpWith}
                   onChange={(e) => setCanHelpWith(e.target.value)}
                   placeholder="e.g. Frontend development, product thinking..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
 
@@ -1819,7 +1820,7 @@ export default function FounderProfilePage() {
                   value={figuringOut}
                   onChange={(e) => setFiguringOut(e.target.value)}
                   placeholder="e.g. Customer acquisition, fundraising..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
 
@@ -1832,7 +1833,7 @@ export default function FounderProfilePage() {
                   value={openTo}
                   onChange={(e) => setOpenTo(e.target.value)}
                   placeholder="e.g. Meaningful conversations, feedback..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
             </div>
@@ -1851,7 +1852,7 @@ export default function FounderProfilePage() {
                   value={focus1}
                   onChange={(e) => setFocus1(e.target.value)}
                   placeholder="e.g. Building Growing Moon"
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
 
@@ -1864,7 +1865,7 @@ export default function FounderProfilePage() {
                   value={focus2}
                   onChange={(e) => setFocus2(e.target.value)}
                   placeholder="e.g. Learning AI"
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
 
@@ -1877,7 +1878,7 @@ export default function FounderProfilePage() {
                   value={focus3}
                   onChange={(e) => setFocus3(e.target.value)}
                   placeholder="e.g. Half Marathon Training"
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
                 />
               </div>
             </div>
@@ -1893,7 +1894,7 @@ export default function FounderProfilePage() {
               <button
                 type="submit"
                 disabled={isSavingProfile}
-                className="px-5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] disabled:opacity-50 text-white text-xs font-bold shadow-sm cursor-pointer"
+                className="px-5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep disabled:opacity-50 text-white text-xs font-bold shadow-sm cursor-pointer"
               >
                 {isSavingProfile ? 'Saving...' : 'Save Profile & Details'}
               </button>
@@ -1906,16 +1907,16 @@ export default function FounderProfilePage() {
       {isEditAboutOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditAboutOpen(false)}
           />
           <form
             onSubmit={handleSaveAbout}
-            className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-lg w-full z-10 space-y-4 animate-in zoom-in-95 duration-150"
+            className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-lg w-full z-10 space-y-4 animate-slide-up"
           >
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
-                <h3 className="text-base font-bold text-[#141724]">
+                <h3 className="text-base font-bold text-gm-ink">
                   Edit About Me
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -1941,7 +1942,7 @@ export default function FounderProfilePage() {
                 onChange={(e) => setTempAbout(e.target.value)}
                 placeholder="Tell us a little about yourself, what drives you, and what you're working towards..."
                 maxLength={1000}
-                className="w-full p-3.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] resize-none leading-relaxed"
+                className="w-full p-3.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent resize-none leading-relaxed"
               />
               <div className="flex items-center justify-between text-[11px] text-gray-400 mt-1">
                 <span>Persisted directly to your profile.</span>
@@ -1960,7 +1961,7 @@ export default function FounderProfilePage() {
               <button
                 type="submit"
                 disabled={isSavingAbout}
-                className="px-5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] disabled:opacity-50 text-white text-xs font-bold shadow-sm cursor-pointer"
+                className="px-5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep disabled:opacity-50 text-white text-xs font-bold shadow-sm cursor-pointer"
               >
                 {isSavingAbout ? 'Saving...' : 'Save About'}
               </button>
@@ -1973,16 +1974,16 @@ export default function FounderProfilePage() {
       {isEditInterestsOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditInterestsOpen(false)}
           />
           <form
             onSubmit={handleSaveInterests}
-            className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-md w-full z-10 space-y-4 animate-in zoom-in-95 duration-150"
+            className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-md w-full z-10 space-y-4 animate-slide-up"
           >
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
-                <h3 className="text-base font-bold text-[#141724]">
+                <h3 className="text-base font-bold text-gm-ink">
                   Manage Interests
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -2024,7 +2025,7 @@ export default function FounderProfilePage() {
                   {tempInterests.map((interest) => (
                     <span
                       key={interest}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEEDFE] text-[#6258DB] text-xs font-medium"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gm-accent-soft text-gm-accent text-xs font-medium"
                     >
                       <span>{interest}</span>
                       <button
@@ -2066,7 +2067,7 @@ export default function FounderProfilePage() {
                       ? 'Maximum 5 interests reached'
                       : 'e.g. Next.js, Bootstrapping, AI...'
                   }
-                  className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] disabled:bg-gray-50 disabled:text-gray-400"
+                  className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent disabled:bg-gray-50 disabled:text-gray-400"
                 />
                 <button
                   type="button"
@@ -2119,7 +2120,7 @@ export default function FounderProfilePage() {
               <button
                 type="submit"
                 disabled={isSavingInterests}
-                className="px-5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] disabled:opacity-50 text-white text-xs font-bold shadow-sm cursor-pointer"
+                className="px-5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep disabled:opacity-50 text-white text-xs font-bold shadow-sm cursor-pointer"
               >
                 {isSavingInterests ? 'Saving...' : 'Save Interests'}
               </button>
@@ -2154,10 +2155,10 @@ export default function FounderProfilePage() {
       {isQrModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md animate-fade-in"
             onClick={() => setIsQrModalOpen(false)}
           />
-          <div className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-sm w-full z-10 text-center animate-in zoom-in-95 duration-150">
+          <div className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 text-center animate-slide-up">
             <button
               type="button"
               onClick={() => setIsQrModalOpen(false)}
@@ -2166,7 +2167,7 @@ export default function FounderProfilePage() {
               <X className="w-4 h-4" />
             </button>
 
-            <span className="text-[11px] font-extrabold text-[#6258DB] uppercase tracking-wider block mb-3">
+            <span className="text-[11px] font-extrabold text-gm-accent uppercase tracking-wider block mb-3">
               Profile Passport
             </span>
 
@@ -2185,7 +2186,7 @@ export default function FounderProfilePage() {
               />
             </div>
 
-            <h3 className="text-base font-extrabold text-[#141724]">
+            <h3 className="text-base font-extrabold text-gm-ink">
               {liveProfile?.name || mockFounder?.name || 'Founder'}
             </h3>
             <p className="text-xs text-gray-400 font-medium mt-0.5">
@@ -2208,7 +2209,7 @@ export default function FounderProfilePage() {
                   setTimeout(() => setCopiedQrLink(false), 2000);
                 }
               }}
-              className="w-full mt-4 py-2.5 px-4 rounded-xl bg-[#F4F3FF] hover:bg-[#EEEDFE] text-[#6258DB] text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer active:scale-95"
+              className="w-full mt-4 py-2.5 px-4 rounded-full bg-gm-accent-soft hover:bg-gm-accent-soft text-gm-accent text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer active:scale-95"
             >
               {copiedQrLink ? (
                 <>

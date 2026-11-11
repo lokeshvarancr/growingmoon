@@ -2,8 +2,27 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'motion/react';
 import { useApp } from '@/lib/state/AppContext';
 import { Home, Search, Plus, Bell } from 'lucide-react';
+
+function Tab({ href, active, label, children }: { href: string; active: boolean; label: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      className={`relative flex-1 flex flex-col items-center justify-center h-14 gap-1 transition-colors ${
+        active ? 'text-gm-ink' : 'text-gray-400'
+      }`}
+      data-testid={`mobile-nav-${label.toLowerCase().replace(/\s+/g, '-')}`}
+    >
+      {children}
+      <span className="h-1 flex items-center">
+        {active && <motion.span layoutId="gm-mobile-dot" className="w-1 h-1 rounded-full bg-gm-accent" />}
+      </span>
+    </Link>
+  );
+}
 
 export default function MobileNavigation() {
   const pathname = usePathname() || '';
@@ -20,78 +39,57 @@ export default function MobileNavigation() {
   const isProfile = pathname.startsWith('/profile') || pathname.startsWith('/passport');
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-black/[0.05] px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
-      <div className="flex items-center justify-between max-w-sm mx-auto">
-        {/* 1. Home */}
-        <Link
-          href="/home"
-          className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${
-            isHome ? 'text-[#141724]' : 'text-gray-400 hover:text-gray-700'
-          }`}
-          aria-label="Home"
-        >
-          <Home className="w-5 h-5" strokeWidth={isHome ? 2.4 : 1.9} />
-          {isHome && <span className="w-3.5 h-[2px] rounded-full bg-[#6258DB] mt-1" />}
-        </Link>
+    <nav
+      className="md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))] pointer-events-none"
+      data-testid="mobile-navigation"
+    >
+      <div className="pointer-events-auto glass-dock rounded-[28px] flex items-center max-w-md mx-auto px-2">
+        <Tab href="/home" active={isHome} label="Home">
+          <Home className="w-[22px] h-[22px]" strokeWidth={isHome ? 2.3 : 1.8} />
+        </Tab>
 
-        {/* 2. Explore */}
-        <Link
-          href="/explore"
-          className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${
-            isExplore ? 'text-[#6258DB]' : 'text-gray-400 hover:text-gray-700'
-          }`}
-          aria-label="Explore"
-        >
-          <Search className="w-5 h-5" strokeWidth={isExplore ? 2.5 : 1.9} />
-          {isExplore && <span className="w-3.5 h-[2px] rounded-full bg-[#6258DB] mt-1" />}
-        </Link>
+        <Tab href="/explore" active={isExplore} label="Explore">
+          <Search className="w-[22px] h-[22px]" strokeWidth={isExplore ? 2.4 : 1.8} />
+        </Tab>
 
-        {/* 3. Center + Button (Squircle shape from mockup) */}
         <Link
           href="/updates/new"
-          className="flex items-center justify-center -mt-3.5 focus:outline-none"
+          className="flex-1 flex items-center justify-center focus:outline-none"
           aria-label="Create New Post"
+          data-testid="mobile-nav-create-post"
         >
-          <div className="w-12 h-12 rounded-[18px] bg-[#141724] text-white flex items-center justify-center shadow-lg hover:bg-black active:scale-95 transition-all ring-4 ring-white">
+          <motion.span
+            whileTap={{ scale: 0.9, rotate: 90 }}
+            className="w-12 h-12 rounded-full bg-gm-accent text-white flex items-center justify-center shadow-[0_10px_24px_-8px_rgb(var(--gm-accent-rgb)/0.7)]"
+          >
             <Plus className="w-6 h-6 stroke-[2.6]" />
-          </div>
+          </motion.span>
         </Link>
 
-        {/* 4. Notifications */}
-        <Link
-          href="/notifications"
-          className={`relative flex flex-col items-center justify-center p-2 rounded-xl transition-all ${
-            isNotifications ? 'text-[#141724]' : 'text-gray-400 hover:text-gray-700'
-          }`}
-          aria-label="Notifications"
-        >
-          <Bell className="w-5 h-5" strokeWidth={isNotifications ? 2.4 : 1.9} />
-          {unreadNotificationCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#E93D5A] ring-2 ring-white" />
-          )}
-          {isNotifications && <span className="w-3.5 h-[2px] rounded-full bg-[#6258DB] mt-1" />}
-        </Link>
+        <Tab href="/notifications" active={isNotifications} label="Notifications">
+          <span className="relative">
+            <Bell className="w-[22px] h-[22px]" strokeWidth={isNotifications ? 2.3 : 1.8} />
+            {unreadNotificationCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-gm-accent ring-2 ring-gm-surface" />
+            )}
+          </span>
+        </Tab>
 
-        {/* 5. Profile User Avatar */}
-        <Link
-          href={`/profile/${currentUser.username}`}
-          className={`flex flex-col items-center justify-center p-1 rounded-full transition-all ${
-            isProfile ? 'ring-2 ring-[#6258DB] ring-offset-2' : ''
-          }`}
-          aria-label="Your Profile"
-        >
-          {currentUser.avatarImage ? (
-            <img
-              src={currentUser.avatarImage}
-              alt={currentUser.name}
-              className="w-6 h-6 rounded-full object-cover ring-1 ring-black/10 shadow-2xs"
-            />
-          ) : (
-            <div className="w-6 h-6 rounded-full bg-[#EEEDFE] text-[#6258DB] font-extrabold text-[10px] flex items-center justify-center ring-1 ring-black/10">
-              {currentUser.avatar}
-            </div>
-          )}
-        </Link>
+        <Tab href={`/profile/${currentUser.username}`} active={isProfile} label="Your Profile">
+          <span className={`rounded-full p-[2px] transition-colors ${isProfile ? 'bg-gm-ink' : 'bg-transparent'}`}>
+            {currentUser.avatarImage ? (
+              <img
+                src={currentUser.avatarImage}
+                alt={currentUser.name}
+                className="w-6 h-6 rounded-full object-cover ring-2 ring-gm-surface"
+              />
+            ) : (
+              <span className="w-6 h-6 rounded-full bg-gm-accent-soft text-gm-accent-deep font-bold text-[10px] flex items-center justify-center ring-2 ring-gm-surface">
+                {currentUser.avatar}
+              </span>
+            )}
+          </span>
+        </Tab>
       </div>
     </nav>
   );

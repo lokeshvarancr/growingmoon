@@ -130,8 +130,8 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
-      <div className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-black/[0.06] relative overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-gm-ink/45 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-7 shadow-modal border border-gm-ink/5 animate-slide-up relative overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">
           <div className="flex items-center gap-2.5">
@@ -139,7 +139,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
               <Lightbulb className="w-5 h-5 text-amber-700" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-extrabold text-[#141724] tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-gm-ink tracking-tight">
                 Product Suggestions
               </h2>
               <p className="text-xs text-gray-500">Shape the future of Growing Moon</p>
@@ -162,7 +162,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
             onClick={() => setActiveTab('browse')}
             className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activeTab === 'browse'
-                ? 'bg-white text-[#141724] shadow-xs'
+                ? 'bg-white text-gm-ink shadow-xs'
                 : 'text-gray-500 hover:text-black'
             }`}
           >
@@ -173,7 +173,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
             onClick={() => setActiveTab('submit')}
             className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               activeTab === 'submit'
-                ? 'bg-[#141724] text-white shadow-xs'
+                ? 'bg-gm-ink text-white shadow-xs'
                 : 'text-gray-500 hover:text-black'
             }`}
           >
@@ -192,7 +192,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                 onClick={() => setSelectedCategory('All')}
                 className={`px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === 'All'
-                    ? 'bg-[#6258DB] text-white'
+                    ? 'bg-gm-accent text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -205,7 +205,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
                     selectedCategory === cat
-                      ? 'bg-[#6258DB] text-white'
+                      ? 'bg-gm-accent text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -217,7 +217,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
             {/* List */}
             {isLoadingList ? (
               <div className="py-12 flex flex-col items-center justify-center text-center">
-                <div className="w-8 h-8 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin mb-2" />
+                <div className="w-8 h-8 rounded-full border-2 border-gm-accent border-t-transparent animate-spin mb-2" />
                 <p className="text-xs text-gray-500">Loading community suggestions...</p>
               </div>
             ) : suggestions.length === 0 ? (
@@ -228,7 +228,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                 <button
                   type="button"
                   onClick={() => setActiveTab('submit')}
-                  className="mt-3 px-4 py-2 bg-[#6258DB] text-white text-xs font-bold rounded-xl cursor-pointer"
+                  className="mt-3 px-4 py-2 bg-gm-accent text-white text-xs font-bold rounded-full cursor-pointer"
                 >
                   Suggest New Feature
                 </button>
@@ -244,9 +244,9 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                     <button
                       type="button"
                       onClick={() => handleVote(item.id)}
-                      className={`flex flex-col items-center justify-center min-w-[44px] py-2 px-1.5 rounded-xl border transition-all cursor-pointer ${
+                      className={`flex flex-col items-center justify-center min-w-[44px] py-2 px-1.5 rounded-full border transition-all cursor-pointer ${
                         item.has_voted
-                          ? 'bg-[#EEEDFE] border-[#6258DB] text-[#6258DB] shadow-2xs'
+                          ? 'bg-gm-accent-soft border-gm-accent text-gm-accent shadow-2xs'
                           : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
                       }`}
                       title={item.has_voted ? 'Withdraw upvote' : 'Upvote this idea'}
@@ -266,7 +266,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                           </span>
                         )}
                       </div>
-                      <h4 className="text-xs sm:text-sm font-bold text-[#141724] leading-snug">
+                      <h4 className="text-xs sm:text-sm font-bold text-gm-ink leading-snug">
                         {item.title}
                       </h4>
                       <p className="text-xs text-gray-600 mt-1 leading-relaxed whitespace-pre-wrap">
@@ -297,7 +297,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
             )}
 
             <div>
-              <label className="block text-xs font-bold text-[#141724] mb-1.5">
+              <label className="block text-xs font-bold text-gm-ink mb-1.5">
                 Category
               </label>
               <div className="flex flex-wrap gap-2">
@@ -306,9 +306,9 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                     key={cat}
                     type="button"
                     onClick={() => setCategory(cat)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                       category === cat
-                        ? 'bg-[#6258DB] text-white shadow-2xs'
+                        ? 'bg-gm-accent text-white shadow-2xs'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -319,7 +319,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#141724] mb-1.5">
+              <label className="block text-xs font-bold text-gm-ink mb-1.5">
                 Feature Headline
               </label>
               <input
@@ -329,12 +329,12 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                 placeholder="e.g. Export milestone certificates as PDF"
                 required
                 maxLength={150}
-                className="w-full px-3.5 py-2.5 bg-gray-50 focus:bg-white border border-gray-200 rounded-2xl text-xs text-gray-900 focus:outline-none focus:border-[#6258DB] transition-all"
+                className="w-full px-3.5 py-2.5 bg-gray-50 focus:bg-white border border-gray-200 rounded-2xl text-xs text-gray-900 focus:outline-none focus:border-gm-accent transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#141724] mb-1.5">
+              <label className="block text-xs font-bold text-gm-ink mb-1.5">
                 Description & Why It Helps
               </label>
               <textarea
@@ -344,14 +344,14 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
                 required
                 rows={4}
                 maxLength={2000}
-                className="w-full px-3.5 py-2.5 bg-gray-50 focus:bg-white border border-gray-200 rounded-2xl text-xs text-gray-900 focus:outline-none focus:border-[#6258DB] transition-all resize-none"
+                className="w-full px-3.5 py-2.5 bg-gray-50 focus:bg-white border border-gray-200 rounded-2xl text-xs text-gray-900 focus:outline-none focus:border-gm-accent transition-all resize-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 bg-[#141724] hover:bg-black text-white font-bold text-xs rounded-2xl shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 bg-gm-ink hover:bg-black text-white font-bold text-xs rounded-2xl shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isSubmitting ? 'Submitting Idea...' : 'Submit Suggestion'}
             </button>

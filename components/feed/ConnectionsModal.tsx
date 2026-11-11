@@ -231,17 +231,17 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-[26px] sm:rounded-[30px] max-w-xl w-full max-h-[88vh] shadow-2xl border border-black/[0.08] flex flex-col overflow-hidden relative animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-[26px] sm:rounded-[30px] max-w-xl w-full max-h-[88vh] shadow-modal border border-gm-ink/5 animate-slide-up flex flex-col overflow-hidden relative animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ── 1. Modal Header ────────────────────────────────────── */}
-        <div className="p-4 sm:p-5 pb-3 border-b border-gray-100 flex items-center justify-between gap-3 bg-[#FCFBFE]">
+        <div className="p-4 sm:p-5 pb-3 border-b border-gray-100 flex items-center justify-between gap-3 bg-gm-accent-soft">
           <div className="flex items-center gap-3">
-            <h2 className="text-base sm:text-lg font-black text-[#141724] tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-black text-gm-ink tracking-tight">
               Connections
             </h2>
             {/* Top Navigation Tabs */}
@@ -251,13 +251,13 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                 onClick={() => setActiveTab('connected')}
                 className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                   activeTab === 'connected'
-                    ? 'bg-white text-[#141724] shadow-xs font-extrabold'
-                    : 'text-gray-600 hover:text-[#141724]'
+                    ? 'bg-white text-gm-ink shadow-xs font-extrabold'
+                    : 'text-gray-600 hover:text-gm-ink'
                 }`}
               >
-                <UserCheck className="w-3.5 h-3.5 text-[#6258DB]" />
+                <UserCheck className="w-3.5 h-3.5 text-gm-accent" />
                 <span>Connected</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-[#6258DB]/10 text-[#6258DB] text-[10px] font-bold">
+                <span className="px-1.5 py-0.2 rounded-full bg-gm-accent/10 text-gm-accent text-[10px] font-bold">
                   {connectedItems.length}
                 </span>
               </button>
@@ -267,8 +267,8 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                 onClick={() => setActiveTab('pending')}
                 className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 cursor-pointer relative ${
                   activeTab === 'pending'
-                    ? 'bg-white text-[#141724] shadow-xs font-extrabold'
-                    : 'text-gray-600 hover:text-[#141724]'
+                    ? 'bg-white text-gm-ink shadow-xs font-extrabold'
+                    : 'text-gray-600 hover:text-gm-ink'
                 }`}
               >
                 <Clock className="w-3.5 h-3.5 text-amber-600" />
@@ -309,7 +309,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search connected people by name, role, or bio..."
-                className="w-full pl-9 pr-8 py-2 bg-gray-50 border border-gray-200/80 rounded-full text-xs text-[#141724] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs"
+                className="w-full pl-9 pr-8 py-2 bg-gray-50 border border-gray-200/80 rounded-full text-xs text-gm-ink placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all shadow-2xs"
               />
               {searchQuery && (
                 <button
@@ -328,7 +328,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
         <div className="flex-1 overflow-y-auto p-3 sm:p-4 divide-y divide-gray-100 scrollbar-thin">
           {isLoading ? (
             <div className="py-12 text-center space-y-2">
-              <div className="w-6 h-6 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin mx-auto" />
+              <div className="w-6 h-6 rounded-full border-2 border-gm-accent border-t-transparent animate-spin mx-auto" />
               <p className="text-xs text-gray-400 font-medium">Fetching connections from database...</p>
             </div>
           ) : activeTab === 'connected' ? (
@@ -355,13 +355,13 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                           <img
                             src={u.avatar_image}
                             alt={u.name}
-                            className="w-11 h-11 rounded-full object-cover ring-2 ring-gray-100 group-hover/avatar:ring-[#6258DB]/40 transition-all shadow-xs"
+                            className="w-11 h-11 rounded-full object-cover ring-2 ring-gray-100 group-hover/avatar:ring-gm-accent/40 transition-all shadow-xs"
                           />
                         ) : (
                           <div
                             className={`w-11 h-11 rounded-full flex items-center justify-center font-black text-xs ${
                               u.avatar_color || 'bg-indigo-100 text-indigo-700'
-                            } ring-2 ring-gray-100 group-hover/avatar:ring-[#6258DB]/40 transition-all shadow-xs`}
+                            } ring-2 ring-gray-100 group-hover/avatar:ring-gm-accent/40 transition-all shadow-xs`}
                           >
                             {u.avatar_initials || 'GM'}
                           </div>
@@ -375,7 +375,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                           <Link
                             href={`/profile/${u.username}`}
                             onClick={onClose}
-                            className="font-bold text-xs sm:text-[13.5px] text-[#141724] hover:text-[#6258DB] transition-colors truncate"
+                            className="font-bold text-xs sm:text-[13.5px] text-gm-ink hover:text-gm-accent transition-colors truncate"
                           >
                             {u.name}
                           </Link>
@@ -411,8 +411,8 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                           onClick={() => handleToggleQuickMessage(u.id, u.name)}
                           className={`w-8 h-8 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-2xs ${
                             isMessaging
-                              ? 'bg-[#6258DB] text-white shadow-md'
-                              : 'bg-[#6258DB]/10 hover:bg-[#6258DB] text-[#6258DB] hover:text-white'
+                              ? 'bg-gm-accent text-white shadow-md'
+                              : 'bg-gm-accent/10 hover:bg-gm-accent text-gm-accent hover:text-white'
                           }`}
                           title={`Message ${u.name}`}
                         >
@@ -433,7 +433,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
 
                     {/* Quick Direct Message Inline Composer */}
                     {isMessaging && (
-                      <div className="mt-3 pt-3 pl-14 pr-1 border-t border-purple-100 animate-in fade-in duration-200">
+                      <div className="mt-3 pt-3 pl-14 pr-1 border-t border-purple-100 animate-fade-in">
                         <div className="flex items-center gap-2">
                           <input
                             type="text"
@@ -445,14 +445,14 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                               }
                             }}
                             placeholder={`Message ${u.name.split(' ')[0]}...`}
-                            className="flex-1 px-3.5 py-2 bg-white border border-[#6258DB]/40 rounded-full text-xs text-[#141724] focus:outline-none focus:ring-2 focus:ring-[#6258DB]/20 shadow-2xs"
+                            className="flex-1 px-3.5 py-2 bg-white border border-gm-accent/40 rounded-full text-xs text-gm-ink focus:outline-none focus:ring-2 focus:ring-gm-accent/20 shadow-2xs"
                             autoFocus
                           />
                           <button
                             type="button"
                             onClick={() => handleSendQuickMessage(u.id, u.name)}
                             disabled={!quickMessageText.trim()}
-                            className="p-2 rounded-full bg-[#6258DB] hover:bg-[#5246D2] disabled:opacity-50 text-white transition-all active:scale-95 cursor-pointer shadow-xs"
+                            className="p-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep disabled:opacity-50 text-white transition-all active:scale-95 cursor-pointer shadow-xs"
                             title="Send message"
                           >
                             <Send className="w-3.5 h-3.5" />
@@ -464,7 +464,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                           <button
                             type="button"
                             onClick={() => handleOpenFullChat(u.id, u.name)}
-                            className="font-bold text-[#6258DB] hover:underline flex items-center gap-0.5 cursor-pointer"
+                            className="font-bold text-gm-accent hover:underline flex items-center gap-0.5 cursor-pointer"
                           >
                             <span>Open full chat</span>
                             <ExternalLink className="w-3 h-3" />
@@ -477,10 +477,10 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
               })
             ) : (
               <div className="py-12 text-center space-y-2">
-                <div className="w-12 h-12 rounded-full bg-purple-50 text-[#6258DB] flex items-center justify-center mx-auto mb-2 text-xl">
+                <div className="w-12 h-12 rounded-full bg-purple-50 text-gm-accent flex items-center justify-center mx-auto mb-2 text-xl">
                   🤝
                 </div>
-                <p className="text-xs font-bold text-[#141724]">No connections found</p>
+                <p className="text-xs font-bold text-gm-ink">No connections found</p>
                 <p className="text-[11.5px] text-gray-400 max-w-sm mx-auto">
                   {searchQuery
                     ? `No connections match "${searchQuery}".`
@@ -490,7 +490,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                   <Link
                     href="/explore"
                     onClick={onClose}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#6258DB] text-white text-xs font-bold hover:bg-[#5246D2] transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gm-accent text-white text-xs font-bold hover:bg-gm-accent-deep transition-colors cursor-pointer"
                   >
                     <span>Discover People to Connect With</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -505,7 +505,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
               <div>
                 <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-100">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-[#141724]">
+                    <span className="text-xs font-bold text-gm-ink">
                       Received Requests
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10.5px] font-bold">
@@ -526,7 +526,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                       return (
                         <div
                           key={item.id}
-                          className="p-3 rounded-2xl bg-[#FCFBFE] border border-purple-100/80 hover:border-[#6258DB]/30 transition-all flex items-center justify-between gap-3"
+                          className="p-3 rounded-2xl bg-gm-accent-soft border border-purple-100/80 hover:border-gm-accent/30 transition-all flex items-center justify-between gap-3"
                         >
                           {/* Left: Avatar & Info */}
                           <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -556,7 +556,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                               <Link
                                 href={`/profile/${u.username}`}
                                 onClick={onClose}
-                                className="font-bold text-xs text-[#141724] hover:text-[#6258DB] transition-colors truncate block"
+                                className="font-bold text-xs text-gm-ink hover:text-gm-accent transition-colors truncate block"
                               >
                                 {u.name}
                               </Link>
@@ -575,7 +575,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                               type="button"
                               disabled={isBusy}
                               onClick={() => handleAcceptRequest(item)}
-                              className="px-3 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5246D2] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer active:scale-95 disabled:opacity-50"
+                              className="px-3 py-1.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer active:scale-95 disabled:opacity-50"
                             >
                               <Check className="w-3.5 h-3.5 stroke-[2.5]" />
                               <span>Accept</span>
@@ -607,7 +607,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
               <div>
                 <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-100">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-[#141724]">
+                    <span className="text-xs font-bold text-gm-ink">
                       Sent Requests
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[10.5px] font-bold">
@@ -658,7 +658,7 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
                               <Link
                                 href={`/profile/${u.username}`}
                                 onClick={onClose}
-                                className="font-bold text-xs text-[#141724] hover:text-[#6258DB] transition-colors truncate block"
+                                className="font-bold text-xs text-gm-ink hover:text-gm-accent transition-colors truncate block"
                               >
                                 {u.name}
                               </Link>
@@ -707,18 +707,18 @@ export default function ConnectionsModal({ isOpen, onClose }: ConnectionsModalPr
           <span className="text-[11px] text-gray-500 font-medium">
             {activeTab === 'connected' ? (
               <>
-                Showing <strong className="text-[#141724]">{filteredConnected.length}</strong> connected {filteredConnected.length === 1 ? 'person' : 'people'}
+                Showing <strong className="text-gm-ink">{filteredConnected.length}</strong> connected {filteredConnected.length === 1 ? 'person' : 'people'}
               </>
             ) : (
               <>
-                <strong className="text-[#141724]">{totalPendingCount}</strong> total pending requests
+                <strong className="text-gm-ink">{totalPendingCount}</strong> total pending requests
               </>
             )}
           </span>
           <Link
             href="/explore"
             onClick={onClose}
-            className="text-[11.5px] font-bold text-[#6258DB] hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-[11.5px] font-bold text-gm-accent hover:underline flex items-center gap-1 cursor-pointer"
           >
             <span>Discover more people →</span>
           </Link>

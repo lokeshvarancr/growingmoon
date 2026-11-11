@@ -80,8 +80,8 @@ export default function ReportModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
-      <div className="bg-white rounded-[32px] max-w-md w-full p-6 shadow-2xl border border-black/[0.06] relative overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-gm-ink/45 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-[32px] max-w-md w-full p-6 shadow-modal border border-gm-ink/5 animate-slide-up relative overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">
           <div className="flex items-center gap-2.5">
@@ -89,7 +89,7 @@ export default function ReportModal({
               <ShieldAlert className="w-5 h-5 text-rose-600" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold text-[#141724] tracking-tight">
+              <h3 className="text-base font-extrabold text-gm-ink tracking-tight">
                 {getLabel()}
               </h3>
               {targetTitle && (
@@ -117,7 +117,7 @@ export default function ReportModal({
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
-            <label className="block text-xs font-bold text-[#141724] mb-2">
+            <label className="block text-xs font-bold text-gm-ink mb-2">
               Why are you reporting this {targetType}?
             </label>
             <div className="space-y-2">
@@ -145,7 +145,7 @@ export default function ReportModal({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#141724] mb-1.5">
+            <label className="block text-xs font-bold text-gm-ink mb-1.5">
               Additional Details (Optional)
             </label>
             <textarea

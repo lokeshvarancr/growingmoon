@@ -52,14 +52,14 @@ type JourneyOption = {
 };
 
 const INITIAL_UPDATE_TYPES: UpdateTypeOption[] = [
-  { id: 'progress', label: 'Progress update', dotColor: 'bg-[#6258DB]' },
+  { id: 'progress', label: 'Progress update', dotColor: 'bg-gm-accent' },
   { id: 'milestone', label: 'Milestone achieved', dotColor: 'bg-[#10B981]' },
   { id: 'challenge', label: 'Challenge', dotColor: 'bg-[#F59E0B]' },
   { id: 'lesson', label: 'Lesson learned', dotColor: 'bg-[#EF4444]' },
 ];
 
 const INITIAL_JOURNEYS: JourneyOption[] = [
-  { id: 'j-saas', label: 'Building my SaaS product', dotColor: 'bg-[#6258DB]' },
+  { id: 'j-saas', label: 'Building my SaaS product', dotColor: 'bg-gm-accent' },
   { id: 'j-ai', label: 'Learning Artificial Intelligence', dotColor: 'bg-[#10B981]' },
   { id: 'j-marathon', label: 'Running my first half marathon', dotColor: 'bg-[#06B6D4]' },
   { id: 'j-finance', label: 'Personal finance journey', dotColor: 'bg-[#F59E0B]' },
@@ -161,7 +161,7 @@ export default function PostComposerModal({
         .then((list) => {
           if (Array.isArray(list) && list.length > 0) {
             const mapped = list.map((p, idx) => {
-              const colors = ['bg-[#6258DB]', 'bg-[#10B981]', 'bg-[#06B6D4]', 'bg-[#F59E0B]'];
+              const colors = ['bg-gm-accent', 'bg-[#10B981]', 'bg-[#06B6D4]', 'bg-[#F59E0B]'];
               return {
                 id: p.id,
                 label: p.title,
@@ -301,7 +301,7 @@ export default function PostComposerModal({
     const newOption: JourneyOption = {
       id: 'journey-' + Date.now(),
       label: newJourneyName.trim(),
-      dotColor: 'bg-[#6258DB]',
+      dotColor: 'bg-gm-accent',
     };
     setJourneys((prev) => [...prev, newOption]);
     setSelectedJourney(newOption.label);
@@ -437,12 +437,12 @@ export default function PostComposerModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto select-none">
       {/* ── Backdrop Overlay ────────────────────────────────────── */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md transition-opacity animate-fade-in"
         onClick={onClose}
       />
 
       {/* ── Modal Window ────────────────────────────────────────── */}
-      <div className="relative bg-white w-full max-w-2xl rounded-[28px] sm:rounded-[32px] shadow-2xl border border-gray-100 flex flex-col max-h-[92vh] overflow-hidden z-10 animate-in zoom-in-95 duration-200">
+      <div className="relative bg-white w-full max-w-2xl rounded-[32px] shadow-modal border border-gm-ink/5 flex flex-col max-h-[92vh] overflow-hidden z-10 animate-slide-up">
         
         {/* Modal Scrollable Body */}
         <div className="p-6 sm:p-8 overflow-y-auto scrollbar-thin">
@@ -450,7 +450,7 @@ export default function PostComposerModal({
           {/* ── 1. HEADER: Title, Subtitle & Close ─────────────────── */}
           <div className="flex items-start justify-between mb-5">
             <div>
-              <h2 className="text-xl sm:text-[22px] font-bold text-[#141724] tracking-tight">
+              <h2 className="text-[26px] sm:text-[22px] font-bold text-gm-ink tracking-tight">
                 {editPost ? 'Edit journey update' : 'Share a journey update'}
               </h2>
               <p className="text-xs sm:text-[13px] text-gray-500 font-normal mt-0.5">
@@ -492,7 +492,7 @@ export default function PostComposerModal({
                   <span
                     className={`${
                       selectedUpdateType
-                        ? 'bg-[#EEEDFE] text-[#6258DB]'
+                        ? 'bg-gm-accent-soft text-gm-accent'
                         : 'bg-gray-100 text-gray-500'
                     } text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]`}
                   >
@@ -512,7 +512,7 @@ export default function PostComposerModal({
                       className="fixed inset-0 z-40"
                       onClick={() => setIsUpdateTypeOpen(false)}
                     />
-                    <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in zoom-in-95">
+                    <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-slide-up">
                       <div className="space-y-0.5 max-h-56 overflow-y-auto">
                         {updateTypes.map((type) => {
                           const isSelected = selectedUpdateType === type.label;
@@ -526,7 +526,7 @@ export default function PostComposerModal({
                               }}
                               className={`w-full flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
                                 isSelected
-                                  ? 'bg-[#F4F3FF] text-[#141724] font-semibold'
+                                  ? 'bg-gm-accent-soft text-gm-ink font-semibold'
                                   : 'text-gray-700 hover:bg-gray-50'
                               }`}
                             >
@@ -535,7 +535,7 @@ export default function PostComposerModal({
                                 <span>{type.label}</span>
                               </div>
                               {isSelected && (
-                                <Check className="w-4 h-4 text-[#6258DB] flex-shrink-0" />
+                                <Check className="w-4 h-4 text-gm-accent flex-shrink-0" />
                               )}
                             </button>
                           );
@@ -551,7 +551,7 @@ export default function PostComposerModal({
                           setIsNewTypeModalOpen(true);
                           setIsUpdateTypeOpen(false);
                         }}
-                        className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-[#6258DB] hover:bg-purple-50/60 cursor-pointer transition-colors"
+                        className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-gm-accent hover:bg-purple-50/60 cursor-pointer transition-colors"
                       >
                         <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                         <span>Add new update type</span>
@@ -570,7 +570,7 @@ export default function PostComposerModal({
                   <button
                     type="button"
                     onClick={() => setIsNewJourneyModalOpen(true)}
-                    className="w-6 h-6 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#6258DB] flex items-center justify-center transition-colors cursor-pointer"
+                    className="w-6 h-6 rounded-lg bg-purple-50 hover:bg-purple-100 text-gm-accent flex items-center justify-center transition-colors cursor-pointer"
                     title="Create a new journey"
                   >
                     <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -589,7 +589,7 @@ export default function PostComposerModal({
                   <span
                     className={`${
                       selectedJourney
-                        ? 'bg-[#EEEDFE] text-[#6258DB]'
+                        ? 'bg-gm-accent-soft text-gm-accent'
                         : 'bg-gray-100 text-gray-500'
                     } text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]`}
                   >
@@ -609,7 +609,7 @@ export default function PostComposerModal({
                       className="fixed inset-0 z-40"
                       onClick={() => setIsJourneyOpen(false)}
                     />
-                    <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in zoom-in-95">
+                    <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-slide-up">
                       <div className="space-y-0.5 max-h-56 overflow-y-auto">
                         {journeys.map((j) => {
                           const isSelected = selectedJourney === j.label;
@@ -623,7 +623,7 @@ export default function PostComposerModal({
                               }}
                               className={`w-full flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
                                 isSelected
-                                  ? 'bg-[#F4F3FF] text-[#141724] font-semibold'
+                                  ? 'bg-gm-accent-soft text-gm-ink font-semibold'
                                   : 'text-gray-700 hover:bg-gray-50'
                               }`}
                             >
@@ -632,7 +632,7 @@ export default function PostComposerModal({
                                 <span className="truncate">{j.label}</span>
                               </div>
                               {isSelected && (
-                                <Check className="w-4 h-4 text-[#6258DB] flex-shrink-0" />
+                                <Check className="w-4 h-4 text-gm-accent flex-shrink-0" />
                               )}
                             </button>
                           );
@@ -648,7 +648,7 @@ export default function PostComposerModal({
                           setIsNewJourneyModalOpen(true);
                           setIsJourneyOpen(false);
                         }}
-                        className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-[#6258DB] hover:bg-purple-50/60 cursor-pointer transition-colors"
+                        className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-gm-accent hover:bg-purple-50/60 cursor-pointer transition-colors"
                       >
                         <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                         <span>Create a new journey</span>
@@ -661,10 +661,10 @@ export default function PostComposerModal({
             </div>
 
             {/* ── 2B. Timeline Dates: Start Date & End Date ────────── */}
-            <div className="bg-[#FAF9F6] rounded-2xl p-3 sm:p-3.5 border border-gray-100">
+            <div className="bg-gm-paper rounded-2xl p-3 sm:p-3.5 border border-gray-100">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#6258DB]" />
+                  <Calendar className="w-3.5 h-3.5 text-gm-accent" />
                   <span>Update Timeline (Dates)</span>
                 </label>
                 <label className="inline-flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-gray-600 select-none">
@@ -675,7 +675,7 @@ export default function PostComposerModal({
                       setIsOngoing(e.target.checked);
                       if (e.target.checked) setEndDate('');
                     }}
-                    className="w-3.5 h-3.5 rounded text-[#6258DB] focus:ring-[#6258DB] border-gray-300"
+                    className="w-3.5 h-3.5 rounded text-gm-accent focus:ring-gm-accent border-gray-300"
                   />
                   <span>Currently ongoing (To: Present)</span>
                 </label>
@@ -691,7 +691,7 @@ export default function PostComposerModal({
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs text-gray-800 focus:outline-none focus:border-[#6258DB] focus:ring-1 focus:ring-[#6258DB] shadow-2xs font-medium"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs text-gray-800 focus:outline-none focus:border-gm-accent focus:ring-1 focus:ring-gm-accent shadow-2xs font-medium"
                   />
                 </div>
 
@@ -705,7 +705,7 @@ export default function PostComposerModal({
                     disabled={isOngoing}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className={`w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs text-gray-800 focus:outline-none focus:border-[#6258DB] focus:ring-1 focus:ring-[#6258DB] shadow-2xs font-medium ${
+                    className={`w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs text-gray-800 focus:outline-none focus:border-gm-accent focus:ring-1 focus:ring-gm-accent shadow-2xs font-medium ${
                       isOngoing ? 'opacity-50 cursor-not-allowed bg-gray-50 text-gray-400' : ''
                     }`}
                   />
@@ -725,7 +725,7 @@ export default function PostComposerModal({
                   value={heading}
                   onChange={(e) => setHeading(e.target.value)}
                   placeholder="e.g. Finally launched our first working prototype"
-                  className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs font-bold"
+                  className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all shadow-2xs font-bold"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-gray-400 font-normal pointer-events-none">
                   {heading.length}/100
@@ -745,7 +745,7 @@ export default function PostComposerModal({
                   value={detailedDescription}
                   onChange={(e) => setDetailedDescription(e.target.value)}
                   placeholder="Share a small description about what happened, what you learned, or what's next..."
-                  className="w-full p-3.5 pb-6 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 resize-none transition-all shadow-2xs"
+                  className="w-full p-3.5 pb-6 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 resize-none transition-all shadow-2xs"
                 />
                 <span className="absolute right-3.5 bottom-2.5 text-[10px] text-gray-400 font-normal pointer-events-none">
                   {detailedDescription.length}/1500
@@ -763,11 +763,11 @@ export default function PostComposerModal({
                 className="w-full p-3.5 sm:p-4 flex items-center justify-between text-left hover:bg-gray-50/60 transition-colors cursor-pointer select-none"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#EEEDFE] flex items-center justify-center text-[#6258DB] flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gm-accent-soft flex items-center justify-center text-gm-accent flex-shrink-0">
                     <List className="w-4 h-4 stroke-[2.2]" />
                   </div>
                   <div>
-                    <span className="text-xs sm:text-sm font-bold text-[#141724] block">
+                    <span className="text-xs sm:text-sm font-bold text-gm-ink block">
                       Add media attachments (optional)
                     </span>
                     <span className="text-[11px] text-gray-500 font-normal mt-0.5 block">
@@ -784,7 +784,7 @@ export default function PostComposerModal({
 
               {/* Collapsible Content - only displayed when expanded */}
               {isDetailsExpanded && (
-                <div className="px-4 pb-4 pt-2 space-y-4 border-t border-gray-100 animate-in fade-in duration-150">
+                <div className="px-4 pb-4 pt-2 space-y-4 border-t border-gray-100 animate-fade-in">
                   {/* 1. Images attachment */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
@@ -802,7 +802,7 @@ export default function PostComposerModal({
                       className="border border-gray-200/90 hover:border-gray-300 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3 text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50/80 transition-all cursor-pointer shadow-2xs group"
                     >
                       <div className="flex items-center gap-2">
-                        <ImageIcon className="w-4 h-4 text-[#6258DB]" />
+                        <ImageIcon className="w-4 h-4 text-gm-accent" />
                         <span>Add images</span>
                       </div>
                       <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[11px] text-gray-500 group-hover:border-gray-400">
@@ -851,7 +851,7 @@ export default function PostComposerModal({
                         value={videoLink}
                         onChange={handleVideoLinkChange}
                         placeholder="Please paste the video link if you have any"
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all"
                       />
                     </div>
                     {videoLinkError ? (
@@ -874,7 +874,7 @@ export default function PostComposerModal({
           <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between gap-3 flex-wrap">
             {/* Left Note */}
             <div className="flex items-center gap-2 text-xs text-gray-500 font-normal">
-              <Sparkles className="w-4 h-4 text-[#6258DB] flex-shrink-0" />
+              <Sparkles className="w-4 h-4 text-gm-accent flex-shrink-0" />
               <span>This will be added to your journey timeline.</span>
             </div>
 
@@ -895,7 +895,7 @@ export default function PostComposerModal({
                 onClick={handleSaveDraft}
                 className="px-4 py-2 rounded-full border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Bookmark className="w-3.5 h-3.5 text-[#6258DB]" />
+                <Bookmark className="w-3.5 h-3.5 text-gm-accent" />
                 <span>Save</span>
               </button>
 
@@ -904,7 +904,7 @@ export default function PostComposerModal({
                 type="button"
                 onClick={handlePostAndSave}
                 disabled={isSubmitting}
-                className="bg-[#6258DB] hover:bg-[#5247CE] text-white px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm hover:shadow transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+                className="bg-gm-accent hover:bg-gm-accent-deep text-white px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm hover:shadow transition-all cursor-pointer active:scale-95 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -941,16 +941,16 @@ export default function PostComposerModal({
 
       {/* ── Sub-modal: Add New Update Type ─────────────────────── */}
       {isNewTypeModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewTypeModalOpen(false)}
           />
           <form
             onSubmit={handleAddNewType}
-            className="relative bg-white rounded-2xl p-5 shadow-2xl border border-gray-100 max-w-sm w-full z-10 space-y-3"
+            className="relative bg-white rounded-[28px] p-6 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 space-y-3 animate-slide-up"
           >
-            <h3 className="text-sm font-bold text-[#141724]">
+            <h3 className="text-sm font-bold text-gm-ink">
               Add new update type
             </h3>
             <p className="text-xs text-gray-500">
@@ -963,7 +963,7 @@ export default function PostComposerModal({
               value={newTypeName}
               onChange={(e) => setNewTypeName(e.target.value)}
               placeholder="e.g. Experiment, Metric sprint..."
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
             />
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
@@ -975,7 +975,7 @@ export default function PostComposerModal({
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold cursor-pointer"
+                className="px-4 py-1.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold cursor-pointer"
               >
                 Add type
               </button>
@@ -986,16 +986,16 @@ export default function PostComposerModal({
 
       {/* ── Sub-modal: Create New Journey ──────────────────────── */}
       {isNewJourneyModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewJourneyModalOpen(false)}
           />
           <form
             onSubmit={handleAddNewJourney}
-            className="relative bg-white rounded-2xl p-5 shadow-2xl border border-gray-100 max-w-sm w-full z-10 space-y-3"
+            className="relative bg-white rounded-[28px] p-6 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 space-y-3 animate-slide-up"
           >
-            <h3 className="text-sm font-bold text-[#141724]">
+            <h3 className="text-sm font-bold text-gm-ink">
               Create a new journey
             </h3>
             <p className="text-xs text-gray-500">
@@ -1008,7 +1008,7 @@ export default function PostComposerModal({
               value={newJourneyName}
               onChange={(e) => setNewJourneyName(e.target.value)}
               placeholder="e.g. AI Workflow Engine, First Angel Round..."
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
             />
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
@@ -1020,7 +1020,7 @@ export default function PostComposerModal({
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold cursor-pointer"
+                className="px-4 py-1.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold cursor-pointer"
               >
                 Create journey
               </button>

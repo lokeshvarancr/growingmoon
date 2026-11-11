@@ -64,7 +64,7 @@ export default function PublicPassportPage() {
     return (
       <AppShell>
         <div className="py-20 flex flex-col items-center justify-center">
-          <div className="w-6 h-6 border-2 border-[#6258DB] border-t-transparent rounded-full animate-spin mb-3" />
+          <div className="w-6 h-6 border-2 border-gm-accent border-t-transparent rounded-full animate-spin mb-3" />
           <p className="text-xs text-gray-500 font-medium">Loading Journey Passport...</p>
         </div>
       </AppShell>

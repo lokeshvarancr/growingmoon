@@ -9,8 +9,8 @@ export default function CurrentUserPassportPage() {
   return (
     <React.Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-[#6258DB] border-t-transparent rounded-full animate-spin" />
+        <div className="min-h-screen bg-gm-paper flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-gm-accent border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

@@ -110,19 +110,33 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gm-ivory flex flex-col justify-center items-center px-4 py-12 selection:bg-gm-lavender/30">
-      <div className="max-w-xl w-full bg-gm-white border border-gm-border rounded-3xl p-6 sm:p-10 shadow-card animate-slide-up">
+    <div className="min-h-screen bg-gm-ivory flex flex-col justify-center items-center px-4 py-12">
+      <div className="max-w-xl w-full bg-gm-white rounded-[36px] p-6 sm:p-12 shadow-card-hover animate-slide-up" data-testid="onboarding-card">
         {/* Progress header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between text-xs font-bold text-gm-text-secondary mb-2">
-            <span className="text-gm-lavender uppercase tracking-wider">Step {step} of 4</span>
+        <div className="mb-10">
+          <div className="flex items-center justify-between text-xs font-semibold text-gm-text-secondary mb-4">
+            <span className="text-gm-lavender uppercase tracking-[0.18em]">Step {step} of 4</span>
             <span>{Math.round((step / 4) * 100)}% Completed</span>
           </div>
-          <div className="w-full h-1.5 bg-gm-ivory border border-gm-border rounded-full overflow-hidden">
+          <div className="relative flex items-center justify-between" aria-hidden>
+            <div className="absolute left-3 right-3 top-1/2 h-px border-t border-dashed border-gm-ink/20" />
             <div
-              className="h-full bg-gm-indigo rounded-full transition-all duration-300"
-              style={{ width: `${(step / 4) * 100}%` }}
+              className="absolute left-3 top-1/2 h-px bg-gm-indigo transition-all duration-700"
+              style={{ width: `calc(${((step - 1) / 3) * 100}% - ${((step - 1) / 3) * 24}px)` }}
             />
+            {[1, 2, 3, 4].map((n) => (
+              <span
+                key={n}
+                className={`relative w-6 h-6 rounded-full overflow-hidden ring-4 ring-gm-white transition-transform duration-500 ${n === step ? 'scale-125' : ''} ${n <= step ? 'bg-[#2A2925]' : 'bg-gm-ink/10'}`}
+              >
+                {n <= step && (
+                  <span
+                    className="absolute inset-0 bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent transition-all duration-700"
+                    style={{ clipPath: `inset(0 0 0 ${(1 - n / 4) * 100}%)` }}
+                  />
+                )}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -130,7 +144,7 @@ export default function OnboardingPage() {
         {step === 1 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-bold text-gm-midnight">
+              <h2 className="text-[26px] font-bold text-gm-midnight">
                 Tell us who you are
               </h2>
               <p className="text-xs text-gm-text-secondary mt-1">
@@ -144,14 +158,14 @@ export default function OnboardingPage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-xs sm:text-sm text-gm-midnight focus-ring"
+                className="w-full px-4 py-3 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent focus:bg-gm-white rounded-2xl text-sm transition-colors text-gm-midnight focus-ring"
                 required
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-gm-midnight mb-1">Username Handle</label>
-              <div className="flex items-center bg-gm-ivory border border-gm-border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-gm-midnight">
+              <div className="flex items-center bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors px-3.5 py-2.5 text-xs sm:text-sm text-gm-midnight">
                 <span className="text-gm-text-secondary mr-1">@</span>
                 <input
                   type="text"
@@ -169,7 +183,7 @@ export default function OnboardingPage() {
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-xs sm:text-sm text-gm-midnight focus-ring"
+                className="w-full px-4 py-3 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent focus:bg-gm-white rounded-2xl text-sm transition-colors text-gm-midnight focus-ring"
                 placeholder="e.g. Bengaluru, Mumbai, Delhi, Remote"
               />
             </div>
@@ -181,7 +195,7 @@ export default function OnboardingPage() {
                 onChange={(e) => setBio(e.target.value)}
                 rows={3}
                 placeholder="What are you building or exploring right now?"
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-xs sm:text-sm text-gm-midnight focus-ring resize-none"
+                className="w-full px-4 py-3 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent focus:bg-gm-white rounded-2xl text-sm transition-colors text-gm-midnight focus-ring resize-none"
               />
             </div>
           </div>
@@ -191,7 +205,7 @@ export default function OnboardingPage() {
         {step === 2 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-bold text-gm-midnight">
+              <h2 className="text-[26px] font-bold text-gm-midnight">
                 Where are you right now?
               </h2>
               <p className="text-xs text-gm-text-secondary mt-1">
@@ -228,7 +242,7 @@ export default function OnboardingPage() {
         {step === 3 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-bold text-gm-midnight">
+              <h2 className="text-[26px] font-bold text-gm-midnight">
                 Current goal & blockers
               </h2>
               <p className="text-xs text-gm-text-secondary mt-1">
@@ -245,7 +259,7 @@ export default function OnboardingPage() {
                 value={currentGoal}
                 onChange={(e) => setCurrentGoal(e.target.value)}
                 placeholder="e.g. Conduct 10 user interviews, launch MVP, get 3 clients"
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-xs sm:text-sm text-gm-midnight focus-ring"
+                className="w-full px-4 py-3 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent focus:bg-gm-white rounded-2xl text-sm transition-colors text-gm-midnight focus-ring"
                 required
               />
             </div>
@@ -259,7 +273,7 @@ export default function OnboardingPage() {
                 onChange={(e) => setBiggestChallenge(e.target.value)}
                 rows={3}
                 placeholder="e.g. Struggling with cold outreach, balancing day job, lack technical skills"
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-xs sm:text-sm text-gm-midnight focus-ring resize-none"
+                className="w-full px-4 py-3 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent focus:bg-gm-white rounded-2xl text-sm transition-colors text-gm-midnight focus-ring resize-none"
                 required
               />
             </div>
@@ -292,7 +306,7 @@ export default function OnboardingPage() {
         {step === 4 && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-xl font-bold text-gm-midnight">
+              <h2 className="text-[26px] font-bold text-gm-midnight">
                 Skills Offered & Needed
               </h2>
               <p className="text-xs text-gm-text-secondary mt-1">
@@ -345,7 +359,7 @@ export default function OnboardingPage() {
             </div>
 
             {/* Passport Preview Box */}
-            <div className="p-4 bg-gm-lavender-soft/40 border border-gm-lavender/30 rounded-2xl text-xs">
+            <div className="p-4 bg-gm-lavender-soft border border-gm-accent-line rounded-[24px] text-xs">
               <span className="text-[10px] font-bold text-gm-indigo uppercase tracking-wider block mb-1">
                 Passport Preview Ready
               </span>
@@ -384,7 +398,7 @@ export default function OnboardingPage() {
             <button
               type="button"
               onClick={() => setStep((s) => s + 1)}
-              className="inline-flex items-center gap-1.5 bg-gm-indigo hover:bg-gm-indigo-hover text-gm-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-card"
+              className="inline-flex items-center gap-1.5 bg-gm-indigo hover:bg-gm-indigo-hover text-gm-white text-xs font-bold px-6 h-12 rounded-full transition-all shadow-float"
             >
               <span>Continue</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -393,7 +407,7 @@ export default function OnboardingPage() {
             <button
               type="button"
               onClick={handleFinish}
-              className="inline-flex items-center gap-1.5 bg-gm-indigo hover:bg-gm-indigo-hover text-gm-white text-xs font-bold px-6 py-2.5 rounded-xl transition-all shadow-card"
+              className="inline-flex items-center gap-1.5 bg-gm-indigo hover:bg-gm-indigo-hover text-gm-white text-xs font-bold px-7 h-12 rounded-full transition-all shadow-float"
             >
               <span>Launch Passport & Enter Feed</span>
               <Sparkles className="w-3.5 h-3.5" />

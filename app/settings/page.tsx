@@ -54,7 +54,7 @@ export default function SettingsPage() {
     <AppShell>
       <div className="max-w-2xl mx-auto space-y-8">
         <div>
-          <h1 className="text-2xl font-extrabold text-gm-midnight tracking-tight">
+          <h1 className="text-[40px] sm:text-[56px] leading-[1.02] font-extrabold text-gm-midnight tracking-tight">
             Settings & Preferences
           </h1>
           <p className="text-xs text-gm-text-secondary mt-0.5">
@@ -66,7 +66,7 @@ export default function SettingsPage() {
         <section className="bg-gm-white border border-gm-border rounded-3xl p-6 sm:p-8 shadow-card">
           <div className="flex items-center gap-2 mb-6 pb-3 border-b border-gm-border">
             <User className="w-4 h-4 text-gm-indigo" />
-            <h2 className="text-base font-bold text-gm-midnight">
+            <h2 className="text-xl font-bold text-gm-midnight">
               Profile Details
             </h2>
           </div>
@@ -79,7 +79,7 @@ export default function SettingsPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-gm-midnight focus-ring"
+                  className="w-full px-3.5 py-2.5 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors text-gm-midnight focus-ring"
                   required
                 />
               </div>
@@ -90,7 +90,7 @@ export default function SettingsPage() {
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-gm-midnight focus-ring"
+                  className="w-full px-3.5 py-2.5 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors text-gm-midnight focus-ring"
                 />
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function SettingsPage() {
               <select
                 value={stage}
                 onChange={(e) => setStage(e.target.value as EntrepreneurialStage)}
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-gm-midnight focus-ring cursor-pointer"
+                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors text-gm-midnight focus-ring cursor-pointer"
               >
                 {stages.map((st) => (
                   <option key={st} value={st}>
@@ -118,7 +118,7 @@ export default function SettingsPage() {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 rows={3}
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-gm-midnight focus-ring resize-none leading-relaxed"
+                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors text-gm-midnight focus-ring resize-none leading-relaxed"
               />
             </div>
 
@@ -128,7 +128,7 @@ export default function SettingsPage() {
                 type="text"
                 value={currentGoal}
                 onChange={(e) => setCurrentGoal(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-gm-midnight focus-ring"
+                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors text-gm-midnight focus-ring"
               />
             </div>
 
@@ -138,14 +138,14 @@ export default function SettingsPage() {
                 type="text"
                 value={biggestChallenge}
                 onChange={(e) => setBiggestChallenge(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-gm-border rounded-xl text-gm-midnight focus-ring"
+                className="w-full px-3.5 py-2.5 bg-gm-ivory border border-transparent hover:border-gm-border focus:border-gm-accent rounded-2xl transition-colors text-gm-midnight focus-ring"
               />
             </div>
 
             <div className="pt-2 flex justify-end">
               <button
                 type="submit"
-                className="flex items-center gap-1.5 bg-gm-indigo hover:bg-gm-indigo-hover text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-card"
+                className="flex items-center gap-1.5 bg-gm-indigo hover:bg-gm-indigo-hover text-white text-xs font-bold px-5 py-2.5 rounded-full transition-all shadow-card"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span>Save Profile Changes</span>
@@ -158,7 +158,7 @@ export default function SettingsPage() {
         <section className="bg-gm-white border border-gm-border rounded-3xl p-6 sm:p-8 shadow-card text-xs">
           <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gm-border">
             <Shield className="w-4 h-4 text-gm-indigo" />
-            <h2 className="text-base font-bold text-gm-midnight">
+            <h2 className="text-xl font-bold text-gm-midnight">
               Passport Privacy
             </h2>
           </div>
@@ -183,7 +183,7 @@ export default function SettingsPage() {
 
         {/* ── Demo Session Reset ─────────────────────────────────── */}
         <section className="bg-gm-white border border-gm-border rounded-3xl p-6 sm:p-8 shadow-card text-xs">
-          <h2 className="text-base font-bold text-gm-midnight mb-2">
+          <h2 className="text-xl font-bold text-gm-midnight mb-2">
             Demo Sandbox Controls
           </h2>
           <p className="text-gm-text-secondary leading-relaxed mb-4">

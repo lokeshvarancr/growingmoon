@@ -398,7 +398,7 @@ export default function UnifiedSearchView() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl sm:text-2xl font-black text-[#141724] tracking-tight">
+              <h1 className="text-[36px] sm:text-[52px] leading-[1.02] font-black text-gm-ink tracking-tight">
                 Search
               </h1>
               <p className="text-xs sm:text-[13px] text-gray-500 mt-0.5">
@@ -417,7 +417,7 @@ export default function UnifiedSearchView() {
                 onChange={(e) => handleInputChange(e.target.value)}
                 placeholder="Search people, journeys, posts..."
                 autoFocus
-                className="w-full pl-11 pr-11 py-3 sm:py-3.5 bg-white border border-gray-200/90 rounded-2xl text-xs sm:text-sm text-[#141724] placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-3 focus:ring-[#6258DB]/15 transition-all shadow-xs font-medium"
+                className="w-full pl-11 pr-11 py-3 sm:py-3.5 bg-white border border-gray-200/90 rounded-2xl text-xs sm:text-sm text-gm-ink placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-3 focus:ring-gm-accent/15 transition-all shadow-xs font-medium"
               />
               {queryInput && (
                 <button
@@ -454,8 +454,8 @@ export default function UnifiedSearchView() {
                     onClick={() => handleTabChange(tab.id)}
                     className={`pb-3 text-xs sm:text-sm font-semibold transition-all relative cursor-pointer flex items-center gap-1.5 whitespace-nowrap select-none ${
                       isActive
-                        ? 'text-[#141724] font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2.5px] after:bg-[#6258DB] after:rounded-full'
-                        : 'text-gray-500 hover:text-[#141724]'
+                        ? 'text-gm-ink font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2.5px] after:bg-gm-accent after:rounded-full'
+                        : 'text-gray-500 hover:text-gm-ink'
                     }`}
                   >
                     <span>{tab.label}</span>
@@ -463,7 +463,7 @@ export default function UnifiedSearchView() {
                       <span
                         className={`text-[10px] px-2 py-0.5 rounded-full font-bold transition-colors ${
                           isActive
-                            ? 'bg-[#EEEDFE] text-[#6258DB]'
+                            ? 'bg-gm-accent-soft text-gm-accent'
                             : 'bg-gray-100 text-gray-500'
                         }`}
                       >
@@ -491,7 +491,7 @@ export default function UnifiedSearchView() {
                     onClick={() => handleCategoryChange(cat)}
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap active:scale-95 flex items-center gap-1 shadow-2xs ${
                       isSelected
-                        ? 'bg-[#6258DB] text-white'
+                        ? 'bg-gm-accent text-white'
                         : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200/80'
                     }`}
                   >
@@ -508,9 +508,9 @@ export default function UnifiedSearchView() {
                 <button
                   type="button"
                   onClick={() => handleSortChange('relevant')}
-                  className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
                     selectedSort === 'relevant'
-                      ? 'bg-[#6258DB] text-white shadow-2xs'
+                      ? 'bg-gm-accent text-white shadow-2xs'
                       : 'text-gray-600 hover:text-black'
                   }`}
                 >
@@ -519,9 +519,9 @@ export default function UnifiedSearchView() {
                 <button
                   type="button"
                   onClick={() => handleSortChange('latest')}
-                  className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
                     selectedSort === 'latest'
-                      ? 'bg-[#6258DB] text-white shadow-2xs'
+                      ? 'bg-gm-accent text-white shadow-2xs'
                       : 'text-gray-600 hover:text-black'
                   }`}
                 >
@@ -538,18 +538,18 @@ export default function UnifiedSearchView() {
           <div className="space-y-6 pt-2">
             {/* Recent Searches */}
             {recentSearches.length > 0 && (
-              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs space-y-3">
+              <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-gray-500" />
-                    <h3 className="text-xs sm:text-sm font-bold text-[#141724]">
+                    <h3 className="text-xs sm:text-sm font-bold text-gm-ink">
                       Recent Searches
                     </h3>
                   </div>
                   <button
                     type="button"
                     onClick={handleClearAllRecent}
-                    className="text-xs text-[#6258DB] hover:underline font-semibold cursor-pointer"
+                    className="text-xs text-gm-accent hover:underline font-semibold cursor-pointer"
                   >
                     Clear all
                   </button>
@@ -561,11 +561,11 @@ export default function UnifiedSearchView() {
                       key={i}
                       type="button"
                       onClick={() => handleQuickQuery(term)}
-                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gray-50 hover:bg-[#EEEDFE] border border-gray-200/70 hover:border-[#6258DB]/30 text-xs text-gray-700 hover:text-[#6258DB] font-medium transition-all cursor-pointer group"
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gray-50 hover:bg-gm-accent-soft border border-gray-200/70 hover:border-gm-accent/30 text-xs text-gray-700 hover:text-gm-accent font-medium transition-all cursor-pointer group"
                     >
                       <span>{term}</span>
                       <X
-                        className="w-3 h-3 text-gray-400 group-hover:text-[#6258DB] hover:text-rose-500 transition-colors"
+                        className="w-3 h-3 text-gray-400 group-hover:text-gm-accent hover:text-rose-500 transition-colors"
                         onClick={(e) => handleDeleteRecent(term, e)}
                       />
                     </button>
@@ -575,10 +575,10 @@ export default function UnifiedSearchView() {
             )}
 
             {/* Suggested Searches */}
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs space-y-3">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card space-y-3">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#6258DB]" />
-                <h3 className="text-xs sm:text-sm font-bold text-[#141724]">
+                <Sparkles className="w-4 h-4 text-gm-accent" />
+                <h3 className="text-xs sm:text-sm font-bold text-gm-ink">
                   Suggested Searches
                 </h3>
               </div>
@@ -598,7 +598,7 @@ export default function UnifiedSearchView() {
                     key={i}
                     type="button"
                     onClick={() => handleQuickQuery(term)}
-                    className="px-3.5 py-2 rounded-full bg-[#FAF9FF] hover:bg-[#EEEDFE] text-[#6258DB] text-xs font-semibold border border-[#E4DCFD] transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
+                    className="px-3.5 py-2 rounded-full bg-gm-accent-soft hover:bg-gm-accent-soft text-gm-accent text-xs font-semibold border border-gm-accent-line transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
                   >
                     <Search className="w-3 h-3" />
                     <span>{term}</span>
@@ -608,10 +608,10 @@ export default function UnifiedSearchView() {
             </div>
 
             {/* Browse by Categories */}
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs space-y-3">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card space-y-3">
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-emerald-600" />
-                <h3 className="text-xs sm:text-sm font-bold text-[#141724]">
+                <h3 className="text-xs sm:text-sm font-bold text-gm-ink">
                   Browse by Category
                 </h3>
               </div>
@@ -634,15 +634,15 @@ export default function UnifiedSearchView() {
                       setQueryInput(cat);
                       updateUrlAndSearch(cat, 'all', cat, 'relevant');
                     }}
-                    className="p-3.5 rounded-2xl bg-gray-50/80 hover:bg-[#FAF9FF] border border-gray-100 hover:border-[#6258DB]/20 text-left transition-all cursor-pointer group flex items-center justify-between"
+                    className="p-3.5 rounded-2xl bg-gray-50/80 hover:bg-gm-accent-soft border border-gray-100 hover:border-gm-accent/20 text-left transition-all cursor-pointer group flex items-center justify-between"
                   >
                     <div className="flex items-center gap-2.5">
                       <span className="text-lg">{CATEGORY_ICONS[cat] || '✨'}</span>
-                      <span className="text-xs font-bold text-[#141724] group-hover:text-[#6258DB]">
+                      <span className="text-xs font-bold text-gm-ink group-hover:text-gm-accent">
                         {cat}
                       </span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#6258DB] group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gm-accent group-hover:translate-x-0.5 transition-all" />
                   </button>
                 ))}
               </div>
@@ -650,10 +650,10 @@ export default function UnifiedSearchView() {
 
             {/* Popular Tags */}
             {suggestions?.popular_tags && suggestions.popular_tags.length > 0 && (
-              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs space-y-3">
+              <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card space-y-3">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-amber-500" />
-                  <h3 className="text-xs sm:text-sm font-bold text-[#141724]">
+                  <h3 className="text-xs sm:text-sm font-bold text-gm-ink">
                     Popular Tags
                   </h3>
                 </div>
@@ -679,7 +679,7 @@ export default function UnifiedSearchView() {
             {[1, 2, 3].map((n) => (
               <div
                 key={n}
-                className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs space-y-3 animate-pulse"
+                className="bg-white rounded-3xl p-5 sm:p-6 shadow-card space-y-3 animate-pulse"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-gray-200" />
@@ -700,7 +700,7 @@ export default function UnifiedSearchView() {
             <button
               type="button"
               onClick={() => executeSearch(queryInput, activeTab, selectedCategory, selectedSort)}
-              className="mt-3 px-4 py-2 rounded-xl bg-[#6258DB] text-white text-xs font-bold shadow-xs cursor-pointer"
+              className="mt-3 px-4 py-2 rounded-full bg-gm-accent text-white text-xs font-bold shadow-xs cursor-pointer"
             >
               Retry Search
             </button>
@@ -714,11 +714,11 @@ export default function UnifiedSearchView() {
               <div className="space-y-8">
                 {counts.all === 0 ? (
                   /* Empty state when query has 0 results across all entities */
-                  <div className="bg-white rounded-3xl p-10 text-center border border-black/[0.04] shadow-xs space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-purple-50 text-[#6258DB] flex items-center justify-center mx-auto">
+                  <div className="bg-white rounded-3xl p-10 text-center shadow-card space-y-3">
+                    <div className="w-12 h-12 rounded-2xl bg-purple-50 text-gm-accent flex items-center justify-center mx-auto">
                       <Search className="w-6 h-6" />
                     </div>
-                    <h3 className="text-sm sm:text-base font-bold text-[#141724]">
+                    <h3 className="text-sm sm:text-base font-bold text-gm-ink">
                       No results found for &ldquo;{queryInput}&rdquo;
                     </h3>
                     <p className="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
@@ -730,7 +730,7 @@ export default function UnifiedSearchView() {
                           key={k}
                           type="button"
                           onClick={() => handleQuickQuery(k)}
-                          className="px-3 py-1 rounded-full bg-gray-100 hover:bg-[#EEEDFE] hover:text-[#6258DB] text-xs font-semibold transition-colors cursor-pointer"
+                          className="px-3 py-1 rounded-full bg-gray-100 hover:bg-gm-accent-soft hover:text-gm-accent text-xs font-semibold transition-colors cursor-pointer"
                         >
                           {k}
                         </button>
@@ -744,8 +744,8 @@ export default function UnifiedSearchView() {
                       <div className="space-y-3.5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Users className="w-4 h-4 text-[#6258DB]" />
-                            <h2 className="text-sm font-extrabold text-[#141724] tracking-tight">
+                            <Users className="w-4 h-4 text-gm-accent" />
+                            <h2 className="text-lg font-extrabold text-gm-ink tracking-tight">
                               People ({searchResults.total_people})
                             </h2>
                           </div>
@@ -753,7 +753,7 @@ export default function UnifiedSearchView() {
                             <button
                               type="button"
                               onClick={() => handleTabChange('people')}
-                              className="text-xs font-bold text-[#6258DB] hover:underline flex items-center gap-1 cursor-pointer"
+                              className="text-xs font-bold text-gm-accent hover:underline flex items-center gap-1 cursor-pointer"
                             >
                               <span>See all {searchResults.total_people}</span>
                               <ChevronRight className="w-3.5 h-3.5" />
@@ -792,7 +792,7 @@ export default function UnifiedSearchView() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Rocket className="w-4 h-4 text-emerald-600" />
-                            <h2 className="text-sm font-extrabold text-[#141724] tracking-tight">
+                            <h2 className="text-lg font-extrabold text-gm-ink tracking-tight">
                               Journeys ({searchResults.total_journeys})
                             </h2>
                           </div>
@@ -800,7 +800,7 @@ export default function UnifiedSearchView() {
                             <button
                               type="button"
                               onClick={() => handleTabChange('journeys')}
-                              className="text-xs font-bold text-[#6258DB] hover:underline flex items-center gap-1 cursor-pointer"
+                              className="text-xs font-bold text-gm-accent hover:underline flex items-center gap-1 cursor-pointer"
                             >
                               <span>See all {searchResults.total_journeys}</span>
                               <ChevronRight className="w-3.5 h-3.5" />
@@ -822,7 +822,7 @@ export default function UnifiedSearchView() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <FileText className="w-4 h-4 text-indigo-600" />
-                            <h2 className="text-sm font-extrabold text-[#141724] tracking-tight">
+                            <h2 className="text-lg font-extrabold text-gm-ink tracking-tight">
                               Posts ({searchResults.total_posts})
                             </h2>
                           </div>
@@ -830,7 +830,7 @@ export default function UnifiedSearchView() {
                             <button
                               type="button"
                               onClick={() => handleTabChange('posts')}
-                              className="text-xs font-bold text-[#6258DB] hover:underline flex items-center gap-1 cursor-pointer"
+                              className="text-xs font-bold text-gm-accent hover:underline flex items-center gap-1 cursor-pointer"
                             >
                               <span>See all {searchResults.total_posts}</span>
                               <ChevronRight className="w-3.5 h-3.5" />
@@ -857,9 +857,9 @@ export default function UnifiedSearchView() {
             {activeTab === 'people' && (
               <div className="space-y-4">
                 {searchResults && searchResults.people.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-10 text-center border border-black/[0.04] shadow-xs">
+                  <div className="bg-white rounded-3xl p-10 text-center shadow-card">
                     <Users className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                    <h3 className="text-sm font-bold text-[#141724]">No people found</h3>
+                    <h3 className="text-sm font-bold text-gm-ink">No people found</h3>
                     <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
                       No community members matched &ldquo;{queryInput}&rdquo;. Try searching for names, roles, or skills.
                     </p>
@@ -895,9 +895,9 @@ export default function UnifiedSearchView() {
             {activeTab === 'journeys' && (
               <div className="space-y-4">
                 {searchResults && searchResults.journeys.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-10 text-center border border-black/[0.04] shadow-xs">
+                  <div className="bg-white rounded-3xl p-10 text-center shadow-card">
                     <Rocket className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                    <h3 className="text-sm font-bold text-[#141724]">No journeys found</h3>
+                    <h3 className="text-sm font-bold text-gm-ink">No journeys found</h3>
                     <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
                       No public journey passports matched &ldquo;{queryInput}&rdquo;. Try another topic or category filter.
                     </p>
@@ -916,9 +916,9 @@ export default function UnifiedSearchView() {
             {activeTab === 'posts' && (
               <div className="space-y-4">
                 {searchResults && searchResults.posts.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-10 text-center border border-black/[0.04] shadow-xs">
+                  <div className="bg-white rounded-3xl p-10 text-center shadow-card">
                     <FileText className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                    <h3 className="text-sm font-bold text-[#141724]">No posts found</h3>
+                    <h3 className="text-sm font-bold text-gm-ink">No posts found</h3>
                     <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
                       No journey updates matched &ldquo;{queryInput}&rdquo;. Try searching for different milestone keywords.
                     </p>
@@ -965,7 +965,7 @@ function PersonCard({
   return (
     <Link
       href={`/profile/${person.username}`}
-      className="bg-white rounded-2xl p-4.5 border border-black/[0.04] shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer"
+      className="bg-white rounded-2xl p-4.5 shadow-card hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer"
     >
       <div className="space-y-3">
         {/* Header: Avatar, Name, Username, Role */}
@@ -978,14 +978,14 @@ function PersonCard({
             />
           ) : (
             <div
-              className={`w-12 h-12 rounded-full ${person.avatar_color || 'bg-indigo-100 text-[#6258DB]'} font-extrabold text-sm flex items-center justify-center flex-shrink-0 ring-1 ring-black/5`}
+              className={`w-12 h-12 rounded-full ${person.avatar_color || 'bg-indigo-100 text-gm-accent'} font-extrabold text-sm flex items-center justify-center flex-shrink-0 ring-1 ring-black/5`}
             >
               {person.avatar_initials || person.name.slice(0, 2).toUpperCase()}
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <h4 className="text-xs sm:text-sm font-bold text-[#141724] group-hover:text-[#6258DB] transition-colors truncate">
+            <h4 className="text-xs sm:text-sm font-bold text-gm-ink group-hover:text-gm-accent transition-colors truncate">
               {person.name}
             </h4>
             <p className="text-[11px] text-gray-400 font-medium truncate">
@@ -1015,7 +1015,7 @@ function PersonCard({
             </div>
           )}
           {person.current_focus_1 && (
-            <div className="flex items-center gap-1.5 truncate text-[#6258DB] font-medium">
+            <div className="flex items-center gap-1.5 truncate text-gm-accent font-medium">
               <Target className="w-3.5 h-3.5 flex-shrink-0" />
               <span className="truncate">Focus: {person.current_focus_1}</span>
             </div>
@@ -1028,7 +1028,7 @@ function PersonCard({
             {person.interests.slice(0, 3).map((item, i) => (
               <span
                 key={i}
-                className="text-[10px] font-semibold text-[#6258DB] bg-[#EEEDFE] px-2 py-0.5 rounded-full"
+                className="text-[10px] font-semibold text-gm-accent bg-gm-accent-soft px-2 py-0.5 rounded-full"
               >
                 {item}
               </span>
@@ -1053,7 +1053,7 @@ function PersonCard({
             className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 active:scale-95 ${
               isFollowing
                 ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                : 'bg-[#6258DB] hover:bg-[#5246D2] text-white shadow-2xs'
+                : 'bg-gm-accent hover:bg-gm-accent-deep text-white shadow-2xs'
             }`}
           >
             {isFollowing ? (
@@ -1084,7 +1084,7 @@ function PersonCard({
               type="button"
               disabled={isActionPending}
               onClick={onSendConnection}
-              className="py-1.5 px-3 rounded-full text-xs font-bold bg-[#FAF9FF] hover:bg-[#EEEDFE] text-[#6258DB] border border-[#E4DCFD] transition-all cursor-pointer flex items-center gap-1 active:scale-95"
+              className="py-1.5 px-3 rounded-full text-xs font-bold bg-gm-accent-soft hover:bg-gm-accent-soft text-gm-accent border border-gm-accent-line transition-all cursor-pointer flex items-center gap-1 active:scale-95"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>Connect</span>
@@ -1103,12 +1103,12 @@ function JourneyResultCard({ journey }: { journey: SearchJourneyResult }) {
   return (
     <Link
       href={`/passport/${journey.author.username}?journey=${encodeURIComponent(journey.title)}`}
-      className="bg-white rounded-2xl p-4.5 border border-black/[0.04] shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer"
+      className="bg-white rounded-2xl p-4.5 shadow-card hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer"
     >
       <div className="space-y-3">
         {/* Top: Category Pill & Update count */}
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[10px] font-bold text-[#6258DB] bg-[#EEEDFE] px-2.5 py-0.5 rounded-full flex items-center gap-1">
+          <span className="text-[10px] font-bold text-gm-accent bg-gm-accent-soft px-2.5 py-0.5 rounded-full flex items-center gap-1">
             <span>{categoryIcon}</span>
             <span>{journey.category}</span>
           </span>
@@ -1119,14 +1119,14 @@ function JourneyResultCard({ journey }: { journey: SearchJourneyResult }) {
         </div>
 
         {/* Title */}
-        <h4 className="text-sm font-bold text-[#141724] group-hover:text-[#6258DB] transition-colors line-clamp-2 leading-snug">
+        <h4 className="text-sm font-bold text-gm-ink group-hover:text-gm-accent transition-colors line-clamp-2 leading-snug">
           {journey.title}
         </h4>
 
         {/* Current Goal */}
         {journey.current_goal && (
           <div className="flex items-start gap-1.5 text-xs text-gray-700 bg-gray-50 p-2 rounded-xl border border-gray-100">
-            <Target className="w-3.5 h-3.5 text-[#6258DB] mt-0.5 flex-shrink-0" />
+            <Target className="w-3.5 h-3.5 text-gm-accent mt-0.5 flex-shrink-0" />
             <span className="line-clamp-2 font-medium">{journey.current_goal}</span>
           </div>
         )}
@@ -1160,7 +1160,7 @@ function JourneyResultCard({ journey }: { journey: SearchJourneyResult }) {
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-[11px] font-bold text-[#6258DB] group-hover:translate-x-0.5 transition-transform">
+        <div className="flex items-center gap-1 text-[11px] font-bold text-gm-accent group-hover:translate-x-0.5 transition-transform">
           <span>View</span>
           <ChevronRight className="w-3.5 h-3.5" />
         </div>

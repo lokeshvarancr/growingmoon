@@ -173,7 +173,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
   // ── Common Reusable Header (Used by Multi-Media & Text-Only Cards) ──
   const renderAuthorHeader = () => (
-    <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+    <div className="flex items-center justify-between">
       <Link
         href={`/profile/${author.username}`}
         className="flex items-center gap-2.5 min-w-0 group/author"
@@ -182,17 +182,17 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           <img
             src={author.avatarImage}
             alt={author.name}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover ring-1 ring-black/10 shadow-xs flex-shrink-0"
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover ring-2 ring-gm-surface shadow-card flex-shrink-0"
           />
         ) : (
           <div
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-black text-xs ${author.avatarColor || 'bg-amber-100 text-amber-800'} ring-1 ring-black/10 shadow-xs flex-shrink-0`}
+            className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center font-bold text-xs ${author.avatarColor || 'bg-amber-100 text-amber-800'} ring-1 ring-black/10 shadow-xs flex-shrink-0`}
           >
             {author.avatar || 'RV'}
           </div>
         )}
         <div className="min-w-0">
-          <span className="font-extrabold text-sm sm:text-[15px] text-[#141724] tracking-tight leading-tight block truncate group-hover/author:text-[#6258DB]">
+          <span className="font-semibold text-sm sm:text-[15px] text-gm-ink leading-tight block truncate group-hover/author:text-gm-accent transition-colors">
             {author.name}
           </span>
           <p className="text-[11px] sm:text-xs text-gray-500 font-normal leading-tight mt-0.5 truncate">
@@ -205,10 +205,10 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         <button
           type="button"
           onClick={handleToggleFollow}
-          className={`px-4 sm:px-4.5 py-1.5 rounded-full font-bold text-xs shadow-xs transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
+          className={`px-4 sm:px-5 h-9 rounded-full font-semibold text-xs transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
             isFollowed
-              ? 'bg-gray-100 text-gray-700'
-              : 'bg-[#141724] hover:bg-black text-white'
+              ? 'bg-transparent border border-gm-ink/15 text-gray-700'
+              : 'bg-gm-ink hover:bg-gm-accent text-gm-paper'
           }`}
         >
           {isFollowed ? 'Following' : 'Follow'}
@@ -219,22 +219,22 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
   // ── Common Headline & Body Text (Placed ABOVE gallery for Multi-Media & Text-Only) ──
   const renderHeadlineAndBody = () => (
-    <div className="mt-3">
+    <div className="mt-5">
       {displayHeadline && (
-        <h2 className="text-base sm:text-lg font-black text-[#141724] tracking-tight leading-snug line-clamp-2">
+        <h2 className="text-[22px] sm:text-[27px] text-gm-ink leading-[1.15] line-clamp-3 text-balance">
           {displayHeadline}
         </h2>
       )}
 
-      <div className="mt-1">
-        <p className={`text-xs sm:text-[13px] text-gray-600 leading-relaxed font-normal ${!isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'}`}>
+      <div className="mt-2.5">
+        <p className={`text-sm sm:text-[15px] text-gray-600 leading-relaxed font-normal ${!isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'}`}>
           {displayContent}
         </p>
         {displayContent && (
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-1 font-bold text-xs sm:text-[12.5px] text-[#6258DB] hover:underline inline-flex items-center gap-0.5 focus:outline-none cursor-pointer"
+            className="mt-2 font-semibold text-[13px] text-gm-ink hover:text-gm-accent underline decoration-gm-accent/40 underline-offset-4 inline-flex items-center gap-0.5 focus:outline-none cursor-pointer"
           >
             {isExpanded ? (
               <>
@@ -252,13 +252,13 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
         {/* Milestone Ending for Text-only cards */}
         {isTextOnly && (
-          <div className="flex items-center gap-2 mt-2.5 pt-1 flex-wrap">
-            <span className="text-[10px] font-extrabold text-[#6258DB] bg-[#F5F2FF] border border-[#E4DCFD] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+          <div className="flex items-center gap-2 mt-4 flex-wrap">
+            <span className="text-[10px] font-extrabold text-gm-accent bg-gm-accent-soft border border-gm-accent-line px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               {update.journeyTag || update.category || 'Milestone'}
             </span>
             {(update.startDate || update.start_date) && (
               <span className="text-[10px] font-semibold text-gray-700 bg-gray-100 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
-                <Calendar className="w-2.5 h-2.5 text-[#6258DB]" />
+                <Calendar className="w-2.5 h-2.5 text-gm-accent" />
                 <span>
                   {new Date(update.startDate || update.start_date!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   {' → '}
@@ -279,20 +279,20 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
   // ── Common Action Bar (Fuel, Save, Passport - 3 Equal Balanced Columns) ──
   const renderActionBar = () => (
-    <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mt-3">
+    <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mt-6">
       {/* Card 1: Fuel */}
       <button
         type="button"
         onClick={handleQuietFuelBoost}
-        className={`h-9 sm:h-10 px-2.5 sm:px-3 rounded-[10px] sm:rounded-[12px] transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 border ${
+        className={`h-11 px-3 rounded-full transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 border ${
           hasFueled
             ? 'bg-amber-100 border-amber-300 text-amber-900 ring-1 ring-amber-400/40'
-            : 'bg-[#FFF9EB] hover:bg-[#FFF4D6] border-[#FDE8B5] text-[#141724]'
+            : 'bg-gray-50 hover:bg-amber-50 border-gm-ink/[0.07] text-gm-ink'
         }`}
         title="Send a quiet, private encouragement boost (Zero public vanity metrics)"
       >
         <Zap className={`w-3.5 h-3.5 flex-shrink-0 ${hasFueled ? 'text-amber-600 fill-amber-600' : 'text-amber-500 fill-amber-500'}`} />
-        <span className="text-xs font-bold truncate">
+        <span className="text-[13px] font-semibold truncate">
           {hasFueled ? 'Fueled' : 'Fuel'}
         </span>
       </button>
@@ -304,15 +304,15 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           e.stopPropagation();
           toggleSave(update.id);
         }}
-        className={`h-9 sm:h-10 px-2.5 sm:px-3 rounded-[10px] sm:rounded-[12px] transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 border ${
+        className={`h-11 px-3 rounded-full transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 border ${
           isSaved
-            ? 'bg-[#F5F2FF] border-[#6258DB]/30 text-[#6258DB] ring-1 ring-[#6258DB]/20'
-            : 'bg-[#F8F9FA] hover:bg-gray-100/70 border-gray-200/80 text-[#141724]'
+            ? 'bg-gm-accent-soft border-gm-accent/30 text-gm-accent ring-1 ring-gm-accent/20'
+            : 'bg-gray-50 hover:bg-gray-100 border-gm-ink/[0.07] text-gm-ink'
         }`}
         title={isSaved ? "Saved in bookmarks" : "Save snippet to your library"}
       >
-        <Bookmark className={`w-3.5 h-3.5 flex-shrink-0 ${isSaved ? 'text-[#6258DB] fill-[#6258DB]' : 'text-gray-700'}`} />
-        <span className={`text-xs font-bold truncate ${isSaved ? 'text-[#6258DB]' : ''}`}>
+        <Bookmark className={`w-3.5 h-3.5 flex-shrink-0 ${isSaved ? 'text-gm-accent fill-gm-accent' : 'text-gray-700'}`} />
+        <span className={`text-[13px] font-semibold truncate ${isSaved ? 'text-gm-accent' : ''}`}>
           {isSaved ? 'Saved' : 'Save'}
         </span>
       </button>
@@ -320,11 +320,11 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       {/* Card 3: Passport */}
       <Link
         href={`/passport/${author.username}`}
-        className="h-9 sm:h-10 px-2.5 sm:px-3 rounded-[10px] sm:rounded-[12px] transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 bg-[#F5F2FF] hover:bg-[#EFEAFF] border border-[#E4DCFD] text-[#6258DB]"
+        className="h-11 px-3 rounded-full transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 bg-gm-ink hover:bg-gm-accent border border-transparent text-gm-paper"
         title="Open author's complete Journey Passport"
       >
         <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5] flex-shrink-0" />
-        <span className="text-xs font-bold truncate">
+        <span className="text-[13px] font-semibold truncate">
           Passport
         </span>
       </Link>
@@ -338,16 +338,16 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       <button
         type="button"
         onClick={() => setIsDiscussionOpen(true)}
-        className="flex-1 bg-[#F8F9FB] hover:bg-gray-100/90 border border-gray-200/70 rounded-full py-2 px-4 flex items-center justify-between text-xs select-none transition-all cursor-pointer group shadow-2xs"
+        className="flex-1 bg-transparent hover:bg-gm-accent-soft border border-dashed border-gm-ink/15 hover:border-gm-accent/40 rounded-full h-11 px-4 flex items-center justify-between text-xs select-none transition-all cursor-pointer group"
       >
         <div className="flex items-center gap-2 text-gray-700 font-semibold text-xs">
-          <MessageSquare className="w-3.5 h-3.5 text-[#6258DB] group-hover:scale-110 transition-transform" />
+          <MessageSquare className="w-3.5 h-3.5 text-gm-accent group-hover:scale-110 transition-transform" />
           <span>Community Thread</span>
           <span className="text-gray-400 font-normal text-[11px]">
             ({update.comments?.length || 24})
           </span>
         </div>
-        <span className="text-[11px] font-bold text-[#6258DB] group-hover:underline flex items-center gap-1">
+        <span className="text-[11px] font-bold text-gm-accent group-hover:underline flex items-center gap-1">
           <span>Join thread</span>
           <span>→</span>
         </span>
@@ -361,7 +361,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
             e.stopPropagation();
             setShowMenu(!showMenu);
           }}
-          className="w-8 h-8 rounded-full bg-[#F8F9FB] hover:bg-gray-100/90 border border-gray-200/80 text-gray-600 flex items-center justify-center transition-all cursor-pointer shadow-2xs active:scale-95"
+          className="w-11 h-11 rounded-full bg-transparent hover:bg-gray-100 border border-gm-ink/10 text-gray-600 flex items-center justify-center transition-all cursor-pointer"
           title="More options"
           aria-label="More options"
         >
@@ -369,7 +369,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         </button>
 
         {showMenu && (
-          <div className="absolute right-0 bottom-11 bg-white rounded-2xl p-1.5 z-30 min-w-[150px] text-xs shadow-xl border border-gray-100 animate-in fade-in zoom-in-95">
+          <div className="absolute right-0 bottom-14 bg-white rounded-2xl p-1.5 z-30 min-w-[170px] text-[13px] shadow-modal border border-gm-ink/5 animate-slide-up">
             <button
               type="button"
               onClick={() => {
@@ -432,7 +432,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     const posterUrl = isVideo ? getVideoPosterUrl(media) : media.url;
 
     return (
-      <article className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden bg-slate-950 aspect-[9/15] sm:aspect-[9/16] min-h-[580px] sm:min-h-[660px] max-h-[760px] w-full max-w-[440px] sm:max-w-[480px] mx-auto select-none shadow-md border border-black/10 group/reel">
+      <article className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden bg-slate-950 aspect-[9/15] sm:aspect-[9/16] min-h-[580px] sm:min-h-[660px] max-h-[760px] w-full max-w-[440px] sm:max-w-[480px] mx-auto select-none shadow-card-hover group/reel">
         {/* Background Visual (Video or Image) */}
         {isVideo && isPlayingVideo ? (
           ytId ? (
@@ -471,7 +471,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
             onClick={() => setIsPlayingVideo(true)}
             className="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors bg-black/25 hover:bg-black/15 z-10"
           >
-            <div className="w-14 h-14 rounded-full bg-white/95 text-[#141724] flex items-center justify-center shadow-2xl backdrop-blur-md transform transition-all active:scale-90 hover:scale-105">
+            <div className="w-14 h-14 rounded-full bg-white/95 text-gm-ink flex items-center justify-center shadow-2xl backdrop-blur-md transform transition-all active:scale-90 hover:scale-105">
               <Play className="w-6 h-6 fill-current translate-x-0.5 text-red-600" />
             </div>
           </div>
@@ -591,7 +591,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
                 className={`px-3 py-1 rounded-full font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
                   isFollowed
                     ? 'bg-white/20 backdrop-blur-md text-white border border-white/40'
-                    : 'bg-white text-[#141724] hover:bg-white/90'
+                    : 'bg-white text-gm-ink hover:bg-white/90'
                 }`}
               >
                 {isFollowed ? 'Following' : 'Follow'}
@@ -601,7 +601,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
           {/* Heading Only (No 2-line snippet text) */}
           {displayHeadline && (
-            <h2 className="text-sm sm:text-[15px] font-black text-white tracking-tight leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] line-clamp-2">
+            <h2 className="text-lg sm:text-xl font-black text-white tracking-tight leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] line-clamp-2">
               {displayHeadline}
             </h2>
           )}
@@ -634,7 +634,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     const posterUrl = isVideo ? getVideoPosterUrl(media) : media.url;
 
     return (
-      <article className="bg-white rounded-[14px] sm:rounded-[18px] p-3.5 sm:p-4.5 pb-3 sm:pb-3.5 shadow-sm border border-black/[0.06] relative transition-all">
+      <article className="bg-white rounded-[28px] p-5 sm:p-7 shadow-card hover:shadow-card-hover relative transition-shadow duration-500">
         {/* 1. Header with Author Info & Follow */}
         {renderAuthorHeader()}
 
@@ -642,7 +642,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         {renderHeadlineAndBody()}
 
         {/* 3. Framed Media (Comfortable max height, centered portrait container) */}
-        <div className="mt-3 rounded-[14px] overflow-hidden bg-gray-950 select-none relative max-h-[500px] w-full flex items-center justify-center">
+        <div className="mt-5 rounded-[20px] overflow-hidden bg-gray-950 select-none relative max-h-[500px] w-full flex items-center justify-center">
           {isVideo && isPlayingVideo ? (
             ytId ? (
               <div className="w-full max-w-[380px] aspect-[9/16] max-h-[500px] flex items-center justify-center">
@@ -681,7 +681,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
               {/* YouTube / Video Play Badge & Button */}
               {isVideo && !isPlayingVideo && (
                 <div className="absolute inset-0 flex items-center justify-center transition-colors bg-black/25 group-hover/portrait:bg-black/15">
-                  <div className="w-14 h-14 rounded-full bg-white/95 text-[#141724] flex items-center justify-center shadow-xl backdrop-blur-md transform transition-all active:scale-90 group-hover/portrait:scale-105">
+                  <div className="w-14 h-14 rounded-full bg-white/95 text-gm-ink flex items-center justify-center shadow-xl backdrop-blur-md transform transition-all active:scale-90 group-hover/portrait:scale-105">
                     <Play className="w-6 h-6 fill-current translate-x-0.5 text-red-600" />
                   </div>
                 </div>
@@ -717,7 +717,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     if (mediaList.length === 2) {
       const isPortraitPair = mediaList[0].orientation === 'portrait' && mediaList[1].orientation === 'portrait';
       return (
-        <div className={`mt-3 rounded-[12px] sm:rounded-[14px] overflow-hidden bg-white border border-black/[0.04] select-none w-full ${isPortraitPair ? 'aspect-[4/3] sm:aspect-[16/11]' : 'aspect-[16/10]'}`}>
+        <div className={`mt-5 rounded-[20px] overflow-hidden bg-white select-none w-full ${isPortraitPair ? 'aspect-[4/3] sm:aspect-[16/11]' : 'aspect-[16/10]'}`}>
           <div className="grid grid-cols-2 gap-1.5 bg-white h-full">
             {mediaList.map((m, idx) => (
               <div
@@ -740,7 +740,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     // 3 Images: "one portrait on left and two landscapes on right"
     if (mediaList.length === 3) {
       return (
-        <div className="mt-3 rounded-[12px] sm:rounded-[14px] overflow-hidden bg-white border border-black/[0.04] select-none aspect-[16/10] sm:aspect-[16/9] w-full">
+        <div className="mt-5 rounded-[20px] overflow-hidden bg-white select-none aspect-[16/10] sm:aspect-[16/9] w-full">
           <div className="grid grid-cols-2 gap-1.5 bg-white h-full">
             {/* Left: 1 Tall Portrait */}
             <div
@@ -784,7 +784,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     // 4 Images: 1 portrait on left + 2 stacked on right with +1 badge
     if (mediaList.length === 4) {
       return (
-        <div className="mt-3 rounded-[12px] sm:rounded-[14px] overflow-hidden bg-white border border-black/[0.04] select-none aspect-[16/10] sm:aspect-[16/9] w-full">
+        <div className="mt-5 rounded-[20px] overflow-hidden bg-white select-none aspect-[16/10] sm:aspect-[16/9] w-full">
           <div className="grid grid-cols-2 gap-1.5 bg-white h-full">
             {/* Left: 1 Tall Portrait */}
             <div
@@ -830,7 +830,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
     // 5+ Images: 1 Hero on Left (spans 3 of 5) + 4 Grid on Right (spans 2 of 5)
     return (
-      <div className="mt-3 rounded-[12px] sm:rounded-[14px] overflow-hidden bg-white border border-black/[0.04] select-none aspect-[16/10] sm:aspect-[16/9] w-full">
+      <div className="mt-5 rounded-[20px] overflow-hidden bg-white select-none aspect-[16/10] sm:aspect-[16/9] w-full">
         <div className="grid grid-cols-5 gap-1.5 bg-white h-full">
           <div
             onClick={() => setLightboxIndex(0)}
@@ -868,7 +868,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
   };
 
   const renderMultiMediaCard = () => (
-    <article className="bg-white rounded-[14px] sm:rounded-[18px] p-3.5 sm:p-4.5 pb-3 sm:pb-3.5 shadow-sm border border-black/[0.06] relative transition-all">
+    <article className="bg-white rounded-[28px] p-5 sm:p-7 shadow-card hover:shadow-card-hover relative transition-shadow duration-500">
       {/* 1. Header with Author Info & Follow */}
       {renderAuthorHeader()}
 
@@ -896,9 +896,9 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     const posterUrl = isVideo ? getVideoPosterUrl(media) : media.url;
 
     return (
-      <article className="bg-white rounded-[14px] sm:rounded-[18px] overflow-hidden p-0 pb-3 sm:pb-3.5 shadow-sm border border-black/[0.06] relative transition-all">
+      <article className="bg-white rounded-[28px] overflow-hidden p-0 pb-5 sm:pb-7 shadow-card hover:shadow-card-hover relative transition-shadow duration-500">
         {/* Landscape Media with Profile Overlay Inside at the Bottom */}
-        <div className="relative rounded-t-[14px] sm:rounded-t-[18px] overflow-hidden bg-gray-900 group/img select-none aspect-[16/10] sm:aspect-[16/9] w-full">
+        <div className="relative rounded-t-[28px] overflow-hidden bg-gray-900 group/img select-none aspect-[16/10] sm:aspect-[16/9] w-full">
           {isVideo && isPlayingVideo ? (
             ytId ? (
               <iframe
@@ -936,7 +936,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
               onClick={() => setIsPlayingVideo(true)}
               className="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors bg-black/30 hover:bg-black/20 z-10"
             >
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 hover:bg-white text-[#141724] flex items-center justify-center shadow-2xl backdrop-blur-md transform transition-all active:scale-90 hover:scale-105">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 hover:bg-white text-gm-ink flex items-center justify-center shadow-2xl backdrop-blur-md transform transition-all active:scale-90 hover:scale-105">
                 <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current translate-x-0.5 text-red-600" />
               </div>
             </div>
@@ -991,7 +991,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
                 className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none flex items-center gap-1.5 backdrop-blur-md ${
                   isFollowed
                     ? 'bg-emerald-500/95 text-white border border-emerald-300/40'
-                    : 'bg-white hover:bg-white/90 text-[#141724]'
+                    : 'bg-white hover:bg-white/90 text-gm-ink'
                 }`}
               >
                 {isFollowed ? (
@@ -1011,7 +1011,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         </div>
 
         {/* Content Below Landscape Media */}
-        <div className="px-3.5 sm:px-4 lg:px-5">
+        <div className="px-5 sm:px-7">
           {renderHeadlineAndBody()}
           {renderActionBar()}
           {renderDiscussionBar()}
@@ -1024,7 +1024,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
   // PARADIGM 4: TEXT-ONLY CARD (Clean Heading, Proper Padding & Ending)
   // ══════════════════════════════════════════════════════════════════════
   const renderTextOnlyCard = () => (
-    <article className="bg-white rounded-[14px] sm:rounded-[18px] p-3.5 sm:p-4.5 pb-3 sm:pb-3.5 shadow-sm border border-black/[0.06] relative transition-all">
+    <article className="bg-white rounded-[28px] p-5 sm:p-7 shadow-card hover:shadow-card-hover relative transition-shadow duration-500">
       {renderAuthorHeader()}
       {renderHeadlineAndBody()}
       {renderActionBar()}
@@ -1061,11 +1061,11 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           {/* Backdrop */}
           <div
             onClick={() => setIsDiscussionOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+            className="fixed inset-0 bg-gm-ink/50 backdrop-blur-md transition-opacity animate-fade-in"
           />
 
           {/* 3/4 Height Sheet Container (75vh height) */}
-          <div className="relative z-10 w-full max-w-2xl mx-auto h-[75vh] max-h-[80vh] bg-[#FBFBFC] rounded-t-[24px] sm:rounded-t-[30px] shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-300 border-t border-black/10">
+          <div className="relative z-10 w-full max-w-2xl mx-auto h-[75vh] max-h-[80vh] bg-gm-paper rounded-t-[32px] shadow-modal flex flex-col overflow-hidden animate-slide-up">
             {/* Top Grab / Drag Handle */}
             <div
               className="pt-2.5 pb-1 flex justify-center flex-shrink-0 cursor-pointer"
@@ -1075,13 +1075,13 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
             </div>
 
             {/* Modal Header: Unified "Community Thread" + Close [X] Button */}
-            <div className="px-5 sm:px-6 py-3.5 border-b border-gray-100 flex items-center justify-between flex-shrink-0 bg-white">
+            <div className="px-5 sm:px-7 py-4 border-b border-gm-ink/[0.06] flex items-center justify-between flex-shrink-0 bg-gm-paper">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#F7F5FF] border border-[#E5DEFC] text-[#6258DB] flex items-center justify-center flex-shrink-0 shadow-2xs">
+                <div className="w-10 h-10 rounded-full bg-gm-accent text-white flex items-center justify-center flex-shrink-0">
                   <MessageSquare className="w-4 h-4 stroke-[2.2]" />
                 </div>
                 <div>
-                  <h2 className="text-sm sm:text-base font-bold text-[#141724] tracking-tight leading-none">
+                  <h2 className="text-[26px] sm:text-[32px] text-gm-ink leading-none">
                     Community Thread
                   </h2>
                   <p className="text-[11px] sm:text-xs text-gray-500 font-normal mt-0.5">
@@ -1093,7 +1093,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
               <button
                 type="button"
                 onClick={() => setIsDiscussionOpen(false)}
-                className="w-8 h-8 rounded-full bg-gray-100/80 hover:bg-gray-200 text-gray-500 hover:text-gray-900 flex items-center justify-center transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-full bg-gm-ink/[0.05] hover:bg-gm-ink hover:text-gm-paper text-gray-500 hover:text-gray-900 flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4 stroke-[2.2]" />
@@ -1133,7 +1133,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       {lightboxIndex !== null && currentMedia && (
         <div
           onClick={() => setLightboxIndex(null)}
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-[#0E0D0C]/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -1171,7 +1171,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
             <img
               src={currentMedia.url}
               alt={currentMedia.alt || 'Full view'}
-              className="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/20"
+              className="max-w-full max-h-[82vh] object-contain rounded-[20px] shadow-2xl animate-slide-up"
             />
           </div>
 

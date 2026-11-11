@@ -75,10 +75,10 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
         return <Rocket className="w-4 h-4 text-emerald-600" />;
       case 'journey':
       case 'passport':
-        return <Compass className="w-4 h-4 text-[#6258DB]" />;
+        return <Compass className="w-4 h-4 text-gm-accent" />;
       case 'comment':
       case 'ask_answer':
-        return <MessageSquare className="w-4 h-4 text-[#6258DB]" />;
+        return <MessageSquare className="w-4 h-4 text-gm-accent" />;
       case 'fuel':
         return <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />;
       case 'helpful_vote':
@@ -108,16 +108,16 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
-      <div className="relative bg-white rounded-3xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-gray-100 z-10 animate-in zoom-in-95 duration-150 overflow-hidden">
+      <div className="relative bg-white rounded-[32px] max-w-xl w-full max-h-[85vh] flex flex-col shadow-modal border border-gm-ink/5 z-10 animate-slide-up overflow-hidden">
         {/* Header */}
         <div className="p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
           <div>
-            <h3 className="text-base sm:text-lg font-bold text-[#141724]">
+            <h3 className="text-base sm:text-lg font-bold text-gm-ink">
               Activity
             </h3>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -148,7 +148,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
               onClick={() => setActiveFilter(tab.id as any)}
               className={`px-3 py-1 rounded-full font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeFilter === tab.id
-                  ? 'bg-white text-[#6258DB] shadow-2xs font-bold border border-gray-200/80'
+                  ? 'bg-white text-gm-accent shadow-2xs font-bold border border-gray-200/80'
                   : 'text-gray-600 hover:text-black'
               }`}
             >
@@ -161,7 +161,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
         <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-3.5">
           {loading ? (
             <div className="py-12 flex flex-col items-center justify-center text-center">
-              <div className="w-6 h-6 border-2 border-[#6258DB] border-t-transparent rounded-full animate-spin mb-3" />
+              <div className="w-6 h-6 border-2 border-gm-accent border-t-transparent rounded-full animate-spin mb-3" />
               <p className="text-xs text-gray-500 font-medium">Loading your activity history...</p>
             </div>
           ) : filtered.length === 0 ? (
@@ -185,7 +185,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
                     {getActivityIcon(item.activity_type)}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-[#141724] leading-snug">
+                    <p className="text-xs font-medium text-gm-ink leading-snug">
                       {item.summary_text}
                     </p>
 
@@ -201,7 +201,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
                         <Link
                           href={`/updates/${item.target_post_id}`}
                           onClick={onClose}
-                          className="text-[#6258DB] hover:underline flex items-center gap-0.5 font-semibold"
+                          className="text-gm-accent hover:underline flex items-center gap-0.5 font-semibold"
                         >
                           <span>{item.activity_type === 'post' ? 'View Update' : 'View Discussion'}</span>
                           <ExternalLink className="w-2.5 h-2.5" />
@@ -210,7 +210,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
                         <Link
                           href="/passport/you"
                           onClick={onClose}
-                          className="text-[#6258DB] hover:underline flex items-center gap-0.5 font-semibold"
+                          className="text-gm-accent hover:underline flex items-center gap-0.5 font-semibold"
                         >
                           <span>View Journey</span>
                           <ExternalLink className="w-2.5 h-2.5" />

@@ -67,10 +67,10 @@ export default function UserActivityPage() {
         return <Rocket className="w-4 h-4 text-emerald-600" />;
       case 'journey':
       case 'passport':
-        return <Compass className="w-4 h-4 text-[#6258DB]" />;
+        return <Compass className="w-4 h-4 text-gm-accent" />;
       case 'comment':
       case 'ask_answer':
-        return <MessageSquare className="w-4 h-4 text-[#6258DB]" />;
+        return <MessageSquare className="w-4 h-4 text-gm-accent" />;
       case 'fuel':
         return <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />;
       case 'helpful_vote':
@@ -100,7 +100,7 @@ export default function UserActivityPage() {
     <AppShell>
       <div className="max-w-2xl mx-auto py-6 sm:py-8 px-4">
         <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#141724]">
+          <h1 className="text-[40px] sm:text-[56px] leading-[1.02] font-extrabold text-gm-ink">
             Activity
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
@@ -123,7 +123,7 @@ export default function UserActivityPage() {
               onClick={() => setActiveFilter(tab.id as any)}
               className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeFilter === tab.id
-                  ? 'bg-white text-[#6258DB] shadow-xs font-bold'
+                  ? 'bg-white text-gm-accent shadow-xs font-bold'
                   : 'text-gray-600 hover:text-black'
               }`}
             >
@@ -136,7 +136,7 @@ export default function UserActivityPage() {
         <div className="space-y-3.5">
           {loading ? (
             <div className="py-16 text-center">
-              <div className="w-6 h-6 border-2 border-[#6258DB] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <div className="w-6 h-6 border-2 border-gm-accent border-t-transparent rounded-full animate-spin mx-auto mb-3" />
               <p className="text-xs text-gray-500 font-medium">Loading your activity history...</p>
             </div>
           ) : filtered.length === 0 ? (
@@ -153,14 +153,14 @@ export default function UserActivityPage() {
             filtered.map((item) => (
               <div
                 key={item.id}
-                className="p-4 sm:p-5 rounded-2xl bg-white border border-black/[0.04] shadow-xs hover:shadow-md transition-all flex items-start justify-between gap-4"
+                className="p-4 sm:p-5 rounded-2xl bg-white shadow-card hover:shadow-md transition-all flex items-start justify-between gap-4"
               >
                 <div className="flex items-start gap-3.5 min-w-0 flex-1">
                   <div className="w-9 h-9 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                     {getActivityIcon(item.activity_type)}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs sm:text-[13px] font-semibold text-[#141724] leading-snug">
+                    <p className="text-xs sm:text-[13px] font-semibold text-gm-ink leading-snug">
                       {item.summary_text}
                     </p>
 
@@ -175,7 +175,7 @@ export default function UserActivityPage() {
                       {item.target_post_id ? (
                         <Link
                           href={`/updates/${item.target_post_id}`}
-                          className="text-[#6258DB] hover:underline flex items-center gap-1 font-semibold"
+                          className="text-gm-accent hover:underline flex items-center gap-1 font-semibold"
                         >
                           <span>{item.activity_type === 'post' ? 'View Update' : 'View Discussion'}</span>
                           <ExternalLink className="w-3 h-3" />
@@ -183,7 +183,7 @@ export default function UserActivityPage() {
                       ) : item.activity_type === 'journey' ? (
                         <Link
                           href="/passport/you"
-                          className="text-[#6258DB] hover:underline flex items-center gap-1 font-semibold"
+                          className="text-gm-accent hover:underline flex items-center gap-1 font-semibold"
                         >
                           <span>View Journey</span>
                           <ExternalLink className="w-3 h-3" />

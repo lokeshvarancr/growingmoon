@@ -93,8 +93,8 @@ export default function CreateJourneyModal({
         category: res.category || category,
         visibility: res.is_public ? 'Public' : 'Private',
         dateRange: 'Just now – Present',
-        color: 'bg-[#EEEDFE] text-[#6258DB]',
-        dotColor: 'bg-[#6258DB]',
+        color: 'bg-gm-accent-soft text-gm-accent',
+        dotColor: 'bg-gm-accent',
       };
 
       onCreated(newJourney);
@@ -108,8 +108,8 @@ export default function CreateJourneyModal({
         category,
         visibility,
         dateRange: 'Just now – Present',
-        color: 'bg-[#EEEDFE] text-[#6258DB]',
-        dotColor: 'bg-[#6258DB]',
+        color: 'bg-gm-accent-soft text-gm-accent',
+        dotColor: 'bg-gm-accent',
       };
 
       onCreated(newJourney);
@@ -123,23 +123,23 @@ export default function CreateJourneyModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto select-none">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md transition-opacity animate-fade-in"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
       <form
         onSubmit={handleSubmit}
-        className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-md w-full z-10 space-y-4 animate-in zoom-in-95 duration-150"
+        className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-md w-full z-10 space-y-4 animate-slide-up"
       >
         {/* Header */}
         <div className="flex items-center justify-between pb-1 border-b border-gray-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-[#EEEDFE] text-[#6258DB] flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 rounded-2xl bg-gm-accent-soft text-gm-accent flex items-center justify-center flex-shrink-0">
               <Rocket className="w-4 h-4 stroke-[2.2]" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-[#141724]">Create a New Journey</h3>
+              <h3 className="text-base font-bold text-gm-ink">Create a New Journey</h3>
               <p className="text-[11px] text-gray-500">Define a new goal, project or learning path</p>
             </div>
           </div>
@@ -170,7 +170,7 @@ export default function CreateJourneyModal({
             placeholder="e.g. Scaling AI Workflows to ₹50K MRR"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all"
             required
             autoFocus
           />
@@ -185,9 +185,9 @@ export default function CreateJourneyModal({
                 key={cat}
                 type="button"
                 onClick={() => setCategory(cat)}
-                className={`py-2 px-2.5 rounded-xl text-xs font-semibold transition-all border cursor-pointer text-center ${
+                className={`py-2 px-2.5 rounded-full text-xs font-semibold transition-all border cursor-pointer text-center ${
                   category === cat
-                    ? 'bg-[#EEEDFE] text-[#6258DB] border-[#6258DB]/30 shadow-2xs'
+                    ? 'bg-gm-accent-soft text-gm-accent border-gm-accent/30 shadow-2xs'
                     : 'bg-gray-50/80 text-gray-600 border-gray-200/80 hover:bg-gray-100/60'
                 }`}
               >
@@ -208,7 +208,7 @@ export default function CreateJourneyModal({
             placeholder="Briefly describe what you are building, learning, or pursuing..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-3 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 resize-none transition-all"
+            className="w-full p-3 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 resize-none transition-all"
           />
         </div>
 
@@ -221,7 +221,7 @@ export default function CreateJourneyModal({
               onClick={() => setVisibility('Public')}
               className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all ${
                 visibility === 'Public'
-                  ? 'bg-[#EEEDFE] border-[#6258DB] text-[#6258DB] shadow-2xs'
+                  ? 'bg-gm-accent-soft border-gm-accent text-gm-accent shadow-2xs'
                   : 'border-gray-200 text-gray-600 hover:bg-gray-50'
               }`}
             >
@@ -233,7 +233,7 @@ export default function CreateJourneyModal({
               onClick={() => setVisibility('Private')}
               className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all ${
                 visibility === 'Private'
-                  ? 'bg-[#EEEDFE] border-[#6258DB] text-[#6258DB] shadow-2xs'
+                  ? 'bg-gm-accent-soft border-gm-accent text-gm-accent shadow-2xs'
                   : 'border-gray-200 text-gray-600 hover:bg-gray-50'
               }`}
             >
@@ -255,7 +255,7 @@ export default function CreateJourneyModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2.5 rounded-xl bg-[#6258DB] hover:bg-[#5246D2] disabled:opacity-60 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-5 py-2.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep disabled:opacity-60 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center gap-1.5"
           >
             {isSubmitting ? (
               <>

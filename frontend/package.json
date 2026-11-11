@@ -1,0 +1,7 @@
+{
+  "name": "growing-moon-preview-runner",
+  "private": true,
+  "scripts": {
+    "start": "cd .. && npx next build --webpack && npx next start -H 0.0.0.0 -p 3000"
+  }
+}

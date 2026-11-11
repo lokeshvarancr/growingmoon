@@ -81,7 +81,7 @@ function MessagesContent() {
         username: conv.otherParticipant.username || 'user',
         avatar: conv.otherParticipant.avatar_initials || 'GM',
         avatarImage: conv.otherParticipant.avatar_image || undefined,
-        avatarColor: conv.otherParticipant.avatar_color || 'bg-[#ECE9FE] text-[#5546D6]',
+        avatarColor: conv.otherParticipant.avatar_color || 'bg-gm-accent-soft text-gm-accent-deep',
         role: conv.otherParticipant.role_title || 'Builder',
         stage: conv.otherParticipant.role_title || 'Building MVP',
       };
@@ -93,7 +93,7 @@ function MessagesContent() {
       name: 'Community Member',
       username: 'member',
       avatar: 'GM',
-      avatarColor: 'bg-[#ECE9FE] text-[#5546D6]',
+      avatarColor: 'bg-gm-accent-soft text-gm-accent-deep',
       role: 'Builder',
       stage: 'Building MVP',
     };
@@ -564,7 +564,7 @@ function MessagesContent() {
                             {conv.lastMessage ? conv.lastMessage.content : 'No messages yet'}
                           </p>
                           {conv.unreadCount > 0 && (
-                            <span className="w-4 h-4 rounded-full bg-[#6258DB] text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                            <span className="w-4 h-4 rounded-full bg-gm-accent text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0">
                               {conv.unreadCount}
                             </span>
                           )}
@@ -583,16 +583,16 @@ function MessagesContent() {
               ) : (
                 /* Positive no-conversations state */
                 <div className="p-6 text-center flex flex-col items-center justify-center h-full min-h-[300px]">
-                  <div className="w-12 h-12 rounded-2xl bg-[#F5F2FF] text-[#6258DB] flex items-center justify-center mb-3 shadow-2xs border border-[#E4DCFD]">
+                  <div className="w-12 h-12 rounded-2xl bg-gm-accent-soft text-gm-accent flex items-center justify-center mb-3 shadow-2xs border border-gm-accent-line">
                     <MessageSquare className="w-6 h-6 stroke-[2]" />
                   </div>
-                  <h3 className="text-xs font-bold text-[#141724]">No conversations yet</h3>
+                  <h3 className="text-xs font-bold text-gm-ink">No conversations yet</h3>
                   <p className="text-[11px] text-gray-500 mt-1.5 leading-relaxed max-w-[210px]">
                     Connect with creators, exchange milestone feedback, or start a chat from anyone&apos;s profile!
                   </p>
                   <Link
                     href="/home"
-                    className="mt-4 px-3.5 py-1.5 rounded-full bg-[#141724] hover:bg-black text-white text-[11px] font-bold transition-all shadow-xs active:scale-95"
+                    className="mt-4 px-3.5 py-1.5 rounded-full bg-gm-ink hover:bg-black text-white text-[11px] font-bold transition-all shadow-xs active:scale-95"
                   >
                     Discover Creators
                   </Link>
@@ -640,7 +640,7 @@ function MessagesContent() {
                       </span>
                       <span className="text-[10px] text-gm-text-secondary flex items-center gap-1">
                         {isOtherTyping ? (
-                          <span className="text-[#6258DB] font-semibold animate-pulse">typing...</span>
+                          <span className="text-gm-accent font-semibold animate-pulse">typing...</span>
                         ) : (
                           otherFounder.stage
                         )}
@@ -694,7 +694,7 @@ function MessagesContent() {
                 <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F8F7FF]/30">
                   {isLoadingMessages ? (
                     <div className="h-full flex flex-col items-center justify-center text-center py-10">
-                      <div className="w-5 h-5 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin mb-2" />
+                      <div className="w-5 h-5 rounded-full border-2 border-gm-accent border-t-transparent animate-spin mb-2" />
                       <p className="text-xs text-gray-400 font-medium">Loading conversation...</p>
                     </div>
                   ) : liveMessages.length > 0 ? (
@@ -716,9 +716,9 @@ function MessagesContent() {
                           className={`flex flex-col group ${isMe ? 'items-end' : 'items-start'}`}
                         >
                           <div
-                            className={`max-w-[85%] rounded-2xl px-4 py-2 text-xs leading-relaxed relative ${
+                            className={`max-w-[85%] rounded-[22px] px-4 py-2.5 text-[13px] leading-relaxed relative ${
                               isDeleted
-                                ? 'bg-gray-100 text-gray-500 border border-gray-200/80 italic rounded-2xl shadow-none'
+                                ? 'bg-gray-100 text-gray-500 border border-gray-200/80 italic shadow-none'
                                 : isMe
                                 ? 'bg-gm-indigo text-gm-white rounded-br-none shadow-sm'
                                 : 'bg-gm-white border border-gm-border text-gm-midnight rounded-bl-none shadow-2xs'
@@ -735,7 +735,7 @@ function MessagesContent() {
                                   type="text"
                                   value={editingMessageText}
                                   onChange={(e) => setEditingMessageText(e.target.value)}
-                                  className="w-full px-2.5 py-1 text-xs rounded-lg bg-white text-gray-900 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#6258DB]"
+                                  className="w-full px-2.5 py-1 text-xs rounded-lg bg-white text-gray-900 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gm-accent"
                                   autoFocus
                                 />
                                 <div className="flex items-center justify-end gap-1.5 text-[10px]">
@@ -749,7 +749,7 @@ function MessagesContent() {
                                   <button
                                     type="submit"
                                     disabled={isSavingEdit || !editingMessageText.trim()}
-                                    className="px-2.5 py-0.5 rounded bg-white text-[#6258DB] font-bold hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
+                                    className="px-2.5 py-0.5 rounded bg-white text-gm-accent font-bold hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
                                   >
                                     {isSavingEdit ? 'Saving...' : 'Save'}
                                   </button>
@@ -858,16 +858,16 @@ function MessagesContent() {
                         <img
                           src={otherFounder.avatarImage}
                           alt={otherFounder.name}
-                          className="w-14 h-14 rounded-full object-cover ring-4 ring-[#ECE9FE] shadow-sm mb-3"
+                          className="w-14 h-14 rounded-full object-cover ring-4 ring-gm-accent-soft shadow-sm mb-3"
                         />
                       ) : (
                         <div
-                          className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-base ${otherFounder.avatarColor} ring-4 ring-[#ECE9FE] shadow-sm mb-3`}
+                          className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-base ${otherFounder.avatarColor} ring-4 ring-gm-accent-soft shadow-sm mb-3`}
                         >
                           {otherFounder.avatar}
                         </div>
                       )}
-                      <h4 className="text-sm font-bold text-[#141724]">
+                      <h4 className="text-sm font-bold text-gm-ink">
                         Say hello to {otherFounder.name}!
                       </h4>
                       <p className="text-xs text-gray-500 mt-1 max-w-xs leading-relaxed">
@@ -885,7 +885,7 @@ function MessagesContent() {
                             key={idx}
                             type="button"
                             onClick={() => setInputText(prompt)}
-                            className="text-[11px] px-3 py-1.5 rounded-full bg-white hover:bg-[#F5F2FF] border border-gray-200/90 hover:border-[#6258DB]/40 text-gray-700 hover:text-[#6258DB] transition-all cursor-pointer shadow-2xs active:scale-95 text-left"
+                            className="text-[11px] px-3 py-1.5 rounded-full bg-white hover:bg-gm-accent-soft border border-gray-200/90 hover:border-gm-accent/40 text-gray-700 hover:text-gm-accent transition-all cursor-pointer shadow-2xs active:scale-95 text-left"
                           >
                             &ldquo;{prompt}&rdquo;
                           </button>
@@ -920,10 +920,10 @@ function MessagesContent() {
             ) : (
               /* Positive General Welcome Screen (No active conversation selected) */
               <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-white">
-                <div className="w-14 h-14 rounded-2xl bg-[#F5F2FF] border border-[#E4DCFD] flex items-center justify-center mb-3 text-[#6258DB] shadow-2xs">
+                <div className="w-14 h-14 rounded-2xl bg-gm-accent-soft border border-gm-accent-line flex items-center justify-center mb-3 text-gm-accent shadow-2xs">
                   <MessageSquare className="w-7 h-7 stroke-[2]" />
                 </div>
-                <h2 className="text-base font-extrabold text-[#141724] tracking-tight">
+                <h2 className="text-xl font-extrabold text-gm-ink tracking-tight">
                   Your Direct Messages
                 </h2>
                 <p className="text-xs text-gray-500 mt-1 max-w-sm leading-relaxed">
@@ -932,18 +932,18 @@ function MessagesContent() {
 
                 <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-md w-full text-left">
                   <div className="p-3 rounded-2xl bg-[#F8F9FA] border border-gray-100 flex items-start gap-2.5">
-                    <Sparkles className="w-4 h-4 text-[#6258DB] flex-shrink-0 mt-0.5" />
+                    <Sparkles className="w-4 h-4 text-gm-accent flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-bold text-[#141724]">Milestone Feedback</p>
+                      <p className="text-xs font-bold text-gm-ink">Milestone Feedback</p>
                       <p className="text-[10.5px] text-gray-500 leading-normal">
                         Trade private advice with creators ahead of you.
                       </p>
                     </div>
                   </div>
                   <div className="p-3 rounded-2xl bg-[#F8F9FA] border border-gray-100 flex items-start gap-2.5">
-                    <Users className="w-4 h-4 text-[#6258DB] flex-shrink-0 mt-0.5" />
+                    <Users className="w-4 h-4 text-gm-accent flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-bold text-[#141724]">Real-Time Collaboration</p>
+                      <p className="text-xs font-bold text-gm-ink">Real-Time Collaboration</p>
                       <p className="text-[10.5px] text-gray-500 leading-normal">
                         Instant delivery and read status indicators.
                       </p>
@@ -953,7 +953,7 @@ function MessagesContent() {
 
                 <Link
                   href="/home"
-                  className="mt-6 px-4 py-2 rounded-full bg-[#6258DB] hover:bg-[#5246D2] text-white text-xs font-bold transition-all shadow-xs active:scale-95"
+                  className="mt-6 px-4 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold transition-all shadow-xs active:scale-95"
                 >
                   Discover People to Chat With
                 </Link>
@@ -964,8 +964,8 @@ function MessagesContent() {
 
         {/* Delete Entire Chat Confirmation Modal */}
         {showDeleteChatModal && otherFounder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-            <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-gray-100 text-left animate-in fade-in zoom-in-95 duration-150">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gm-ink/45 backdrop-blur-md">
+            <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-gray-100 text-left animate-slide-up">
               <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center mb-3">
                 <Trash2 className="w-5 h-5 stroke-[2]" />
               </div>

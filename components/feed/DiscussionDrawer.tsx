@@ -654,12 +654,12 @@ export default function DiscussionDrawer({
   const getTagIcon = (tag: string) => {
     switch (tag) {
       case 'Reflection':
-        return <Compass className="w-3 h-3 text-[#6258DB]" />;
+        return <Compass className="w-3 h-3 text-gm-accent" />;
       case 'Idea':
-        return <Lightbulb className="w-3 h-3 text-[#6258DB]" />;
+        return <Lightbulb className="w-3 h-3 text-gm-accent" />;
       case 'Feedback':
       default:
-        return <MessageSquare className="w-3 h-3 text-[#6258DB]" />;
+        return <MessageSquare className="w-3 h-3 text-gm-accent" />;
     }
   };
 
@@ -669,16 +669,16 @@ export default function DiscussionDrawer({
       {/* ═══════════════════════════════════════════════════════════════
           SECTION 1: "MY ASK" ACCORDION CARD (Exact match to screenshot)
          ═══════════════════════════════════════════════════════════════ */}
-      <div className="bg-[#FAF9FF] border border-[#EBE7FF] rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 shadow-2xs space-y-4">
+      <div className="bg-gm-accent-soft border border-gm-accent-soft rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 shadow-2xs space-y-4">
         
         {/* Card Header: Icon + Title + Pill Counter */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#EEEDFE] text-[#6258DB] flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gm-accent-soft text-gm-accent flex items-center justify-center flex-shrink-0">
               <HelpCircle className="w-4 h-4 stroke-[2.2]" />
             </div>
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-[#141724] tracking-tight leading-none">
+              <h3 className="text-sm sm:text-base font-bold text-gm-ink tracking-tight leading-none">
                 My Ask
               </h3>
               <p className="text-[11px] sm:text-xs text-gray-500 font-normal mt-0.5">
@@ -697,7 +697,7 @@ export default function DiscussionDrawer({
           {asks.map((ask) => (
             <div
               key={ask.id}
-              className="bg-white border border-[#EBE7FF] rounded-2xl p-4 shadow-2xs transition-all"
+              className="bg-white border border-gm-accent-soft rounded-2xl p-4 shadow-2xs transition-all"
             >
               {/* Clickable Question Header Row */}
               <div
@@ -705,10 +705,10 @@ export default function DiscussionDrawer({
                 className="flex items-center justify-between gap-3 cursor-pointer select-none"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-full bg-[#EEEDFE] text-[#6258DB] text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-gm-accent-soft text-gm-accent text-xs font-bold flex items-center justify-center flex-shrink-0">
                     {ask.number}
                   </div>
-                  <h4 className="text-xs sm:text-sm font-bold text-[#141724] tracking-tight truncate sm:whitespace-normal">
+                  <h4 className="text-xs sm:text-sm font-bold text-gm-ink tracking-tight truncate sm:whitespace-normal">
                     {ask.question}
                   </h4>
                 </div>
@@ -727,7 +727,7 @@ export default function DiscussionDrawer({
 
               {/* Expanded Answers & Inline Input */}
               {ask.isExpanded && (
-                <div className="mt-4 pt-3 border-t border-gray-100 space-y-4 animate-in fade-in duration-150">
+                <div className="mt-4 pt-3 border-t border-gray-100 space-y-4 animate-fade-in">
                   
                   {/* Answers Stream */}
                   <div className="space-y-4">
@@ -747,7 +747,7 @@ export default function DiscussionDrawer({
                                 className="w-8 h-8 rounded-full object-cover ring-1 ring-black/5 flex-shrink-0"
                               />
                               <div className="flex items-center gap-1.5 flex-wrap">
-                                <span className="text-xs sm:text-sm font-bold text-[#141724] tracking-tight">
+                                <span className="text-xs sm:text-sm font-bold text-gm-ink tracking-tight">
                                   {answer.author.name}
                                 </span>
                                 <span className="text-xs text-gray-400">·</span>
@@ -756,7 +756,7 @@ export default function DiscussionDrawer({
                                 </span>
                                 
                                 {/* Pill Tag */}
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#F4F1FD] text-[#6258DB] border border-[#E5DEFC] ml-1">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-gm-accent-soft text-gm-accent border border-gm-accent-line ml-1">
                                   {getTagIcon(answer.tag)}
                                   <span>{answer.tag}</span>
                                 </span>
@@ -781,12 +781,12 @@ export default function DiscussionDrawer({
                               {isMenuOpen && (
                                 <div
                                   onClick={(e) => e.stopPropagation()}
-                                  className="absolute right-0 top-7 z-30 w-52 bg-white rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-gray-100 py-1.5 animate-in fade-in zoom-in-95 duration-150"
+                                  className="absolute right-0 top-7 z-30 w-52 bg-white rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-gray-100 py-1.5 animate-slide-up"
                                 >
                                   <button
                                     type="button"
                                     onClick={() => handleMarkApplied(answer.id)}
-                                    className="w-full px-3.5 py-2 hover:bg-gray-50 flex items-center gap-2.5 text-xs text-[#141724] font-medium text-left cursor-pointer transition-colors"
+                                    className="w-full px-3.5 py-2 hover:bg-gray-50 flex items-center gap-2.5 text-xs text-gm-ink font-medium text-left cursor-pointer transition-colors"
                                   >
                                     <CheckCircle2 className="w-4 h-4 text-gray-700 stroke-[2]" />
                                     <span>Mark as Applied & Worked</span>
@@ -794,7 +794,7 @@ export default function DiscussionDrawer({
                                   <button
                                     type="button"
                                     onClick={() => handleSave(answer.id)}
-                                    className="w-full px-3.5 py-2 hover:bg-gray-50 flex items-center gap-2.5 text-xs text-[#141724] font-medium text-left cursor-pointer transition-colors"
+                                    className="w-full px-3.5 py-2 hover:bg-gray-50 flex items-center gap-2.5 text-xs text-gm-ink font-medium text-left cursor-pointer transition-colors"
                                   >
                                     <Bookmark className="w-4 h-4 text-gray-700 stroke-[2]" />
                                     <span>Save</span>
@@ -802,7 +802,7 @@ export default function DiscussionDrawer({
                                   <button
                                     type="button"
                                     onClick={() => handleReport(answer.id)}
-                                    className="w-full px-3.5 py-2 hover:bg-gray-50 flex items-center gap-2.5 text-xs text-[#141724] font-medium text-left cursor-pointer transition-colors"
+                                    className="w-full px-3.5 py-2 hover:bg-gray-50 flex items-center gap-2.5 text-xs text-gm-ink font-medium text-left cursor-pointer transition-colors"
                                   >
                                     <Flag className="w-4 h-4 text-gray-700 stroke-[2]" />
                                     <span>Report</span>
@@ -823,7 +823,7 @@ export default function DiscussionDrawer({
                               type="button"
                               onClick={() => handleToggleHelpful(answer.id)}
                               className={`inline-flex items-center gap-1.5 transition-colors cursor-pointer select-none ${
-                                vote.userVoted ? 'text-[#6258DB] font-bold' : 'hover:text-[#141724]'
+                                vote.userVoted ? 'text-gm-accent font-bold' : 'hover:text-gm-ink'
                               }`}
                             >
                               <ThumbsUp className={`w-3.5 h-3.5 ${vote.userVoted ? 'fill-current' : 'stroke-[2]'}`} />
@@ -833,7 +833,7 @@ export default function DiscussionDrawer({
                             <button
                               type="button"
                               onClick={() => handleReplyClick(answer.id, answer.author.name)}
-                              className="inline-flex items-center gap-1.5 hover:text-[#141724] transition-colors cursor-pointer select-none"
+                              className="inline-flex items-center gap-1.5 hover:text-gm-ink transition-colors cursor-pointer select-none"
                             >
                               <MessageSquare className="w-3.5 h-3.5 stroke-[2]" />
                               <span>Reply</span>
@@ -843,7 +843,7 @@ export default function DiscussionDrawer({
                               <button
                                 type="button"
                                 onClick={() => toggleReplies(answer.id)}
-                                className="inline-flex items-center gap-1 hover:text-[#141724] transition-colors cursor-pointer select-none"
+                                className="inline-flex items-center gap-1 hover:text-gm-ink transition-colors cursor-pointer select-none"
                               >
                                 <span>{answer.repliesCount} {answer.repliesCount === 1 ? 'reply' : 'replies'}</span>
                                 <ChevronDown
@@ -864,9 +864,9 @@ export default function DiscussionDrawer({
                                   className="bg-gray-50/80 rounded-xl p-3 border border-gray-100 text-xs text-gray-700 space-y-1"
                                 >
                                   <div className="flex items-center gap-1.5">
-                                    <span className="font-bold text-[#141724]">{reply.author.name}</span>
+                                    <span className="font-bold text-gm-ink">{reply.author.name}</span>
                                     {reply.author.isAuthor && (
-                                      <span className="bg-[#EEEDFE] text-[#6258DB] text-[10px] font-bold px-1.5 py-0.2 rounded-md">
+                                      <span className="bg-gm-accent-soft text-gm-accent text-[10px] font-bold px-1.5 py-0.2 rounded-full">
                                         Author
                                       </span>
                                     )}
@@ -884,7 +884,7 @@ export default function DiscussionDrawer({
 
                   {/* Inline Capsule Answer Input */}
                   <div className="pt-1">
-                    <div className="flex items-center gap-2 px-3.5 py-2 rounded-full border border-gray-200/90 bg-white hover:border-[#6258DB]/50 transition-colors shadow-2xs">
+                    <div className="flex items-center gap-2 px-3.5 py-2 rounded-full border border-gray-200/90 bg-white hover:border-gm-accent/50 transition-colors shadow-2xs">
                       <MessageSquare className="w-4 h-4 text-gray-400 stroke-[2] flex-shrink-0" />
                       <input
                         type="text"
@@ -899,13 +899,13 @@ export default function DiscussionDrawer({
                           }
                         }}
                         placeholder="Share an answer to this ask..."
-                        className="flex-1 text-xs bg-transparent border-none outline-none text-[#141724] placeholder:text-gray-400"
+                        className="flex-1 text-xs bg-transparent border-none outline-none text-gm-ink placeholder:text-gray-400"
                       />
                       <button
                         type="button"
                         onClick={() => handleInlineAskSubmit(ask.id)}
                         disabled={!(askInputMap[ask.id] || '').trim()}
-                        className="p-1 text-[#6258DB] hover:text-[#5246D2] disabled:opacity-30 transition-all cursor-pointer flex-shrink-0"
+                        className="p-1 text-gm-accent hover:text-gm-accent-deep disabled:opacity-30 transition-all cursor-pointer flex-shrink-0"
                         title="Submit answer"
                       >
                         <Send className="w-4 h-4 stroke-[2.2]" />
@@ -926,7 +926,7 @@ export default function DiscussionDrawer({
         {/* Header Row: Chat Icon + Conversation + Comments Count */}
         <div className="flex items-center gap-2 pt-1">
           <MessageSquare className="w-4 h-4 text-gray-900 stroke-[2.2]" />
-          <h3 className="text-sm sm:text-base font-bold text-[#141724] tracking-tight">
+          <h3 className="text-sm sm:text-base font-bold text-gm-ink tracking-tight">
             Conversation
           </h3>
           <span className="text-xs text-gray-500 font-medium">· 24 comments</span>
@@ -950,7 +950,7 @@ export default function DiscussionDrawer({
                         className="w-9 h-9 rounded-full object-cover ring-1 ring-black/5 flex-shrink-0"
                       />
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="text-xs sm:text-sm font-bold text-[#141724] tracking-tight">
+                        <span className="text-xs sm:text-sm font-bold text-gm-ink tracking-tight">
                           {item.author.name}
                         </span>
                         <span className="text-xs text-gray-400">·</span>
@@ -959,7 +959,7 @@ export default function DiscussionDrawer({
                         </span>
                         
                         {item.tag && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#F4F1FD] text-[#6258DB] border border-[#E5DEFC] ml-1">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-gm-accent-soft text-gm-accent border border-gm-accent-line ml-1">
                             {getTagIcon(item.tag)}
                             <span>{item.tag}</span>
                           </span>
@@ -987,7 +987,7 @@ export default function DiscussionDrawer({
                       type="button"
                       onClick={() => handleToggleHelpful(item.id)}
                       className={`inline-flex items-center gap-1.5 transition-colors cursor-pointer select-none ${
-                        vote.userVoted ? 'text-[#6258DB] font-bold' : 'hover:text-[#141724]'
+                        vote.userVoted ? 'text-gm-accent font-bold' : 'hover:text-gm-ink'
                       }`}
                     >
                       <ThumbsUp className={`w-3.5 h-3.5 ${vote.userVoted ? 'fill-current' : 'stroke-[2]'}`} />
@@ -997,7 +997,7 @@ export default function DiscussionDrawer({
                     <button
                       type="button"
                       onClick={() => handleReplyClick(item.id, item.author.name)}
-                      className="inline-flex items-center gap-1.5 hover:text-[#141724] transition-colors cursor-pointer select-none"
+                      className="inline-flex items-center gap-1.5 hover:text-gm-ink transition-colors cursor-pointer select-none"
                     >
                       <MessageSquare className="w-3.5 h-3.5 stroke-[2]" />
                       <span>Reply</span>
@@ -1007,7 +1007,7 @@ export default function DiscussionDrawer({
                       <button
                         type="button"
                         onClick={() => toggleReplies(item.id)}
-                        className="inline-flex items-center gap-1 hover:text-[#141724] transition-colors cursor-pointer select-none"
+                        className="inline-flex items-center gap-1 hover:text-gm-ink transition-colors cursor-pointer select-none"
                       >
                         <span>{item.repliesCount} {item.repliesCount === 1 ? 'reply' : 'replies'}</span>
                         <ChevronDown
@@ -1041,11 +1041,11 @@ export default function DiscussionDrawer({
                               className="w-7 h-7 rounded-full object-cover ring-1 ring-black/5 flex-shrink-0"
                             />
                             <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="text-xs sm:text-sm font-bold text-[#141724] tracking-tight">
+                              <span className="text-xs sm:text-sm font-bold text-gm-ink tracking-tight">
                                 {reply.author.name}
                               </span>
                               {reply.author.isAuthor && (
-                                <span className="bg-[#EEEDFE] text-[#6258DB] text-[10px] font-bold px-1.5 py-0.2 rounded-md">
+                                <span className="bg-gm-accent-soft text-gm-accent text-[10px] font-bold px-1.5 py-0.2 rounded-full">
                                   Author
                                 </span>
                               )}
@@ -1065,7 +1065,7 @@ export default function DiscussionDrawer({
                               type="button"
                               onClick={() => handleToggleHelpful(reply.id)}
                               className={`inline-flex items-center gap-1.5 transition-colors cursor-pointer select-none ${
-                                replyVote.userVoted ? 'text-[#6258DB] font-bold' : 'hover:text-[#141724]'
+                                replyVote.userVoted ? 'text-gm-accent font-bold' : 'hover:text-gm-ink'
                               }`}
                             >
                               <ThumbsUp className={`w-3.5 h-3.5 ${replyVote.userVoted ? 'fill-current' : 'stroke-[2]'}`} />
@@ -1075,7 +1075,7 @@ export default function DiscussionDrawer({
                             <button
                               type="button"
                               onClick={() => handleReplyClick(reply.id, reply.author.name)}
-                              className="inline-flex items-center gap-1.5 hover:text-[#141724] transition-colors cursor-pointer select-none"
+                              className="inline-flex items-center gap-1.5 hover:text-gm-ink transition-colors cursor-pointer select-none"
                             >
                               <MessageSquare className="w-3.5 h-3.5 stroke-[2]" />
                               <span>Reply</span>
@@ -1104,13 +1104,13 @@ export default function DiscussionDrawer({
               <button
                 type="button"
                 onClick={() => setIsTargetDropdownOpen(!isTargetDropdownOpen)}
-                className="bg-[#F4F3FF] hover:bg-[#EEEDFE] text-[#6258DB] font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+                className="bg-gm-accent-soft hover:bg-gm-accent-soft text-gm-accent font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer select-none"
               >
                 <MessageSquare className="w-3.5 h-3.5 stroke-[2]" />
                 <span className="capitalize">
                   {postTarget === 'general' ? 'General' : postTarget === 'ask-1' ? 'Ask 1' : 'Ask 2'}
                 </span>
-                <ChevronDown className="w-3 h-3 text-[#6258DB]" />
+                <ChevronDown className="w-3 h-3 text-gm-accent" />
               </button>
 
               {/* Target Options Popup */}
@@ -1124,7 +1124,7 @@ export default function DiscussionDrawer({
                     }}
                     className="w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center gap-2 font-medium cursor-pointer"
                   >
-                    <MessageSquare className="w-3.5 h-3.5 text-[#6258DB]" />
+                    <MessageSquare className="w-3.5 h-3.5 text-gm-accent" />
                     <span>General Conversation</span>
                   </button>
                   {asks.map((ask) => (
@@ -1137,7 +1137,7 @@ export default function DiscussionDrawer({
                       }}
                       className="w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center gap-2 font-medium cursor-pointer"
                     >
-                      <span className="w-4 h-4 rounded-full bg-purple-100 text-[#6258DB] text-[10px] font-bold flex items-center justify-center">
+                      <span className="w-4 h-4 rounded-full bg-purple-100 text-gm-accent text-[10px] font-bold flex items-center justify-center">
                         {ask.number}
                       </span>
                       <span className="truncate">Ask {ask.number}: {ask.question}</span>
@@ -1157,14 +1157,14 @@ export default function DiscussionDrawer({
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
               placeholder="Share your thoughts, feedback or ideas..."
-              className="flex-1 text-xs sm:text-[13px] bg-transparent border-none outline-none text-[#141724] placeholder:text-gray-400"
+              className="flex-1 text-xs sm:text-[13px] bg-transparent border-none outline-none text-gm-ink placeholder:text-gray-400"
             />
 
             {/* Purple Paper Plane Send Button */}
             <button
               type="submit"
               disabled={!commentInput.trim()}
-              className="p-1.5 text-[#6258DB] hover:text-[#5246D2] disabled:opacity-30 transition-all active:scale-90 cursor-pointer flex-shrink-0"
+              className="p-1.5 text-gm-accent hover:text-gm-accent-deep disabled:opacity-30 transition-all active:scale-90 cursor-pointer flex-shrink-0"
               aria-label="Send message"
             >
               <Send className="w-4 h-4 stroke-[2.2]" />

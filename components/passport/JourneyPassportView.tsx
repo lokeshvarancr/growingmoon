@@ -177,8 +177,8 @@ export default function JourneyPassportView({
               startDate: p.start_date || undefined,
               endDate: p.end_date || undefined,
               type: p.journey_tag || p.category || 'Progress Update',
-              typeColor: 'bg-[#EEEDFE] text-[#6258DB]',
-              dotColor: 'bg-[#6258DB]',
+              typeColor: 'bg-gm-accent-soft text-gm-accent',
+              dotColor: 'bg-gm-accent',
               verification: hasLink || mediaItem ? 'Evidence-Backed' : 'Self-Reported',
               evidenceUrl: mediaItem?.url || (urlMatch ? urlMatch[0] : undefined),
               evidenceLabel: (mediaItem as any)?.file_name || (urlMatch ? 'Interactive Evidence Link' : (mediaItem ? 'Media Proof' : undefined)),
@@ -551,8 +551,8 @@ export default function JourneyPassportView({
   const rightSidebar = (
     <div className="space-y-4 sm:space-y-5 pt-0.5">
       {/* ── Card 1: JOURNEY PASSPORT QR CARD ─────────────────────── */}
-      <div className="bg-white rounded-3xl p-6 border border-black/[0.04] shadow-xs text-center">
-        <span className="text-[11px] font-extrabold text-[#6258DB] uppercase tracking-wider block mb-4">
+      <div className="bg-white rounded-3xl p-6 shadow-card text-center">
+        <span className="text-[11px] font-extrabold text-gm-accent uppercase tracking-wider block mb-4">
           JOURNEY PASSPORT
         </span>
 
@@ -568,7 +568,7 @@ export default function JourneyPassportView({
         </div>
 
         {/* Title & Subtitle */}
-        <h3 className="text-sm sm:text-base font-extrabold text-[#141724] mt-4 leading-snug">
+        <h3 className="text-sm sm:text-base font-extrabold text-gm-ink mt-4 leading-snug">
           {journeyTitle}
         </h3>
         <p className="text-xs text-gray-500 font-medium mt-0.5">
@@ -583,7 +583,7 @@ export default function JourneyPassportView({
         <button
           type="button"
           onClick={handleCopyLink}
-          className="w-full mt-4 py-2.5 px-4 rounded-xl bg-[#F4F3FF] hover:bg-[#EEEDFE] text-[#6258DB] text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer active:scale-95"
+          className="w-full mt-4 py-2.5 px-4 rounded-full bg-gm-accent-soft hover:bg-gm-accent-soft text-gm-accent text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer active:scale-95"
         >
           {copiedLink ? (
             <>
@@ -600,11 +600,11 @@ export default function JourneyPassportView({
       </div>
 
       {/* ── Card 2: ABOUT THIS JOURNEY ─────────────────────────── */}
-      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-black/[0.04] shadow-xs">
+      <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-gray-700" />
-            <h4 className="text-xs sm:text-[13px] font-bold text-[#141724]">
+            <h4 className="text-xs sm:text-[13px] font-bold text-gm-ink">
               About this journey
             </h4>
           </div>
@@ -635,7 +635,7 @@ export default function JourneyPassportView({
           <div>
             <Link
               href={`/profile/${activeFounder.username}`}
-              className="inline-flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-[#141724] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-gm-ink transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to profile</span>
@@ -644,16 +644,17 @@ export default function JourneyPassportView({
         )}
 
         {/* ── 1. HERO CARD: Midnight Navy Card (Exact Xerox) ─────── */}
-        <div className="bg-[#101322] text-white rounded-[22px] sm:rounded-[30px] p-4.5 sm:p-7 shadow-lg relative overflow-hidden">
+        <div className="bg-[#16161A] text-white rounded-[36px] p-6 sm:p-10 shadow-card-hover relative overflow-hidden animate-slide-up">
           {/* Subtle radial decorative sheen */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-indigo-600/10 via-purple-600/5 to-transparent rounded-full pointer-events-none blur-2xl" />
+          <div aria-hidden className="absolute -top-24 -right-24 w-80 h-80 rounded-full overflow-hidden pointer-events-none opacity-90"><div className="absolute inset-0 bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent" /><div className="absolute inset-0 rounded-full bg-[#16161A] translate-x-[-30%] translate-y-[22%]" /></div>
+          <div aria-hidden className="absolute -top-10 right-10 w-96 h-96 rounded-full bg-gm-accent/20 blur-[100px] pointer-events-none" />
 
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-5">
             
             {/* Left: Icon, Category, Title, Tagline, Meta Row */}
             <div className="flex items-start gap-3.5 sm:gap-5 min-w-0 flex-1">
               {/* Rocket Icon in Rounded Box */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/[0.08] border border-white/10 flex items-center justify-center text-white flex-shrink-0 shadow-sm mt-0.5">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center text-white flex-shrink-0 shadow-sm mt-0.5">
                 <Rocket className="w-6 h-6 sm:w-7 sm:h-7 stroke-[1.8]" />
               </div>
 
@@ -664,20 +665,20 @@ export default function JourneyPassportView({
                 </span>
 
                 {/* Journey Title */}
-                <h1 className="text-xl sm:text-2xl lg:text-[26px] font-extrabold text-white tracking-tight leading-snug truncate">
+                <h1 className="text-[34px] sm:text-[48px] font-extrabold text-white leading-[1.02] line-clamp-2 mt-1">
                   {journeyTitle}
                 </h1>
 
                 {/* Tagline */}
-                <p className="text-xs sm:text-sm text-gray-300 font-normal mt-1 leading-relaxed max-w-xl">
+                <p className="text-sm sm:text-base text-gray-300 font-normal mt-3 leading-relaxed max-w-xl">
                   {journeyTagline}
                 </p>
 
                 {/* Meta details row: Avatar, Location, Date */}
-                <div className="flex items-center gap-3 sm:gap-4 mt-3 flex-wrap text-xs text-gray-400">
+                <div className="flex items-center gap-3 sm:gap-4 mt-6 flex-wrap text-xs text-gray-400">
                   {/* Founder */}
                   <div className="flex items-center gap-1.5 text-white font-semibold">
-                    <span className="w-5 h-5 rounded-full bg-[#6258DB] text-white font-bold text-[9px] flex items-center justify-center flex-shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-gm-accent text-white font-bold text-[9px] flex items-center justify-center flex-shrink-0">
                       YD
                     </span>
                     <span>{activeFounder.name}</span>
@@ -691,7 +692,7 @@ export default function JourneyPassportView({
 
                   {/* Journey Timeline: From Date -> To Date */}
                   <div className="inline-flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-full text-xs text-gray-200">
-                    <Calendar className="w-3.5 h-3.5 text-[#AFA9EC] flex-shrink-0" />
+                    <Calendar className="w-3.5 h-3.5 text-gm-accent flex-shrink-0" />
                     <span>From: <strong className="text-white font-semibold">{journeyFromDate}</strong></span>
                     <span className="text-gray-400">→</span>
                     <span>To: <strong className="text-white font-semibold">{journeyToDate}</strong></span>
@@ -738,7 +739,7 @@ export default function JourneyPassportView({
                       className="fixed inset-0 z-30"
                       onClick={() => setIsMenuOpen(false)}
                     />
-                    <div className="absolute right-0 top-11 bg-white text-gray-800 rounded-2xl shadow-xl border border-gray-100 p-1.5 z-40 min-w-[170px] text-xs font-medium animate-in fade-in zoom-in-95">
+                    <div className="absolute right-0 top-11 bg-white text-gray-800 rounded-2xl shadow-xl border border-gray-100 p-1.5 z-40 min-w-[170px] text-xs font-medium animate-slide-up">
                       <button
                         type="button"
                         onClick={() => {
@@ -791,9 +792,9 @@ export default function JourneyPassportView({
         </div>
 
         {/* ── 2. TABS & + ADD UPDATE ROW ─────────────────────────── */}
-        <div className="flex items-center justify-between border-b border-gray-200/80 pb-0.5 gap-3 flex-wrap">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
           {/* Tabs (Stats removed) */}
-          <div className="flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1 p-1 rounded-full bg-gm-ink/[0.05] overflow-x-auto scrollbar-none">
             {[
               { id: 'timeline', label: 'Timeline' },
               { id: 'about', label: 'About' },
@@ -805,10 +806,10 @@ export default function JourneyPassportView({
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`text-xs sm:text-sm pb-3 font-semibold transition-all relative cursor-pointer select-none ${
+                  className={`text-[13px] px-5 h-10 rounded-full font-semibold transition-all relative cursor-pointer select-none ${
                     isActive
-                      ? 'text-[#141724] font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2.5px] after:bg-[#6258DB] after:rounded-full'
-                      : 'text-gray-500 hover:text-[#141724]'
+                      ? 'bg-gm-ink text-gm-paper shadow-float'
+                      : 'text-gray-500 hover:text-gm-ink'
                   }`}
                 >
                   {tab.label}
@@ -825,7 +826,7 @@ export default function JourneyPassportView({
                 setEditingPostData(null);
                 setIsComposerOpen(true);
               }}
-              className="bg-[#6258DB] hover:bg-[#5247CE] text-white px-4.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm hover:shadow transition-all cursor-pointer active:scale-95 mb-2 sm:mb-0"
+              className="bg-gm-accent hover:bg-gm-accent-deep text-white px-5 h-10 rounded-full text-[13px] font-semibold flex items-center gap-1.5 shadow-float transition-all cursor-pointer active:scale-95"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
               <span>Add Update</span>
@@ -840,11 +841,11 @@ export default function JourneyPassportView({
           <div className="relative pt-2">
             
             {displayedTimelineItems.length === 0 ? (
-              <div className="py-14 text-center bg-white rounded-3xl border border-gray-100 p-8 shadow-xs">
-                <div className="w-12 h-12 rounded-2xl bg-purple-50 text-[#6258DB] mx-auto flex items-center justify-center mb-3">
+              <div className="py-14 text-center rounded-[32px] border border-dashed border-gm-ink/15 p-8 animate-slide-up">
+                <div className="w-14 h-14 rounded-full bg-white shadow-card text-gm-accent mx-auto flex items-center justify-center mb-3">
                   <Rocket className="w-6 h-6 stroke-[1.8]" />
                 </div>
-                <p className="text-sm font-bold text-[#141724]">
+                <p className="font-display text-2xl font-medium text-gm-ink">
                   No updates for this journey yet
                 </p>
                 <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">
@@ -859,7 +860,7 @@ export default function JourneyPassportView({
                       setEditingPostData(null);
                       setIsComposerOpen(true);
                     }}
-                    className="mt-4 px-4.5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold shadow-sm inline-flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all"
+                    className="mt-4 px-4.5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold shadow-sm inline-flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all"
                   >
                     <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                     <span>Add First Update</span>
@@ -887,19 +888,25 @@ export default function JourneyPassportView({
                     <div className="relative flex flex-col items-center flex-shrink-0 self-stretch">
                       {/* Connecting vertical rail segment */}
                       {!isLast && (
-                        <div className="absolute top-5 bottom-0 w-[2px] bg-gray-200" />
+                        <div className="absolute top-7 bottom-[-1.25rem] w-px border-l-2 border-dashed border-gm-ink/15" />
                       )}
                       {/* Colored marker dot */}
                       <div
-                        className={`w-3.5 h-3.5 rounded-full ${item.dotColor} border-2 border-white shadow-xs z-10 mt-4.5 flex-shrink-0`}
-                      />
+                        className={`relative w-6 h-6 rounded-full bg-[#2A2925] ring-4 ring-gm-paper z-10 mt-3 flex-shrink-0 overflow-hidden transition-transform duration-500 group-hover:scale-110`}
+                        aria-hidden
+                      >
+                        <span
+                          className={`absolute inset-0 ${item.dotColor} bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent`}
+                          style={{ clipPath: `inset(0 0 0 ${Math.round((index / Math.max(displayedTimelineItems.length, 1)) * 85)}%)` }}
+                        />
+                      </div>
                     </div>
 
                     {/* 3. Event Card (Right) */}
                     <div className="flex-1 ml-3 sm:ml-5">
                       <div
                         onClick={() => toggleItemExpansion(item.id)}
-                        className="bg-white rounded-2xl p-4 sm:p-5 border border-black/[0.04] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer group/card"
+                        className="bg-white rounded-[24px] p-5 sm:p-6 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-500 cursor-pointer group/card"
                       >
                         {/* Top Row: Type Pill (Left) & Verification Pill + Chevron (Right) */}
                         <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -932,7 +939,7 @@ export default function JourneyPassportView({
                                 <button
                                   type="button"
                                   onClick={() => handleOpenEditTimelineItem(item)}
-                                  className="p-1 text-gray-400 hover:text-[#6258DB] hover:bg-purple-50 rounded-md transition-colors cursor-pointer"
+                                  className="p-1 text-gray-400 hover:text-gm-accent hover:bg-purple-50 rounded-md transition-colors cursor-pointer"
                                   title="Edit update"
                                 >
                                   <Pencil className="w-3.5 h-3.5" />
@@ -948,7 +955,7 @@ export default function JourneyPassportView({
                               </div>
                             )}
 
-                            <div className="p-0.5 text-gray-400 group-hover/card:text-[#141724] transition-colors">
+                            <div className="p-0.5 text-gray-400 group-hover/card:text-gm-ink transition-colors">
                               {isExpanded ? (
                                 <ChevronUp className="w-4 h-4" />
                               ) : (
@@ -959,13 +966,13 @@ export default function JourneyPassportView({
                         </div>
 
                         {/* Timeline Date Range Pill */}
-                        <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#6258DB] bg-[#EEEDFE] px-2.5 py-0.5 rounded-full mt-2">
-                          <Calendar className="w-3 h-3 text-[#6258DB] flex-shrink-0" />
+                        <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gm-accent bg-gm-accent-soft px-2.5 py-0.5 rounded-full mt-2">
+                          <Calendar className="w-3 h-3 text-gm-accent flex-shrink-0" />
                           <span>Timeline: {item.date}</span>
                         </div>
 
                         {/* Heading */}
-                        <h3 className="text-sm sm:text-base font-bold text-[#141724] mt-2 group-hover/card:text-[#6258DB] transition-colors">
+                        <h3 className="text-sm sm:text-base font-bold text-gm-ink mt-2 group-hover/card:text-gm-accent transition-colors">
                           {item.heading}
                         </h3>
 
@@ -976,7 +983,7 @@ export default function JourneyPassportView({
 
                         {/* Expanded Details Section */}
                         {isExpanded && item.details && (
-                          <div className="mt-3.5 pt-3 border-t border-gray-100 text-xs text-gray-500 leading-relaxed space-y-2 animate-in fade-in duration-150">
+                          <div className="mt-3.5 pt-3 border-t border-gray-100 text-xs text-gray-500 leading-relaxed space-y-2 animate-fade-in">
                             <p>{item.details}</p>
                             {item.evidenceUrl && (
                               <div className="pt-1">
@@ -985,7 +992,7 @@ export default function JourneyPassportView({
                                   target="_blank"
                                   rel="noreferrer"
                                   onClick={(e) => e.stopPropagation()}
-                                  className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#6258DB] bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors"
+                                  className="inline-flex items-center gap-1.5 text-[11px] font-bold text-gm-accent bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors"
                                 >
                                   <ExternalLink className="w-3 h-3" />
                                   <span>{item.evidenceLabel || 'View Proof Link'}</span>
@@ -1008,10 +1015,10 @@ export default function JourneyPassportView({
 
         {/* TAB 2: ABOUT (Simplified Content Presentation - Clean readable text with author Edit option) */}
         {activeTab === 'about' && (
-          <div className="py-2 max-w-2xl animate-in fade-in duration-150 space-y-4">
+          <div className="py-2 max-w-2xl animate-fade-in space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
-                <h3 className="text-base sm:text-lg font-bold text-[#141724]">
+                <h3 className="text-base sm:text-lg font-bold text-gm-ink">
                   About this Journey
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -1022,7 +1029,7 @@ export default function JourneyPassportView({
                 <button
                   type="button"
                   onClick={handleOpenEditAbout}
-                  className="px-3.5 py-1.5 rounded-full border border-gray-200 hover:border-[#6258DB] bg-white text-[#6258DB] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs hover:bg-purple-50/40 active:scale-95"
+                  className="px-3.5 py-1.5 rounded-full border border-gray-200 hover:border-gm-accent bg-white text-gm-accent text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs hover:bg-purple-50/40 active:scale-95"
                 >
                   <Pencil className="w-3.5 h-3.5" />
                   <span>Edit About</span>
@@ -1043,7 +1050,7 @@ export default function JourneyPassportView({
                   <button
                     type="button"
                     onClick={handleOpenEditAbout}
-                    className="mt-3 px-4.5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                    className="mt-3 px-4.5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
                   >
                     <Pencil className="w-3.5 h-3.5" />
                     <span>Add Journey Description</span>
@@ -1056,11 +1063,11 @@ export default function JourneyPassportView({
 
         {/* TAB 3: GOALS & MILESTONES (Separate Dedicated Table, Strikethrough & Completed Button) */}
         {activeTab === 'goals' && (
-          <div className="py-2 max-w-2xl space-y-5 animate-in fade-in duration-150">
+          <div className="py-2 max-w-2xl space-y-5 animate-fade-in">
             {/* Header with Title & Manage action */}
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
-                <h3 className="text-base sm:text-lg font-bold text-[#141724]">
+                <h3 className="text-base sm:text-lg font-bold text-gm-ink">
                   Goals & Milestones
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -1071,7 +1078,7 @@ export default function JourneyPassportView({
                 <button
                   type="button"
                   onClick={() => setIsEditGoalsModalOpen(true)}
-                  className="px-3.5 py-1.5 rounded-full border border-gray-200 hover:border-[#6258DB] bg-white text-[#6258DB] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs hover:bg-purple-50/40 active:scale-95"
+                  className="px-3.5 py-1.5 rounded-full border border-gray-200 hover:border-gm-accent bg-white text-gm-accent text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs hover:bg-purple-50/40 active:scale-95"
                 >
                   <Pencil className="w-3.5 h-3.5" />
                   <span>Manage All Goals</span>
@@ -1083,10 +1090,10 @@ export default function JourneyPassportView({
             {isCurrentOwner && (
               <form
                 onSubmit={handleAddGoalDirect}
-                className="p-4 rounded-2xl border border-dashed border-[#6258DB]/30 bg-[#F4F3FF]/40 space-y-2.5"
+                className="p-4 rounded-2xl border border-dashed border-gm-accent/30 bg-gm-accent-soft/40 space-y-2.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-[#6258DB] uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-[11px] font-bold text-gm-accent uppercase tracking-wider flex items-center gap-1.5">
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add New Goal or Milestone</span>
                   </span>
@@ -1097,7 +1104,7 @@ export default function JourneyPassportView({
                     value={inlineNewGoalTitle}
                     onChange={(e) => setInlineNewGoalTitle(e.target.value)}
                     placeholder="e.g. Launch Beta to 100 users, Validate with 15 founders..."
-                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 bg-white text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 bg-white text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
                     required
                   />
                   <input
@@ -1105,12 +1112,12 @@ export default function JourneyPassportView({
                     value={inlineNewGoalDate}
                     onChange={(e) => setInlineNewGoalDate(e.target.value)}
                     placeholder="Target date (e.g. Nov 2026)"
-                    className="sm:w-44 px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs focus:outline-none focus:border-[#6258DB]"
+                    className="sm:w-44 px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs focus:outline-none focus:border-gm-accent"
                   />
                   <button
                     type="submit"
                     disabled={isAddingGoal || !inlineNewGoalTitle.trim()}
-                    className="px-4.5 py-2 rounded-xl bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 shadow-xs"
+                    className="px-4.5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 shadow-xs"
                   >
                     {isAddingGoal ? (
                       <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1127,11 +1134,11 @@ export default function JourneyPassportView({
 
             {/* Goals List (backed by dedicated database table) */}
             {goals.length === 0 ? (
-              <div className="py-14 text-center bg-white rounded-3xl border border-gray-100 p-8 shadow-xs">
-                <div className="w-12 h-12 rounded-2xl bg-purple-50 text-[#6258DB] mx-auto flex items-center justify-center mb-3">
+              <div className="py-14 text-center rounded-[32px] border border-dashed border-gm-ink/15 p-8 animate-slide-up">
+                <div className="w-14 h-14 rounded-full bg-white shadow-card text-gm-accent mx-auto flex items-center justify-center mb-3">
                   <Target className="w-6 h-6 stroke-[1.8]" />
                 </div>
-                <p className="text-sm font-bold text-[#141724]">No goals added yet</p>
+                <p className="text-sm font-bold text-gm-ink">No goals added yet</p>
                 <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">
                   {isCurrentOwner
                     ? "You haven't set any goals for this journey yet. Use the form above to add your first milestone!"
@@ -1158,7 +1165,7 @@ export default function JourneyPassportView({
                         className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
                           g.done
                             ? 'bg-emerald-500 text-white shadow-xs'
-                            : 'border-2 border-gray-300 hover:border-[#6258DB] bg-white'
+                            : 'border-2 border-gray-300 hover:border-gm-accent bg-white'
                         } ${!isCurrentOwner ? 'cursor-default opacity-80' : 'cursor-pointer active:scale-90'}`}
                         title={
                           isCurrentOwner
@@ -1179,7 +1186,7 @@ export default function JourneyPassportView({
                           className={`text-xs sm:text-sm font-semibold block transition-all ${
                             g.done
                               ? 'text-gray-400 line-through'
-                              : 'text-[#141724]'
+                              : 'text-gm-ink'
                           }`}
                         >
                           {g.title}
@@ -1205,7 +1212,7 @@ export default function JourneyPassportView({
                           className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 active:scale-95 ${
                             g.done
                               ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                              : 'bg-[#F4F3FF] text-[#6258DB] hover:bg-[#6258DB] hover:text-white'
+                              : 'bg-gm-accent-soft text-gm-accent hover:bg-gm-accent hover:text-white'
                           }`}
                         >
                           {g.done ? (
@@ -1250,15 +1257,15 @@ export default function JourneyPassportView({
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditModalOpen(false)}
           />
           <form
             onSubmit={handleEditSubmit}
-            className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-lg w-full z-10 space-y-4 animate-in zoom-in-95 duration-150"
+            className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-lg w-full z-10 space-y-4 animate-slide-up"
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-[#141724]">
+              <h3 className="text-base font-bold text-gm-ink">
                 Edit Journey Details
               </h3>
               <button
@@ -1278,7 +1285,7 @@ export default function JourneyPassportView({
                 type="text"
                 value={journeyTitle}
                 onChange={(e) => setJourneyTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
                 required
               />
             </div>
@@ -1291,7 +1298,7 @@ export default function JourneyPassportView({
                 type="text"
                 value={journeyTagline}
                 onChange={(e) => setJourneyTagline(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
                 required
               />
             </div>
@@ -1304,7 +1311,7 @@ export default function JourneyPassportView({
                 rows={3}
                 value={journeyAbout}
                 onChange={(e) => setJourneyAbout(e.target.value)}
-                className="w-full p-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20 resize-none"
+                className="w-full p-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20 resize-none"
                 required
               />
             </div>
@@ -1316,7 +1323,7 @@ export default function JourneyPassportView({
               <select
                 value={journeyVisibility}
                 onChange={(e) => setJourneyVisibility(e.target.value as typeof journeyVisibility)}
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB]"
+                className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent"
               >
                 <option value="Public">Public (Anyone on Growing Moon)</option>
                 <option value="Private">Private (Only You)</option>
@@ -1333,7 +1340,7 @@ export default function JourneyPassportView({
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold shadow-sm"
+                className="px-5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold shadow-sm"
               >
                 Save Changes
               </button>
@@ -1355,19 +1362,19 @@ export default function JourneyPassportView({
       {isEditAboutModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditAboutModalOpen(false)}
           />
           <form
             onSubmit={handleSaveAbout}
-            className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-lg w-full z-10 space-y-4 animate-in zoom-in-95 duration-150"
+            className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-lg w-full z-10 space-y-4 animate-slide-up"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#6258DB] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-purple-50 text-gm-accent flex items-center justify-center">
                   <FileText className="w-4 h-4" />
                 </div>
-                <h3 className="text-base font-bold text-[#141724]">
+                <h3 className="text-base font-bold text-gm-ink">
                   Edit About Description
                 </h3>
               </div>
@@ -1389,7 +1396,7 @@ export default function JourneyPassportView({
                 value={tempAbout}
                 onChange={(e) => setTempAbout(e.target.value)}
                 placeholder="Describe your journey, problem context, thesis, and vision..."
-                className="w-full p-3.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20 resize-none"
+                className="w-full p-3.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20 resize-none"
                 required
               />
             </div>
@@ -1404,7 +1411,7 @@ export default function JourneyPassportView({
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
+                className="px-5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
               >
                 Save About
               </button>
@@ -1417,20 +1424,20 @@ export default function JourneyPassportView({
       {isEditGoalsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsEditGoalsModalOpen(false)}
           />
           <form
             onSubmit={handleSaveGoals}
-            className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-lg w-full z-10 space-y-4 animate-in zoom-in-95 duration-150 max-h-[90vh] flex flex-col"
+            className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-lg w-full z-10 space-y-4 animate-slide-up max-h-[90vh] flex flex-col"
           >
             <div className="flex items-center justify-between pb-1 border-b border-gray-100 flex-shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#6258DB] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-purple-50 text-gm-accent flex items-center justify-center">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#141724]">
+                  <h3 className="text-base font-bold text-gm-ink">
                     Edit Goals & Milestones
                   </h3>
                   <p className="text-[11px] text-gray-400">
@@ -1460,7 +1467,7 @@ export default function JourneyPassportView({
                     className={`mt-1 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${
                       g.done
                         ? 'bg-emerald-500 text-white'
-                        : 'border border-gray-300 hover:border-[#6258DB]'
+                        : 'border border-gray-300 hover:border-gm-accent'
                     }`}
                     title={g.done ? 'Mark pending' : 'Mark completed'}
                   >
@@ -1473,7 +1480,7 @@ export default function JourneyPassportView({
                       value={g.title}
                       onChange={(e) => handleUpdateTempGoalText(g.id, 'title', e.target.value)}
                       placeholder="Goal description..."
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#6258DB]"
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs bg-white focus:outline-none focus:border-gm-accent"
                       required
                     />
                     <input
@@ -1481,7 +1488,7 @@ export default function JourneyPassportView({
                       value={g.date}
                       onChange={(e) => handleUpdateTempGoalText(g.id, 'date', e.target.value)}
                       placeholder="Target date or status (e.g. Completed Oct 2026, Target: Q1 2027)"
-                      className="w-full px-2.5 py-1 rounded-lg border border-gray-200 text-[11px] text-gray-500 bg-white focus:outline-none focus:border-[#6258DB]"
+                      className="w-full px-2.5 py-1 rounded-lg border border-gray-200 text-[11px] text-gray-500 bg-white focus:outline-none focus:border-gm-accent"
                     />
                   </div>
 
@@ -1498,7 +1505,7 @@ export default function JourneyPassportView({
 
               {/* Add New Goal Box */}
               <div className="p-3 rounded-2xl border border-dashed border-gray-300 bg-purple-50/30 space-y-2 mt-2">
-                <span className="text-[11px] font-bold text-[#6258DB] uppercase tracking-wider block">
+                <span className="text-[11px] font-bold text-gm-accent uppercase tracking-wider block">
                   + Add New Goal
                 </span>
                 <input
@@ -1506,7 +1513,7 @@ export default function JourneyPassportView({
                   value={newGoalTitle}
                   onChange={(e) => setNewGoalTitle(e.target.value)}
                   placeholder="New goal or milestone title..."
-                  className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#6258DB]"
+                  className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-xs bg-white focus:outline-none focus:border-gm-accent"
                 />
                 <div className="flex items-center gap-2">
                   <input
@@ -1514,13 +1521,13 @@ export default function JourneyPassportView({
                     value={newGoalDate}
                     onChange={(e) => setNewGoalDate(e.target.value)}
                     placeholder="Target date (e.g. Target: Dec 2026)"
-                    className="flex-1 px-3 py-1.5 rounded-lg border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#6258DB]"
+                    className="flex-1 px-3 py-1.5 rounded-lg border border-gray-200 text-xs bg-white focus:outline-none focus:border-gm-accent"
                   />
                   <button
                     type="button"
                     onClick={handleAddTempGoal}
                     disabled={!newGoalTitle.trim()}
-                    className="px-3 py-1.5 rounded-lg bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-semibold disabled:opacity-40 transition-colors cursor-pointer"
+                    className="px-3 py-1.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-semibold disabled:opacity-40 transition-colors cursor-pointer"
                   >
                     Add
                   </button>
@@ -1538,7 +1545,7 @@ export default function JourneyPassportView({
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
+                className="px-5 py-2 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold shadow-sm transition-all cursor-pointer active:scale-95"
               >
                 Save Goals
               </button>
@@ -1551,16 +1558,16 @@ export default function JourneyPassportView({
       {deletingTimelineItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => !isDeletingTimelineItem && setDeletingTimelineItem(null)}
           />
-          <div className="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-100 max-w-sm w-full z-10 space-y-4 animate-in zoom-in-95 duration-150">
+          <div className="relative bg-white rounded-[32px] p-6 sm:p-8 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 space-y-4 animate-slide-up">
             <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
               <AlertTriangle className="w-6 h-6 stroke-[2]" />
             </div>
 
             <div className="text-center">
-              <h3 className="text-base font-bold text-[#141724]">
+              <h3 className="text-base font-bold text-gm-ink">
                 Delete Timeline Entry?
               </h3>
               <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import AuthFrame from '@/components/shared/AuthFrame';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useApp } from '@/lib/state/AppContext';
 import { supabase } from '@/lib/supabaseClient';
@@ -18,7 +19,7 @@ import {
 
 export default function RegisterPage() {
   return (
-    <React.Suspense fallback={<div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center text-xs text-gray-400">Loading Register...</div>}>
+    <React.Suspense fallback={<div className="min-h-screen bg-gm-paper flex items-center justify-center text-xs text-gray-400">Loading Register...</div>}>
       <RegisterForm />
     </React.Suspense>
   );
@@ -150,32 +151,13 @@ function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center p-4 sm:p-6 select-none">
-      {/* Brand Header */}
-      <div className="mb-6 sm:mb-8 text-center">
-        <Link href="/" className="inline-flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#141724] to-[#2B2F44] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-white">
-              <path
-                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <span className="font-extrabold text-xl sm:text-2xl text-[#141724] tracking-tight">
-            Growing Moon
-          </span>
-        </Link>
-        <p className="text-xs text-gray-500 mt-2 font-medium">
-          Start documenting and discovering real founder journeys
-        </p>
-      </div>
+    <AuthFrame tagline="Start documenting and discovering real founder journeys">
 
       {/* Main Card Container */}
-      <div className="bg-white border border-black/[0.06] rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 max-w-md w-full shadow-lg relative overflow-hidden">
+      <div className="bg-white border border-gm-ink/[0.05] rounded-[32px] p-6 sm:p-10 max-w-md w-full shadow-card-hover relative overflow-hidden">
         {/* Card Title */}
-        <div className="mb-6 text-center">
-          <h2 className="text-xl sm:text-2xl font-black text-[#141724] tracking-tight">
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl sm:text-4xl text-gm-ink">
             Create Account
           </h2>
           <p className="text-xs text-gray-500 mt-1">
@@ -202,54 +184,54 @@ function RegisterForm() {
         <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
           {/* 1. Full Name */}
           <div>
-            <label className="block text-xs font-bold text-[#141724] mb-1.5">
+            <label className="block text-xs font-bold text-gm-ink mb-1.5">
               Full Name
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <User className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Lokesh V"
                 required
-                className="w-full pl-10 pr-3.5 py-3 bg-gray-50/70 focus:bg-white border border-gray-200 rounded-2xl text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+                className="w-full pl-11 pr-3.5 h-12 bg-gray-100/70 focus:bg-white border border-transparent hover:border-gray-200 rounded-full text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all"
               />
             </div>
           </div>
 
           {/* 2. Email */}
           <div>
-            <label className="block text-xs font-bold text-[#141724] mb-1.5">
+            <label className="block text-xs font-bold text-gm-ink mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Mail className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="lokesh@example.com"
                 required
-                className="w-full pl-10 pr-3.5 py-3 bg-gray-50/70 focus:bg-white border border-gray-200 rounded-2xl text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+                className="w-full pl-11 pr-3.5 h-12 bg-gray-100/70 focus:bg-white border border-transparent hover:border-gray-200 rounded-full text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all"
               />
             </div>
           </div>
 
           {/* 3. Password */}
           <div>
-            <label className="block text-xs font-bold text-[#141724] mb-1.5">
+            <label className="block text-xs font-bold text-gm-ink mb-1.5">
               Enter Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
                 required
-                className="w-full pl-10 pr-10 py-3 bg-gray-50/70 focus:bg-white border border-gray-200 rounded-2xl text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+                className="w-full pl-11 pr-10 h-12 bg-gray-100/70 focus:bg-white border border-transparent hover:border-gray-200 rounded-full text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all"
               />
               <button
                 type="button"
@@ -263,18 +245,18 @@ function RegisterForm() {
 
           {/* 4. Confirm Password */}
           <div>
-            <label className="block text-xs font-bold text-[#141724] mb-1.5">
+            <label className="block text-xs font-bold text-gm-ink mb-1.5">
               Re-enter Confirm Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Repeat password"
                 required
-                className="w-full pl-10 pr-3.5 py-3 bg-gray-50/70 focus:bg-white border border-gray-200 rounded-2xl text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+                className="w-full pl-11 pr-3.5 h-12 bg-gray-100/70 focus:bg-white border border-transparent hover:border-gray-200 rounded-full text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all"
               />
             </div>
           </div>
@@ -282,7 +264,7 @@ function RegisterForm() {
           <button
             type="submit"
             disabled={isLoading || Boolean(loadingProvider)}
-            className="w-full mt-3 bg-[#141724] hover:bg-black active:scale-98 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full mt-3 bg-gm-ink hover:bg-gm-accent text-white font-bold text-xs sm:text-sm h-12 px-4 rounded-full transition-all shadow-float disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isLoading ? (
               <span>Creating account...</span>
@@ -312,7 +294,7 @@ function RegisterForm() {
             type="button"
             onClick={() => handleOAuthSignUp('Google')}
             disabled={Boolean(loadingProvider) || isLoading}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-[#141724] font-bold text-xs py-3 px-4 rounded-2xl border border-gray-200 transition-all shadow-2xs hover:shadow-xs active:scale-98 disabled:opacity-50 cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gm-ink font-bold text-xs h-12 px-4 rounded-full border border-gray-200 hover:border-gray-400 transition-all disabled:opacity-50 cursor-pointer"
           >
             <svg width="18" height="18" viewBox="0 0 24 24">
               <path
@@ -342,7 +324,7 @@ function RegisterForm() {
             type="button"
             onClick={() => handleOAuthSignUp('LinkedIn')}
             disabled={Boolean(loadingProvider) || isLoading}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-[#141724] font-bold text-xs py-3 px-4 rounded-2xl border border-gray-200 transition-all shadow-2xs hover:shadow-xs active:scale-98 disabled:opacity-50 cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gm-ink font-bold text-xs h-12 px-4 rounded-full border border-gray-200 hover:border-gray-400 transition-all disabled:opacity-50 cursor-pointer"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
@@ -361,13 +343,13 @@ function RegisterForm() {
             Already have an account?{' '}
             <Link
               href={redirectParam ? `/login?redirect=${encodeURIComponent(redirectParam)}` : '/login'}
-              className="font-bold text-[#6258DB] hover:text-[#5246D2] hover:underline transition-colors"
+              className="font-bold text-gm-accent hover:text-gm-accent-deep hover:underline transition-colors"
             >
               Sign In here →
             </Link>
           </p>
         </div>
       </div>
-    </div>
+    </AuthFrame>
   );
 }

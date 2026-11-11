@@ -221,12 +221,12 @@ export default function AuthCallbackPage() {
           <div className="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 font-bold text-sm">
             !
           </div>
-          <h3 className="font-bold text-sm text-[#141724] mb-2">Authentication Notice</h3>
+          <h3 className="font-bold text-sm text-gm-ink mb-2">Authentication Notice</h3>
           <p className="text-gray-600 leading-relaxed mb-5">{errorMessage}</p>
           <button
             type="button"
             onClick={() => router.replace('/login')}
-            className="w-full py-3 px-4 rounded-2xl bg-[#141724] hover:bg-black text-white font-bold text-xs transition-all cursor-pointer"
+            className="w-full py-3 px-4 rounded-full bg-gm-ink hover:bg-black text-white font-bold text-xs transition-all cursor-pointer"
           >
             Return to Sign In
           </button>
@@ -235,9 +235,9 @@ export default function AuthCallbackPage() {
         <div className="flex flex-col items-center">
           {/* Continuous Loop Aesthetic Crescent Pulse (No percentage) */}
           <div className="relative w-16 h-16 flex items-center justify-center mb-4">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#6258DB]/20 to-[#9E77ED]/20 animate-ping opacity-75 duration-1000" />
-            <div className="w-12 h-12 rounded-full border-2 border-[#6258DB]/30 border-t-[#6258DB] animate-spin flex items-center justify-center shadow-lg bg-white/80 backdrop-blur-xs">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-[#6258DB] animate-pulse">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-gm-accent/20 to-[#9E77ED]/20 animate-ping opacity-75 duration-1000" />
+            <div className="w-12 h-12 rounded-full border-2 border-gm-accent/30 border-t-gm-accent animate-spin flex items-center justify-center shadow-lg bg-white/80 backdrop-blur-xs">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-gm-accent animate-pulse">
                 <path
                   d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
                   fill="currentColor"
@@ -245,7 +245,7 @@ export default function AuthCallbackPage() {
               </svg>
             </div>
           </div>
-          <h2 className="text-sm font-bold text-[#141724] tracking-tight">Completing secure sign-in...</h2>
+          <h2 className="text-lg font-bold text-gm-ink tracking-tight">Completing secure sign-in...</h2>
           <p className="text-xs text-gray-500 mt-1">Preparing your Growing Moon journey.</p>
         </div>
       )}

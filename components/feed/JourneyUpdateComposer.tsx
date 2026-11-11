@@ -35,14 +35,14 @@ type JourneyOption = {
 };
 
 const INITIAL_UPDATE_TYPES: UpdateTypeOption[] = [
-  { id: 'progress', label: 'Progress update', dotColor: 'bg-[#6258DB]' },
+  { id: 'progress', label: 'Progress update', dotColor: 'bg-gm-accent' },
   { id: 'milestone', label: 'Milestone achieved', dotColor: 'bg-[#10B981]' },
   { id: 'challenge', label: 'Challenge', dotColor: 'bg-[#F59E0B]' },
   { id: 'lesson', label: 'Lesson learned', dotColor: 'bg-[#EF4444]' },
 ];
 
 const INITIAL_JOURNEYS: JourneyOption[] = [
-  { id: 'j-saas', label: 'Building my SaaS product', dotColor: 'bg-[#6258DB]' },
+  { id: 'j-saas', label: 'Building my SaaS product', dotColor: 'bg-gm-accent' },
   { id: 'j-ai', label: 'Learning Artificial Intelligence', dotColor: 'bg-[#10B981]' },
   { id: 'j-marathon', label: 'Running my first half marathon', dotColor: 'bg-[#06B6D4]' },
   { id: 'j-finance', label: 'Personal finance journey', dotColor: 'bg-[#F59E0B]' },
@@ -175,7 +175,7 @@ export default function JourneyUpdateComposer({
     const newOption: JourneyOption = {
       id: 'journey-' + Date.now(),
       label: newJourneyName.trim(),
-      dotColor: 'bg-[#6258DB]',
+      dotColor: 'bg-gm-accent',
     };
     setJourneys((prev) => [...prev, newOption]);
     setSelectedJourney(newOption.label);
@@ -224,7 +224,7 @@ export default function JourneyUpdateComposer({
       {/* ── 1. HEADER: Title & Subtitle ──────────────────────── */}
       <div className="flex items-start justify-between mb-5">
         <div>
-          <h2 className="text-xl sm:text-[22px] font-bold text-[#141724] tracking-tight">
+          <h2 className="text-[26px] sm:text-[22px] font-bold text-gm-ink tracking-tight">
             Share a journey update
           </h2>
           <p className="text-xs sm:text-[13px] text-gray-500 font-normal mt-0.5">
@@ -251,7 +251,7 @@ export default function JourneyUpdateComposer({
               }}
               className="w-full border border-gray-200/90 hover:border-gray-300 rounded-2xl p-2 sm:p-2.5 flex items-center justify-between cursor-pointer bg-white transition-all shadow-2xs text-left"
             >
-              <span className="bg-[#EEEDFE] text-[#6258DB] text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5">
+              <span className="bg-gm-accent-soft text-gm-accent text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5">
                 {selectedUpdateType}
               </span>
               <ChevronDown
@@ -267,7 +267,7 @@ export default function JourneyUpdateComposer({
                   className="fixed inset-0 z-40"
                   onClick={() => setIsUpdateTypeOpen(false)}
                 />
-                <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in zoom-in-95">
+                <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-slide-up">
                   <div className="space-y-0.5">
                     {updateTypes.map((type) => {
                       const isSelected = selectedUpdateType === type.label;
@@ -281,7 +281,7 @@ export default function JourneyUpdateComposer({
                           }}
                           className={`w-full flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
                             isSelected
-                              ? 'bg-[#F4F3FF] text-[#141724] font-semibold'
+                              ? 'bg-gm-accent-soft text-gm-ink font-semibold'
                               : 'text-gray-700 hover:bg-gray-50'
                           }`}
                         >
@@ -290,7 +290,7 @@ export default function JourneyUpdateComposer({
                             <span>{type.label}</span>
                           </div>
                           {isSelected && (
-                            <Check className="w-4 h-4 text-[#6258DB] flex-shrink-0" />
+                            <Check className="w-4 h-4 text-gm-accent flex-shrink-0" />
                           )}
                         </button>
                       );
@@ -305,7 +305,7 @@ export default function JourneyUpdateComposer({
                       setIsNewTypeModalOpen(true);
                       setIsUpdateTypeOpen(false);
                     }}
-                    className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-[#6258DB] hover:bg-purple-50/60 cursor-pointer transition-colors"
+                    className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-gm-accent hover:bg-purple-50/60 cursor-pointer transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                     <span>Add new update type</span>
@@ -324,7 +324,7 @@ export default function JourneyUpdateComposer({
               <button
                 type="button"
                 onClick={() => setIsNewJourneyModalOpen(true)}
-                className="w-6 h-6 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#6258DB] flex items-center justify-center transition-colors cursor-pointer"
+                className="w-6 h-6 rounded-lg bg-purple-50 hover:bg-purple-100 text-gm-accent flex items-center justify-center transition-colors cursor-pointer"
                 title="Create a new journey"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -339,7 +339,7 @@ export default function JourneyUpdateComposer({
               }}
               className="w-full border border-gray-200/90 hover:border-gray-300 rounded-2xl p-2 sm:p-2.5 flex items-center justify-between cursor-pointer bg-white transition-all shadow-2xs text-left"
             >
-              <span className="bg-[#EEEDFE] text-[#6258DB] text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]">
+              <span className="bg-gm-accent-soft text-gm-accent text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]">
                 {selectedJourney}
               </span>
               <ChevronDown
@@ -355,7 +355,7 @@ export default function JourneyUpdateComposer({
                   className="fixed inset-0 z-40"
                   onClick={() => setIsJourneyOpen(false)}
                 />
-                <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in zoom-in-95">
+                <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-slide-up">
                   <div className="space-y-0.5">
                     {journeys.map((j) => {
                       const isSelected = selectedJourney === j.label;
@@ -369,7 +369,7 @@ export default function JourneyUpdateComposer({
                           }}
                           className={`w-full flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
                             isSelected
-                              ? 'bg-[#F4F3FF] text-[#141724] font-semibold'
+                              ? 'bg-gm-accent-soft text-gm-ink font-semibold'
                               : 'text-gray-700 hover:bg-gray-50'
                           }`}
                         >
@@ -378,7 +378,7 @@ export default function JourneyUpdateComposer({
                             <span className="truncate">{j.label}</span>
                           </div>
                           {isSelected && (
-                            <Check className="w-4 h-4 text-[#6258DB] flex-shrink-0" />
+                            <Check className="w-4 h-4 text-gm-accent flex-shrink-0" />
                           )}
                         </button>
                       );
@@ -393,7 +393,7 @@ export default function JourneyUpdateComposer({
                       setIsNewJourneyModalOpen(true);
                       setIsJourneyOpen(false);
                     }}
-                    className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-[#6258DB] hover:bg-purple-50/60 cursor-pointer transition-colors"
+                    className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-gm-accent hover:bg-purple-50/60 cursor-pointer transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                     <span>Create a new journey</span>
@@ -417,7 +417,7 @@ export default function JourneyUpdateComposer({
               value={heading}
               onChange={(e) => setHeading(e.target.value)}
               placeholder="Finally launched our first prototype"
-              className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs"
+              className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all shadow-2xs"
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-gray-400 font-normal pointer-events-none">
               {heading.length}/100
@@ -437,7 +437,7 @@ export default function JourneyUpdateComposer({
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="After three weeks of development, our first working prototype is ready for customer testing."
-              className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs"
+              className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 transition-all shadow-2xs"
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-gray-400 font-normal pointer-events-none">
               {summary.length}/150
@@ -453,11 +453,11 @@ export default function JourneyUpdateComposer({
             className="w-full p-3.5 sm:p-4 flex items-center justify-between text-left hover:bg-gray-50/60 transition-colors cursor-pointer select-none"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#EEEDFE] flex items-center justify-center text-[#6258DB] flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-gm-accent-soft flex items-center justify-center text-gm-accent flex-shrink-0">
                 <List className="w-4 h-4 stroke-[2.2]" />
               </div>
               <div>
-                <span className="text-xs sm:text-sm font-bold text-[#141724] block">
+                <span className="text-xs sm:text-sm font-bold text-gm-ink block">
                   Add more details (optional)
                 </span>
                 <span className="text-[11px] text-gray-500 font-normal mt-0.5 block">
@@ -473,7 +473,7 @@ export default function JourneyUpdateComposer({
           </button>
 
           {isDetailsExpanded && (
-            <div className="px-4 pb-4 pt-1 space-y-4 border-t border-gray-100 animate-in fade-in duration-150">
+            <div className="px-4 pb-4 pt-1 space-y-4 border-t border-gray-100 animate-fade-in">
               <div>
                 <label className="text-xs font-semibold text-gray-700 block mb-1.5">
                   Detailed description
@@ -485,7 +485,7 @@ export default function JourneyUpdateComposer({
                     value={detailedDescription}
                     onChange={(e) => setDetailedDescription(e.target.value)}
                     placeholder="Share what happened, what you learned, challenges, or what comes next..."
-                    className="w-full p-3.5 pb-6 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 resize-none transition-all shadow-2xs"
+                    className="w-full p-3.5 pb-6 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/15 resize-none transition-all shadow-2xs"
                   />
                   <span className="absolute right-3.5 bottom-2.5 text-[10px] text-gray-400 font-normal pointer-events-none">
                     {detailedDescription.length}/2000
@@ -555,7 +555,7 @@ export default function JourneyUpdateComposer({
                               <FileText className="w-4 h-4 stroke-[2]" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <span className="text-[11px] font-bold text-[#141724] block truncate">
+                              <span className="text-[11px] font-bold text-gm-ink block truncate">
                                 {att.fileName || 'MVP_Pitch_Deck.pptx'}
                               </span>
                               <span className="text-[10px] text-gray-400 block">
@@ -599,7 +599,7 @@ export default function JourneyUpdateComposer({
       {/* ── 6. FOOTER ACTION BAR ──────────────────────────────── */}
       <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2 text-xs text-gray-500 font-normal">
-          <Sparkles className="w-4 h-4 text-[#6258DB] flex-shrink-0" />
+          <Sparkles className="w-4 h-4 text-gm-accent flex-shrink-0" />
           <span>This will be added to your journey timeline.</span>
         </div>
 
@@ -609,7 +609,7 @@ export default function JourneyUpdateComposer({
             onClick={handleSaveDraft}
             className="px-4 py-2 rounded-full border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <Bookmark className="w-3.5 h-3.5 text-[#6258DB]" />
+            <Bookmark className="w-3.5 h-3.5 text-gm-accent" />
             <span>Save</span>
           </button>
 
@@ -617,7 +617,7 @@ export default function JourneyUpdateComposer({
             type="button"
             onClick={handlePostAndSave}
             disabled={isSubmitting}
-            className="bg-[#6258DB] hover:bg-[#5247CE] text-white px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm hover:shadow transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+            className="bg-gm-accent hover:bg-gm-accent-deep text-white px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm hover:shadow transition-all cursor-pointer active:scale-95 disabled:opacity-50"
           >
             <Send className="w-3.5 h-3.5 rotate-45 -translate-y-0.5" />
             <span>Post & Save</span>
@@ -636,16 +636,16 @@ export default function JourneyUpdateComposer({
 
       {/* ── Sub-modal: Add New Update Type ─────────────────────── */}
       {isNewTypeModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewTypeModalOpen(false)}
           />
           <form
             onSubmit={handleAddNewType}
-            className="relative bg-white rounded-2xl p-5 shadow-2xl border border-gray-100 max-w-sm w-full z-10 space-y-3"
+            className="relative bg-white rounded-[28px] p-6 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 space-y-3 animate-slide-up"
           >
-            <h3 className="text-sm font-bold text-[#141724]">
+            <h3 className="text-sm font-bold text-gm-ink">
               Add new update type
             </h3>
             <p className="text-xs text-gray-500">
@@ -658,7 +658,7 @@ export default function JourneyUpdateComposer({
               value={newTypeName}
               onChange={(e) => setNewTypeName(e.target.value)}
               placeholder="e.g. Experiment, Metric sprint..."
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
             />
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
@@ -670,7 +670,7 @@ export default function JourneyUpdateComposer({
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold"
+                className="px-4 py-1.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold"
               >
                 Add type
               </button>
@@ -681,16 +681,16 @@ export default function JourneyUpdateComposer({
 
       {/* ── Sub-modal: Create New Journey ──────────────────────── */}
       {isNewJourneyModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-gm-ink/45 backdrop-blur-md"
             onClick={() => setIsNewJourneyModalOpen(false)}
           />
           <form
             onSubmit={handleAddNewJourney}
-            className="relative bg-white rounded-2xl p-5 shadow-2xl border border-gray-100 max-w-sm w-full z-10 space-y-3"
+            className="relative bg-white rounded-[28px] p-6 shadow-modal border border-gm-ink/5 max-w-sm w-full z-10 space-y-3 animate-slide-up"
           >
-            <h3 className="text-sm font-bold text-[#141724]">
+            <h3 className="text-sm font-bold text-gm-ink">
               Create a new journey
             </h3>
             <p className="text-xs text-gray-500">
@@ -703,7 +703,7 @@ export default function JourneyUpdateComposer({
               value={newJourneyName}
               onChange={(e) => setNewJourneyName(e.target.value)}
               placeholder="e.g. AI Workflow Engine, First Angel Round..."
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/20"
+              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
             />
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
@@ -715,7 +715,7 @@ export default function JourneyUpdateComposer({
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold"
+                className="px-4 py-1.5 rounded-full bg-gm-accent hover:bg-gm-accent-deep text-white text-xs font-bold"
               >
                 Create journey
               </button>

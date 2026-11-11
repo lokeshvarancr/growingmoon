@@ -48,7 +48,7 @@ export default function StartPostCard({ onOpenModal }: StartPostCardProps) {
               e.stopPropagation();
               onOpenModal('photo');
             }}
-            className="p-1 hover:text-[#141724] transition-colors cursor-pointer"
+            className="p-1 hover:text-gm-ink transition-colors cursor-pointer"
             title="Attach photo"
           >
             <ImageIcon className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />

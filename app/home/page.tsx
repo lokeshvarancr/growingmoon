@@ -66,7 +66,7 @@ const FALLBACK_DISCOVERING_PEOPLE: DiscoveringPerson[] = [
     username: 'neha-k',
     name: 'Neha Krishnan',
     initials: 'NK',
-    avatarColor: 'bg-[#ECE9FE] text-[#5546D6]',
+    avatarColor: 'bg-gm-accent-soft text-gm-accent-deep',
     badge: 'Learning AI',
     subtitle: 'Build an AI copilot for student productivity',
   },
@@ -317,7 +317,7 @@ export default function HomePage() {
         if (!error && data && data.length > 0 && isMounted) {
           const palette = [
             'bg-[#FEE8D6] text-[#B04A15]',
-            'bg-[#ECE9FE] text-[#5546D6]',
+            'bg-gm-accent-soft text-gm-accent-deep',
             'bg-[#E5EEFF] text-[#1D58B5]',
             'bg-[#E8FAF0] text-[#0E9F6E]',
           ];
@@ -354,7 +354,7 @@ export default function HomePage() {
     const map = new Map<string, DiscoveringPerson>();
     const palette = [
       'bg-[#FEE8D6] text-[#B04A15]',
-      'bg-[#ECE9FE] text-[#5546D6]',
+      'bg-gm-accent-soft text-gm-accent-deep',
       'bg-[#E5EEFF] text-[#1D58B5]',
       'bg-[#E8FAF0] text-[#0E9F6E]',
     ];
@@ -406,7 +406,7 @@ export default function HomePage() {
   const leftSidebar = (
     <div className="space-y-4 pt-0.5">
       {/* ── 1. Profile Card with Saved & Connections ─────────────────── */}
-      <div className="bg-white rounded-[24px] p-4 sm:p-5 border border-black/[0.04] shadow-xs">
+      <div className="bg-white rounded-[28px] p-5 sm:p-6 shadow-card">
         {/* Profile Info Row */}
         <div className="flex items-center justify-between gap-3">
           <Link
@@ -417,15 +417,15 @@ export default function HomePage() {
               <img
                 src={currentUser.avatarImage}
                 alt={currentUser.name}
-                className="w-11 h-11 rounded-full object-cover ring-1 ring-black/[0.06] flex-shrink-0 group-hover:scale-105 transition-transform"
+                className="w-14 h-14 rounded-full object-cover ring-1 ring-black/[0.06] flex-shrink-0 group-hover:scale-105 transition-transform"
               />
             ) : (
-              <div className="w-11 h-11 rounded-full bg-[#EAE8E4] flex items-center justify-center font-bold text-xs text-[#141724] ring-1 ring-black/[0.04] flex-shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-14 h-14 rounded-full bg-gm-accent-soft flex items-center justify-center font-bold text-xs text-gm-ink ring-1 ring-black/[0.04] flex-shrink-0 group-hover:scale-105 transition-transform">
                 YD
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <span className="font-bold text-sm text-[#141724] group-hover:text-[#6258DB] transition-colors block truncate">
+              <span className="font-display text-xl font-medium text-gm-ink group-hover:text-gm-accent transition-colors block truncate leading-tight">
                 {currentUser.name || 'You (Demo)'}
               </span>
               <p className="text-xs text-gray-400 font-normal truncate mt-0.5">
@@ -438,7 +438,7 @@ export default function HomePage() {
             {/* View Profile Button */}
             <Link
               href={`/profile/${currentUser.username}`}
-              className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 transition-colors active:scale-95"
+              className="w-9 h-9 rounded-full bg-gm-ink text-gm-paper hover:bg-gm-accent flex items-center justify-center transition-colors active:scale-95"
               title="View Profile"
             >
               <ArrowRight className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -447,20 +447,20 @@ export default function HomePage() {
         </div>
 
         {/* Saved & Connections Navigation Links */}
-        <div className="mt-4 pt-3.5 border-t border-gray-100/90 space-y-2.5">
+        <div className="mt-5 pt-4 border-t border-gm-ink/[0.06] space-y-1">
           <button
             type="button"
             onClick={() => setActiveCategory(activeCategory === 'saved' ? 'for-you' : 'saved')}
-            className={`w-full flex items-center justify-between text-xs font-semibold transition-colors py-1 group cursor-pointer ${
-              activeCategory === 'saved' ? 'text-[#6258DB]' : 'text-[#141724] hover:text-[#6258DB]'
+            className={`w-full flex items-center justify-between text-[13px] font-medium transition-colors py-2 px-2 -mx-2 rounded-xl hover:bg-gray-100 group cursor-pointer ${
+              activeCategory === 'saved' ? 'text-gm-accent' : 'text-gm-ink hover:text-gm-accent'
             }`}
           >
             <div className="flex items-center gap-3">
               <Bookmark
                 className={`w-4 h-4 transition-colors ${
                   activeCategory === 'saved'
-                    ? 'text-[#6258DB] fill-[#6258DB]'
-                    : 'text-gray-700 group-hover:text-[#6258DB]'
+                    ? 'text-gm-accent fill-gm-accent'
+                    : 'text-gray-700 group-hover:text-gm-accent'
                 }`}
                 strokeWidth={2}
               />
@@ -469,8 +469,8 @@ export default function HomePage() {
             <span
               className={`text-[10.5px] px-2 py-0.5 rounded-full font-bold transition-colors ${
                 activeCategory === 'saved'
-                  ? 'bg-[#6258DB] text-white shadow-xs'
-                  : 'bg-gray-100 text-gray-600 group-hover:bg-[#6258DB]/10 group-hover:text-[#6258DB]'
+                  ? 'bg-gm-accent text-white shadow-xs'
+                  : 'bg-gray-100 text-gray-600 group-hover:bg-gm-accent/10 group-hover:text-gm-accent'
               }`}
             >
               {updates.filter((u) => (u.saves || []).includes(currentUser.id)).length}
@@ -479,13 +479,13 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => setIsConnectionsModalOpen(true)}
-            className="w-full flex items-center justify-between text-xs font-semibold text-[#141724] hover:text-[#6258DB] transition-colors py-1 group cursor-pointer"
+            className="w-full flex items-center justify-between text-[13px] font-medium text-gm-ink hover:text-gm-accent transition-colors py-2 px-2 -mx-2 rounded-xl hover:bg-gray-100 group cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <Users className="w-4 h-4 text-gray-700 group-hover:text-[#6258DB] transition-colors" strokeWidth={2} />
+              <Users className="w-4 h-4 text-gray-700 group-hover:text-gm-accent transition-colors" strokeWidth={2} />
               <span>Connections</span>
             </div>
-            <span className="text-[11px] font-bold text-gray-500 group-hover:text-[#6258DB] bg-gray-100 group-hover:bg-[#6258DB]/10 px-2 py-0.5 rounded-full transition-colors">
+            <span className="text-[11px] font-bold text-gray-500 group-hover:text-gm-accent bg-gray-100 group-hover:bg-gm-accent/10 px-2 py-0.5 rounded-full transition-colors">
               {connectedCount}
             </span>
           </button>
@@ -493,20 +493,20 @@ export default function HomePage() {
       </div>
 
       {/* ── 2. Your Journeys Card with Stepper Line & Create Button ──── */}
-      <div className="bg-white rounded-[24px] p-4.5 sm:p-5 border border-black/[0.04] shadow-xs">
-        <h4 className="text-sm font-bold text-[#141724] mb-4">
+      <div className="bg-white rounded-[28px] p-5 sm:p-6 shadow-card">
+        <h4 className="font-display text-xl font-medium text-gm-ink mb-5 leading-tight">
           Your Journeys
         </h4>
 
         {/* Stepper with connecting rail */}
         <div className="relative pl-0.5">
           {/* Vertical Connecting Rail Line */}
-          <div className="absolute left-[7px] top-4 bottom-5 w-[1.5px] bg-gray-200" />
+          <div className="absolute left-[7px] top-4 bottom-5 w-px border-l border-dashed border-gm-ink/20" />
 
           <div className="space-y-4">
             {isLoadingFeed ? (
               <div className="py-4 text-center">
-                <div className="w-5 h-5 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin mx-auto mb-2" />
+                <div className="w-5 h-5 rounded-full border-2 border-gm-accent border-t-transparent animate-spin mx-auto mb-2" />
                 <p className="text-[11px] text-gray-400">Loading your journeys...</p>
               </div>
             ) : userJourneys.length === 0 ? (
@@ -524,13 +524,13 @@ export default function HomePage() {
                     className="flex items-center gap-3 group relative cursor-pointer"
                   >
                     {/* Hollow node circle */}
-                    <div className="w-3.5 h-3.5 rounded-full border-2 border-gray-400 bg-white z-10 flex-shrink-0" />
+                    <div className="w-3.5 h-3.5 rounded-full bg-gm-ink z-10 flex-shrink-0 ring-4 ring-gm-surface overflow-hidden relative after:absolute after:inset-0 after:rounded-full after:bg-gradient-to-br after:from-[#FFF3E2] after:to-gm-accent after:translate-x-[35%] group-hover:after:translate-x-0 after:transition-transform after:duration-500" />
                     {/* Icon in light purple circle */}
-                    <div className="w-8 h-8 rounded-full bg-[#EEEDFE] flex items-center justify-center text-[#6258DB] flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-8 h-8 rounded-full bg-gm-accent-soft flex items-center justify-center text-gm-accent flex-shrink-0 group-hover:scale-105 transition-transform">
                       <Icon className="w-4 h-4 stroke-[2]" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <span className="text-xs font-bold text-[#141724] group-hover:text-[#6258DB] block truncate transition-colors">
+                      <span className="text-xs font-bold text-gm-ink group-hover:text-gm-accent block truncate transition-colors">
                         {j.title}
                       </span>
                       <span className="text-[11px] text-gray-400 block truncate font-normal">
@@ -548,7 +548,7 @@ export default function HomePage() {
         <button
           type="button"
           onClick={() => setIsCreateJourneyModalOpen(true)}
-          className="mt-5 w-full py-2.5 rounded-full bg-[#6258DB]/10 hover:bg-[#6258DB]/15 text-[#6258DB] font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-98 cursor-pointer"
+          className="mt-6 w-full h-11 rounded-full border border-dashed border-gm-accent/50 hover:border-gm-accent hover:bg-gm-accent-soft text-gm-accent font-semibold text-[13px] flex items-center justify-center gap-1.5 transition-all active:scale-98 cursor-pointer"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>Create a Journey</span>
@@ -563,43 +563,43 @@ export default function HomePage() {
   const rightSidebar = (
     <div className="space-y-4 pt-0.5">
       {/* ── 1. Builders Ahead of You Worth Following ───────── */}
-      <div className="bg-white rounded-[24px] p-4.5 sm:p-5 border border-black/[0.04] shadow-xs">
+      <div className="bg-white rounded-[28px] p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-3.5">
-          <h3 className="text-sm font-bold text-[#141724]">
+          <h3 className="font-display text-xl font-medium text-gm-ink leading-tight pr-2">
             Builders ahead of you worth following
           </h3>
           <Link
             href="/discover"
-            className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 transition-colors flex-shrink-0"
+            className="w-9 h-9 rounded-full bg-gm-ink text-gm-paper hover:bg-gm-accent flex items-center justify-center transition-colors flex-shrink-0"
             title="Discover more people"
           >
             <ArrowRight className="w-3.5 h-3.5 stroke-[2.2]" />
           </Link>
         </div>
 
-        <div className="space-y-3.5">
+        <div className="space-y-1">
           {discoveringPeople.map((person, idx) => (
             <Link
               key={person.username + idx}
               href={`/profile/${person.username}`}
-              className="flex items-start gap-2.5 group cursor-pointer"
+              className="flex items-center gap-3 group cursor-pointer p-2 -mx-2 rounded-2xl hover:bg-gray-100 transition-colors"
             >
               {person.avatarImage ? (
                 <img
                   src={person.avatarImage}
                   alt={person.name}
-                  className="w-9 h-9 rounded-full object-cover flex-shrink-0 ring-1 ring-black/[0.04]"
+                  className="w-11 h-11 rounded-full object-cover flex-shrink-0 ring-1 ring-black/[0.04]"
                 />
               ) : (
                 <div
-                  className={`w-9 h-9 rounded-full ${person.avatarColor} font-black text-xs flex items-center justify-center flex-shrink-0 ring-1 ring-black/[0.04]`}
+                  className={`w-11 h-11 rounded-full ${person.avatarColor} font-bold text-xs flex items-center justify-center flex-shrink-0 ring-1 ring-black/[0.04]`}
                 >
                   {person.initials}
                 </div>
               )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-xs font-bold text-[#141724] group-hover:text-[#6258DB] transition-colors truncate">
+                  <span className="text-[13px] font-semibold text-gm-ink group-hover:text-gm-accent transition-colors truncate">
                     {person.name}
                   </span>
                   <span className="text-[9.5px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full truncate max-w-[120px]">
@@ -616,16 +616,16 @@ export default function HomePage() {
       </div>
 
       {/* ── 2. Saved Milestones & Insights Card ────────────────── */}
-      <div className="bg-white rounded-[24px] p-4.5 sm:p-5 border border-black/[0.04] shadow-xs">
+      <div className="bg-white rounded-[28px] p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-3.5">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#EEEDFE] text-[#6258DB] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-gm-accent-soft text-gm-accent flex items-center justify-center">
               <Bookmark className="w-3.5 h-3.5 fill-current" />
             </div>
-            <h3 className="text-sm font-bold text-[#141724]">Saved Milestones</h3>
+            <h3 className="font-display text-xl font-medium text-gm-ink leading-tight">Saved Milestones</h3>
           </div>
           {savedUpdates.length > 0 && (
-            <span className="text-[11px] font-bold text-[#6258DB] bg-[#EEEDFE] px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold text-gm-accent bg-gm-accent-soft px-2 py-0.5 rounded-full">
               {savedUpdates.length}
             </span>
           )}
@@ -637,15 +637,15 @@ export default function HomePage() {
               <div
                 key={item.id}
                 onClick={() => setActiveCategory('saved')}
-                className="p-2.5 rounded-2xl bg-gray-50/80 hover:bg-[#F5F2FF] border border-gray-100 hover:border-[#E4DCFD] transition-all cursor-pointer group"
+                className="p-3 rounded-2xl bg-gray-50 hover:bg-gm-accent-soft border border-transparent hover:border-gm-accent-line transition-all cursor-pointer group"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-bold text-[#6258DB] bg-white px-2 py-0.5 rounded-md border border-purple-100 truncate max-w-[130px]">
+                  <span className="text-[10px] font-bold text-gm-accent bg-white px-2 py-0.5 rounded-md border border-gm-accent-line truncate max-w-[130px]">
                     {item.journeyTag || item.category || 'Milestone'}
                   </span>
                   <span className="text-[10px] text-gray-400">by @{item.author?.username || 'member'}</span>
                 </div>
-                <p className="text-xs font-semibold text-[#141724] group-hover:text-[#6258DB] transition-colors line-clamp-2 leading-snug">
+                <p className="font-display text-[15px] font-medium text-gm-ink group-hover:text-gm-accent transition-colors line-clamp-2 leading-snug">
                   {item.headline || item.oneLineSummary || item.content}
                 </p>
               </div>
@@ -654,7 +654,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => setActiveCategory('saved')}
-              className="w-full py-2 rounded-xl text-center text-xs font-bold text-[#6258DB] hover:bg-[#EEEDFE] transition-colors cursor-pointer block mt-1"
+              className="w-full py-2 rounded-xl text-center text-xs font-bold text-gm-accent hover:bg-gm-accent-soft transition-colors cursor-pointer block mt-1"
             >
               View all {savedUpdates.length} saved →
             </button>
@@ -677,7 +677,7 @@ export default function HomePage() {
       <AppShell leftSidebar={leftSidebar} rightSidebar={rightSidebar}>
         <div className="w-full">
           {/* ── 1. Category Filter Pills Row ────────────────────────── */}
-        <div className="flex items-center gap-2 mb-3.5 sm:mb-4 overflow-x-auto scrollbar-none pb-0.5 -mx-1 px-1">
+        <div className="flex items-center gap-1.5 mb-6 overflow-x-auto scrollbar-none pb-1 -mx-1 px-1">
           {HOME_CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat.id;
             return (
@@ -685,10 +685,10 @@ export default function HomePage() {
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveCategory(cat.id)}
-                className={`whitespace-nowrap px-4 sm:px-5 py-2 rounded-full text-xs transition-all active:scale-95 cursor-pointer select-none ${
+                className={`whitespace-nowrap px-4 sm:px-5 h-10 rounded-full text-[13px] transition-all active:scale-95 cursor-pointer select-none ${
                   isActive
-                    ? 'bg-[#141724] text-white font-bold shadow-xs'
-                    : 'text-gray-700 hover:text-black font-medium hover:bg-gray-100/70'
+                    ? 'bg-gm-ink text-gm-paper font-semibold shadow-float'
+                    : 'text-gray-600 hover:text-gm-ink font-medium bg-gm-ink/[0.04] hover:bg-gm-ink/[0.08]'
                 }`}
               >
                 {cat.label}
@@ -701,25 +701,25 @@ export default function HomePage() {
         {!isInlineComposerOpen ? (
           <div
             onClick={() => setIsInlineComposerOpen(true)}
-            className="bg-white rounded-full border border-purple-200/90 shadow-2xs px-4 py-3 sm:py-3.5 mb-3.5 sm:mb-4 flex items-center justify-between gap-3 cursor-pointer hover:border-[#6258DB] transition-all group"
+            className="bg-white rounded-[28px] shadow-card hover:shadow-card-hover pl-4 pr-3 py-4 sm:py-5 mb-8 flex items-center justify-between gap-4 cursor-pointer transition-all duration-500 group"
           >
             {/* Left Purple Edit Icon */}
-            <div className="w-8 h-8 rounded-xl bg-[#6258DB]/10 text-[#6258DB] flex items-center justify-center flex-shrink-0 group-hover:bg-[#6258DB]/20 transition-colors">
-              <SquarePen className="w-4 h-4 text-[#6258DB] stroke-[2.2]" />
+            <div className="w-11 h-11 rounded-full bg-gm-accent-soft text-gm-accent flex items-center justify-center flex-shrink-0 group-hover:bg-gm-accent group-hover:[&_svg]:text-white transition-colors">
+              <SquarePen className="w-4 h-4 text-gm-accent stroke-[2.2]" />
             </div>
 
             {/* Placeholder text */}
-            <span className="text-xs sm:text-[13px] text-gray-500 font-medium flex-1 truncate">
+            <span className="font-display text-lg sm:text-xl text-gray-500 group-hover:text-gm-ink flex-1 truncate transition-colors">
               What did you ship, learn, or struggle with today?
             </span>
 
             {/* Right Action Button */}
-            <div className="w-7 h-7 rounded-full bg-[#6258DB] text-white flex items-center justify-center flex-shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-full bg-gm-ink text-gm-paper flex items-center justify-center flex-shrink-0 group-hover:rotate-90 group-hover:bg-gm-accent transition-all duration-500">
               <Plus className="w-4 h-4 stroke-[2.5]" />
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-[24px] border border-[#6258DB]/30 shadow-md p-4 sm:p-5 mb-4 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-[28px] shadow-card-hover ring-1 ring-gm-accent/25 p-5 sm:p-6 mb-8 animate-slide-up">
             {/* Top Selector Bar: Journey & Update Type Pills */}
             <div className="flex items-center justify-between gap-2 flex-wrap mb-3 pb-2.5 border-b border-gray-100">
               <div className="flex items-center gap-2 flex-wrap">
@@ -728,7 +728,7 @@ export default function HomePage() {
                   <select
                     value={inlineJourney || (userJourneys[0]?.title || 'Building my SaaS product')}
                     onChange={(e) => setInlineJourney(e.target.value)}
-                    className="bg-[#EEEDFE] text-[#6258DB] font-bold text-xs pl-3 pr-7 py-1.5 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#6258DB]/20 cursor-pointer appearance-none max-w-[200px] truncate"
+                    className="bg-gm-accent-soft text-gm-accent font-bold text-xs pl-3 pr-7 py-1.5 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-gm-accent/20 cursor-pointer appearance-none max-w-[200px] truncate"
                   >
                     {(userJourneys.length > 0 ? userJourneys.map((j) => j.title) : ['Building my SaaS product', 'Learning AI']).map((title) => (
                       <option key={title} value={title}>
@@ -736,7 +736,7 @@ export default function HomePage() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="w-3.5 h-3.5 text-[#6258DB] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ChevronDown className="w-3.5 h-3.5 text-gm-accent absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
 
                 {/* Quick Type Selection Pills */}
@@ -748,7 +748,7 @@ export default function HomePage() {
                       onClick={() => setInlineType(t)}
                       className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer whitespace-nowrap ${
                         inlineType === t
-                          ? 'bg-[#141724] text-white shadow-2xs'
+                          ? 'bg-gm-ink text-white shadow-2xs'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200/70'
                       }`}
                     >
@@ -783,7 +783,7 @@ export default function HomePage() {
                   }
                 }}
                 placeholder="Heading: What did you accomplish or learn today?"
-                className="w-full text-xs sm:text-sm font-bold text-[#141724] placeholder:text-gray-400 placeholder:font-normal focus:outline-none pb-2 border-b border-gray-100 pr-16"
+                className="w-full bg-transparent font-display text-lg sm:text-xl font-medium text-gm-ink placeholder:text-gray-400 placeholder:font-normal focus:outline-none pb-3 border-b border-gm-ink/[0.06] pr-16"
                 autoFocus
               />
               <span className="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 font-normal pointer-events-none">
@@ -804,13 +804,13 @@ export default function HomePage() {
                   }
                 }}
                 placeholder="Add a small description about what happened or what you learned..."
-                className="w-full text-xs text-gray-700 placeholder:text-gray-400 focus:outline-none resize-none pb-1"
+                className="w-full bg-transparent text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none resize-none pb-1 pt-2 leading-relaxed"
               />
             </div>
 
             {/* Optional Google Drive Video Input */}
             {inlineIsVideoOpen && (
-              <div className="mb-3 p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-200 animate-in fade-in duration-100">
+              <div className="mb-3 p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-200 animate-fade-in">
                 <div className="flex items-center gap-2">
                   <Video className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                   <input
@@ -868,10 +868,10 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => inlineFileInputRef.current?.click()}
-                  className="px-2.5 py-1.5 rounded-xl text-gray-600 hover:text-[#6258DB] hover:bg-purple-50 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+                  className="px-2.5 py-1.5 rounded-full text-gray-600 hover:text-gm-accent hover:bg-gm-accent-soft transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
                   title="Add Images"
                 >
-                  <ImageIcon className="w-4 h-4 text-[#6258DB]" />
+                  <ImageIcon className="w-4 h-4 text-gm-accent" />
                   <span className="hidden sm:inline">Images</span>
                 </button>
 
@@ -913,7 +913,7 @@ export default function HomePage() {
                   type="button"
                   onClick={handleInlinePostSubmit}
                   disabled={!inlineHeading.trim() || isInlineSubmitting}
-                  className="bg-[#6258DB] hover:bg-[#5247CE] disabled:opacity-50 text-white font-bold text-xs px-4 py-2 rounded-full shadow-sm active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="bg-gm-ink hover:bg-gm-accent disabled:opacity-40 text-gm-paper font-semibold text-[13px] px-5 h-10 rounded-full active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5 rotate-45 -translate-y-0.5" />
                   <span>Post Update</span>
@@ -935,15 +935,15 @@ export default function HomePage() {
 
         {/* ── Saved Snippets Active Filter Banner ─────────────── */}
         {activeCategory === 'saved' && (
-          <div className="bg-[#F5F2FF] border border-[#E4DCFD] rounded-[16px] p-3.5 flex items-center justify-between text-xs mb-3.5">
-            <div className="flex items-center gap-2.5 text-[#6258DB] font-bold">
+          <div className="bg-gm-accent-soft border border-gm-accent-line rounded-full pl-5 pr-4 h-12 flex items-center justify-between text-[13px] mb-6 animate-slide-up">
+            <div className="flex items-center gap-2.5 text-gm-accent font-bold">
               <Bookmark className="w-4 h-4 fill-current" />
               <span>Showing your Saved Snippets ({filteredUpdates.length})</span>
             </div>
             <button
               type="button"
               onClick={() => setActiveCategory('for-you')}
-              className="text-xs text-[#6258DB] hover:underline font-semibold cursor-pointer"
+              className="text-xs text-gm-accent hover:underline font-semibold cursor-pointer"
             >
               Back to all posts
             </button>
@@ -952,22 +952,37 @@ export default function HomePage() {
 
         {/* ── 4. Movement Feed Stream ────────────────────────────── */}
         {isLoadingFeed ? (
-          <div className="bg-white rounded-[24px] p-10 border border-black/[0.04] shadow-xs">
+          <div className="space-y-5">
             <AestheticLoader
               title="Bringing your personalized journey stream..."
               subtitle="Fetching real community milestones, discussions, and updates."
             />
+            {[0, 1].map((k) => (
+              <div key={k} className="bg-white rounded-[28px] p-6 shadow-card" aria-hidden>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="gm-skeleton !rounded-full w-11 h-11" />
+                  <div className="space-y-2 flex-1">
+                    <div className="gm-skeleton h-3 w-40" />
+                    <div className="gm-skeleton h-2.5 w-24" />
+                  </div>
+                </div>
+                <div className="gm-skeleton h-6 w-3/4 mb-3" />
+                <div className="gm-skeleton h-3 w-full mb-2" />
+                <div className="gm-skeleton h-3 w-5/6 mb-6" />
+                <div className="gm-skeleton h-56 w-full !rounded-2xl" />
+              </div>
+            ))}
           </div>
         ) : filteredUpdates.length > 0 ? (
-          <div className="space-y-2 sm:space-y-2.5">
+          <div className="space-y-5 sm:space-y-6">
             {filteredUpdates.map((update) => (
               <JourneyPostCard key={update.id} update={update} />
             ))}
           </div>
         ) : activeCategory === 'saved' ? (
-          <div className="bg-white rounded-[18px] p-8 text-center border border-black/[0.06] shadow-xs">
+          <div className="rounded-[28px] p-10 sm:p-14 text-center border border-dashed border-gm-ink/15 animate-slide-up">
             <Bookmark className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-            <h3 className="font-extrabold text-[#141724] text-sm">No saved snippets yet</h3>
+            <h3 className="font-display text-2xl font-medium text-gm-ink">No saved snippets yet</h3>
             <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
               Click the Save button on any journey card in your feed to bookmark valuable journey moments here.
             </p>

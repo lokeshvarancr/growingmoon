@@ -74,7 +74,7 @@ export default function NotificationsPage() {
       case 'connection_request':
       case 'connection_accepted':
       case 'user_follow':
-        return <UserPlus className="w-4 h-4 text-[#6258DB]" />;
+        return <UserPlus className="w-4 h-4 text-gm-accent" />;
       case 'like':
       case 'post_fuel':
       case 'fuel':
@@ -83,7 +83,7 @@ export default function NotificationsPage() {
       case 'discussion_reply':
       case 'discussion_helpful':
       case 'advice_applied':
-        return <MessageCircle className="w-4 h-4 text-[#6258DB]" />;
+        return <MessageCircle className="w-4 h-4 text-gm-accent" />;
       default:
         return <Bell className="w-4 h-4 text-gray-400" />;
     }
@@ -95,7 +95,7 @@ export default function NotificationsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-extrabold text-gm-midnight tracking-tight">
+            <h1 className="text-[40px] sm:text-[56px] leading-[1.02] font-extrabold text-gm-midnight tracking-tight">
               Notifications
             </h1>
             <p className="text-xs text-gm-text-secondary mt-0.5">
@@ -141,7 +141,7 @@ export default function NotificationsPage() {
 
         {/* ── Continuous Aesthetic Loop Loading State ── */}
         {isLoading ? (
-          <div className="bg-white rounded-3xl p-10 border border-black/[0.04] shadow-xs">
+          <div className="bg-white rounded-3xl p-10 shadow-card">
             <AestheticLoader
               title="Loading your notifications..."
               subtitle="Fetching real-time updates from followers, comments, and milestones."

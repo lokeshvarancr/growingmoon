@@ -1,13 +1,21 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Newsreader, Schibsted_Grotesk } from 'next/font/google';
 import './globals.css';
 import { AppProvider } from '@/lib/state/AppContext';
 import ToastProvider from '@/components/shared/ToastProvider';
+import MotionRoot from '@/components/shared/MotionRoot';
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const display = Newsreader({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-plus-jakarta-sans',
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+});
+
+const text = Schibsted_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-text',
 });
 
 export const metadata: Metadata = {
@@ -21,15 +29,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={plusJakartaSans.variable} suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${plusJakartaSans.className} font-sans antialiased bg-gm-ivory text-gm-midnight min-h-screen selection:bg-gm-lavender/30`}
+        className={`${text.className} font-sans antialiased bg-gm-ivory text-gm-midnight min-h-screen`}
       >
-        <AppProvider>
-          {children}
-          <ToastProvider />
-        </AppProvider>
+        <MotionRoot>
+          <AppProvider>
+            {children}
+            <ToastProvider />
+          </AppProvider>
+        </MotionRoot>
       </body>
     </html>
   );
