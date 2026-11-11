@@ -2,7 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AppShell from '@/components/shared/AppShell';
-import { Trash2, MessageSquare, Heart, CheckCircle2, Bookmark, ExternalLink, Clock, AlertCircle } from 'lucide-react';
+import {
+  Trash2,
+  MessageSquare,
+  Heart,
+  CheckCircle2,
+  Bookmark,
+  ExternalLink,
+  Clock,
+  AlertCircle,
+  Rocket,
+  Compass,
+} from 'lucide-react';
 import { activitiesApi } from '@/lib/api/client';
 import type { UserActivity } from '@/lib/api/types';
 import { useApp } from '@/lib/state/AppContext';
@@ -11,7 +22,7 @@ export default function UserActivityPage() {
   const { addToast } = useApp();
   const [activities, setActivities] = useState<UserActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'comment' | 'fuel' | 'helpful_vote'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'post' | 'comment' | 'fuel' | 'helpful_vote'>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -46,11 +57,17 @@ export default function UserActivityPage() {
 
   const filtered = activities.filter((a) => {
     if (activeFilter === 'all') return true;
+    if (activeFilter === 'post') return a.activity_type === 'post' || a.activity_type === 'journey';
     return a.activity_type === activeFilter;
   });
 
   const getActivityIcon = (type: string) => {
     switch (type) {
+      case 'post':
+        return <Rocket className="w-4 h-4 text-emerald-600" />;
+      case 'journey':
+      case 'passport':
+        return <Compass className="w-4 h-4 text-[#6258DB]" />;
       case 'comment':
       case 'ask_answer':
         return <MessageSquare className="w-4 h-4 text-[#6258DB]" />;
@@ -83,11 +100,11 @@ export default function UserActivityPage() {
     <AppShell>
       <div className="max-w-2xl mx-auto py-6 sm:py-8 px-4">
         <div className="mb-6">
-          <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-[#141724]">
-            Activity & Participation Audit
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#141724]">
+            Activity
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Browse and manage your past comments, answers, fuels, and contributions across Growing Moon.
+            Browse and manage your journey updates, creations, comments, fuels, and contributions across Growing Moon.
           </p>
         </div>
 
@@ -95,6 +112,7 @@ export default function UserActivityPage() {
         <div className="flex items-center gap-1.5 p-1 bg-gray-100/80 rounded-2xl text-xs mb-6 overflow-x-auto scrollbar-none">
           {[
             { id: 'all', label: 'All Activities' },
+            { id: 'post', label: 'Updates & Journeys' },
             { id: 'comment', label: 'Comments & Asks' },
             { id: 'fuel', label: 'Fuels' },
             { id: 'helpful_vote', label: 'Helpful Votes' },
@@ -103,7 +121,7 @@ export default function UserActivityPage() {
               key={tab.id}
               type="button"
               onClick={() => setActiveFilter(tab.id as any)}
-              className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeFilter === tab.id
                   ? 'bg-white text-[#6258DB] shadow-xs font-bold'
                   : 'text-gray-600 hover:text-black'
@@ -154,15 +172,23 @@ export default function UserActivityPage() {
 
                     <div className="flex items-center gap-4 mt-2.5 text-xs text-gray-400 font-medium">
                       <span>{formatActivityDate(item.created_at)}</span>
-                      {item.target_post_id && (
+                      {item.target_post_id ? (
                         <Link
                           href={`/updates/${item.target_post_id}`}
                           className="text-[#6258DB] hover:underline flex items-center gap-1 font-semibold"
                         >
-                          <span>View Discussion</span>
+                          <span>{item.activity_type === 'post' ? 'View Update' : 'View Discussion'}</span>
                           <ExternalLink className="w-3 h-3" />
                         </Link>
-                      )}
+                      ) : item.activity_type === 'journey' ? (
+                        <Link
+                          href="/passport/you"
+                          className="text-[#6258DB] hover:underline flex items-center gap-1 font-semibold"
+                        >
+                          <span>View Journey</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                 </div>

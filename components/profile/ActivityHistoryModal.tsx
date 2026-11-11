@@ -1,7 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { X, Trash2, MessageSquare, Heart, CheckCircle2, Bookmark, ExternalLink, Clock, AlertCircle } from 'lucide-react';
+import {
+  X,
+  Trash2,
+  MessageSquare,
+  Heart,
+  CheckCircle2,
+  Bookmark,
+  ExternalLink,
+  Clock,
+  AlertCircle,
+  Rocket,
+  Compass,
+} from 'lucide-react';
 import { activitiesApi } from '@/lib/api/client';
 import type { UserActivity } from '@/lib/api/types';
 import { useApp } from '@/lib/state/AppContext';
@@ -15,7 +27,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
   const { addToast } = useApp();
   const [activities, setActivities] = useState<UserActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'comment' | 'fuel' | 'helpful_vote'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'post' | 'comment' | 'fuel' | 'helpful_vote'>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,11 +65,17 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
 
   const filtered = activities.filter((a) => {
     if (activeFilter === 'all') return true;
+    if (activeFilter === 'post') return a.activity_type === 'post' || a.activity_type === 'journey';
     return a.activity_type === activeFilter;
   });
 
   const getActivityIcon = (type: string) => {
     switch (type) {
+      case 'post':
+        return <Rocket className="w-4 h-4 text-emerald-600" />;
+      case 'journey':
+      case 'passport':
+        return <Compass className="w-4 h-4 text-[#6258DB]" />;
       case 'comment':
       case 'ask_answer':
         return <MessageSquare className="w-4 h-4 text-[#6258DB]" />;
@@ -100,16 +118,16 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
         <div className="p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
           <div>
             <h3 className="text-base sm:text-lg font-bold text-[#141724]">
-              Activity & Participation Audit
+              Activity
             </h3>
             <p className="text-xs text-gray-500 mt-0.5">
-              Review your contributions, comments, and engagement across the platform.
+              Review your journey updates, contributions, comments, and engagement across Growing Moon.
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-gray-400 hover:text-black rounded-full hover:bg-gray-100 transition-colors"
+            className="p-1.5 text-gray-400 hover:text-black rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -119,6 +137,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
         <div className="flex items-center gap-1.5 px-5 sm:px-6 py-2.5 bg-gray-50/60 border-b border-gray-100 text-xs overflow-x-auto scrollbar-none flex-shrink-0">
           {[
             { id: 'all', label: 'All Activities' },
+            { id: 'post', label: 'Updates & Journeys' },
             { id: 'comment', label: 'Comments & Asks' },
             { id: 'fuel', label: 'Fuels' },
             { id: 'helpful_vote', label: 'Helpful Votes' },
@@ -127,7 +146,7 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
               key={tab.id}
               type="button"
               onClick={() => setActiveFilter(tab.id as any)}
-              className={`px-3 py-1 rounded-full font-semibold transition-all whitespace-nowrap ${
+              className={`px-3 py-1 rounded-full font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeFilter === tab.id
                   ? 'bg-white text-[#6258DB] shadow-2xs font-bold border border-gray-200/80'
                   : 'text-gray-600 hover:text-black'
@@ -178,16 +197,25 @@ export default function ActivityHistoryModal({ isOpen, onClose }: ActivityHistor
 
                     <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-400 font-medium">
                       <span>{formatActivityDate(item.created_at)}</span>
-                      {item.target_post_id && (
+                      {item.target_post_id ? (
                         <Link
                           href={`/updates/${item.target_post_id}`}
                           onClick={onClose}
                           className="text-[#6258DB] hover:underline flex items-center gap-0.5 font-semibold"
                         >
-                          <span>View Post</span>
+                          <span>{item.activity_type === 'post' ? 'View Update' : 'View Discussion'}</span>
                           <ExternalLink className="w-2.5 h-2.5" />
                         </Link>
-                      )}
+                      ) : item.activity_type === 'journey' ? (
+                        <Link
+                          href="/passport/you"
+                          onClick={onClose}
+                          className="text-[#6258DB] hover:underline flex items-center gap-0.5 font-semibold"
+                        >
+                          <span>View Journey</span>
+                          <ExternalLink className="w-2.5 h-2.5" />
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                 </div>

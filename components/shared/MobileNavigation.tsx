@@ -7,7 +7,12 @@ import { Home, Search, Plus, Bell } from 'lucide-react';
 
 export default function MobileNavigation() {
   const pathname = usePathname() || '';
-  const { currentUser, unreadNotificationCount } = useApp();
+  const { currentUser, unreadNotificationCount, isAuthenticated, isAuthLoading } = useApp();
+
+  // Hide mobile bottom navigation for unauthenticated visitors scanning a profile QR code
+  if (!isAuthLoading && !isAuthenticated) {
+    return null;
+  }
 
   const isHome = pathname === '/home';
   const isExplore = pathname.startsWith('/explore') || pathname.startsWith('/discover');

@@ -54,6 +54,11 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { currentUser, updateUser, addToast } = useApp();
 
+  React.useEffect(() => {
+    // Automatically redirect directly to home feed without setup
+    router.replace('/home');
+  }, [router]);
+
   const [step, setStep] = useState(1);
 
   // Form State

@@ -1,6 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useApp } from '@/lib/state/AppContext';
 import {
   Compass,
   FileBadge2,
@@ -15,6 +17,14 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
+  const router = useRouter();
+  const { isAuthenticated, isAuthLoading } = useApp();
+
+  useEffect(() => {
+    if (!isAuthLoading && isAuthenticated) {
+      router.replace('/home');
+    }
+  }, [isAuthLoading, isAuthenticated, router]);
   return (
     <div className="min-h-screen bg-gm-ivory text-gm-midnight selection:bg-gm-lavender/30">
       {/* ── Navbar ─────────────────────────────────────────────── */}
@@ -50,7 +60,7 @@ export default function LandingPage() {
               Sign In
             </Link>
             <Link
-              href="/onboarding"
+              href="/register"
               className="bg-gm-indigo text-gm-white hover:bg-gm-indigo-hover px-4 py-2 rounded-xl transition-colors shadow-card flex items-center gap-1.5"
             >
               <span>Get Started</span>
@@ -80,7 +90,7 @@ export default function LandingPage() {
           {/* Primary & Secondary CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
             <Link
-              href="/onboarding"
+              href="/register"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gm-indigo text-gm-white font-bold text-sm px-6 py-3.5 rounded-xl hover:bg-gm-indigo-hover transition-all shadow-card group"
             >
               <span>Start your journey</span>
@@ -258,7 +268,7 @@ export default function LandingPage() {
           Join early-stage founders who are documenting the journey and moving forward together.
         </p>
         <Link
-          href="/onboarding"
+          href="/home"
           className="inline-flex items-center gap-2 bg-gm-indigo text-gm-white font-bold text-sm px-8 py-4 rounded-xl hover:bg-gm-indigo-hover transition-all shadow-card"
         >
           <span>Start your Journey Passport</span>

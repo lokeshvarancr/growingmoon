@@ -114,3 +114,69 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── High-Level Serene Dark Mode ── */
+html.dark {
+  --gm-midnight: #F3F4F6;
+  --gm-lavender: #A5B4FC;
+  --gm-ivory: #0F111A;
+  --gm-white: #171A26;
+  --gm-mist: #232738;
+  --gm-mint: #4EBA93;
+  --gm-text-secondary: #9CA3AF;
+  --gm-border: #282C3D;
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0B0D14;
+  color: #F3F4F6;
+}
+
+html.dark header,
+html.dark nav {
+  background-color: rgba(17, 20, 31, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .bg-white {
+  background-color: #161926 !important;
+}
+
+html.dark .bg-\[\#FAF9F6\],
+html.dark .bg-\[\#FAF9F6\]\/95 {
+  background-color: #0B0D14 !important;
+}
+
+html.dark .bg-\[\#F7F5F0\] {
+  background-color: #0B0D14 !important;
+}
+
+html.dark .bg-gray-50,
+html.dark .bg-gray-100 {
+  background-color: #1F2333 !important;
+}
+
+html.dark .text-\[\#141724\],
+html.dark .text-gray-800,
+html.dark .text-gray-900 {
+  color: #F3F4F6 !important;
+}
+
+html.dark .text-gray-600,
+html.dark .text-gray-700 {
+  color: #D1D5DB !important;
+}
+
+html.dark .text-gray-500,
+html.dark .text-gray-400 {
+  color: #9CA3AF !important;
+}
+
+html.dark .border-gray-100,
+html.dark .border-gray-200,
+html.dark .border-black\/\[0\.04\],
+html.dark .border-black\/\[0\.05\],
+html.dark .border-black\/\[0\.06\] {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}

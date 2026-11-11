@@ -11,7 +11,7 @@ import type { FounderProfile } from '@/types';
 
 export default function PublicPassportPage() {
   const params = useParams();
-  const { currentUser } = useApp();
+  const { currentUser, isAuthenticated } = useApp();
 
   const username = typeof params.username === 'string' ? params.username : '';
   const mockFounder = getFounderByUsername(username);
@@ -86,7 +86,18 @@ export default function PublicPassportPage() {
     );
   }
 
-  const isOwner = founder.id === currentUser.id;
+  const isOwner = Boolean(
+    (isAuthenticated && (
+      (founder?.id && currentUser?.id && founder.id === currentUser.id) ||
+      (founder?.username && currentUser?.username && founder.username.toLowerCase() === currentUser.username.toLowerCase())
+    )) ||
+    username === 'you' ||
+    username === 'demo'
+  );
 
-  return <JourneyPassportView founder={founder} isOwner={isOwner} />;
+  return (
+    <React.Suspense fallback={null}>
+      <JourneyPassportView founder={founder} isOwner={isOwner} />
+    </React.Suspense>
+  );
 }

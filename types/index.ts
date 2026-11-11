@@ -95,6 +95,10 @@ export type JourneyUpdate = {
   media: MediaAttachment[];
   milestoneId?: string;   // optional linked milestone
   category?: string;
+  startDate?: string;
+  endDate?: string;
+  start_date?: string;
+  end_date?: string;
   createdAt: string;
   created_at?: string;
   updatedAt?: string;
@@ -149,6 +153,7 @@ export type Conversation = {
   lastMessage?: Message;
   updatedAt: string;
   unreadCount: number;
+  otherParticipant?: any;
 };
 
 // ── Notifications ─────────────────────────────────────────────

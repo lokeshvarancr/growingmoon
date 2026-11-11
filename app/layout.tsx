@@ -21,8 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={plusJakartaSans.variable}>
-      <body className={`${plusJakartaSans.className} font-sans antialiased bg-gm-ivory text-gm-midnight min-h-screen selection:bg-gm-lavender/30`}>
+    <html lang="en" data-scroll-behavior="smooth" className={plusJakartaSans.variable} suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className={`${plusJakartaSans.className} font-sans antialiased bg-gm-ivory text-gm-midnight min-h-screen selection:bg-gm-lavender/30`}
+      >
         <AppProvider>
           {children}
           <ToastProvider />

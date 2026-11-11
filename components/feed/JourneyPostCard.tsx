@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { JourneyUpdate } from '@/types';
 import { getFounderById } from '@/lib/mock-data/founders';
 import { useApp } from '@/lib/state/AppContext';
+import { socialApi } from '@/lib/api/client';
 import { formatRelativeTime } from '@/lib/utils';
 import {
   Bookmark,
@@ -26,8 +27,11 @@ import {
   Video,
   Plus,
   Check,
+  Flag,
+  Calendar,
 } from 'lucide-react';
 import DiscussionDrawer from './DiscussionDrawer';
+import ReportModal from '@/components/moderation/ReportModal';
 
 type JourneyPostCardProps = {
   update: JourneyUpdate;
@@ -77,6 +81,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     update.is_fueled_by_me || (update.likes || []).includes(currentUser.id)
   );
   const [showMenu, setShowMenu] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -125,11 +130,21 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
     }
   }
 
-  const handleToggleFollow = (e: React.MouseEvent) => {
+  const handleToggleFollow = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!author?.id || isOwnPost) return;
     const next = !isFollowed;
     setIsFollowed(next);
     addToast(next ? `Now following ${author.name}` : `Unfollowed ${author.name}`, 'info');
+    try {
+      if (next) {
+        await socialApi.followUser(author.id);
+      } else {
+        await socialApi.unfollowUser(author.id);
+      }
+    } catch (err) {
+      console.warn('Failed to update follow status in database:', err);
+    }
   };
 
   const handleQuietFuelBoost = (e: React.MouseEvent) => {
@@ -186,17 +201,19 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         </div>
       </Link>
 
-      <button
-        type="button"
-        onClick={handleToggleFollow}
-        className={`px-4 sm:px-4.5 py-1.5 rounded-full font-bold text-xs shadow-xs transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
-          isFollowed
-            ? 'bg-gray-100 text-gray-700'
-            : 'bg-[#141724] hover:bg-black text-white'
-        }`}
-      >
-        {isFollowed ? 'Following' : 'Follow'}
-      </button>
+      {!isOwnPost && (
+        <button
+          type="button"
+          onClick={handleToggleFollow}
+          className={`px-4 sm:px-4.5 py-1.5 rounded-full font-bold text-xs shadow-xs transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
+            isFollowed
+              ? 'bg-gray-100 text-gray-700'
+              : 'bg-[#141724] hover:bg-black text-white'
+          }`}
+        >
+          {isFollowed ? 'Following' : 'Follow'}
+        </button>
+      )}
     </div>
   );
 
@@ -239,6 +256,18 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
             <span className="text-[10px] font-extrabold text-[#6258DB] bg-[#F5F2FF] border border-[#E4DCFD] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               {update.journeyTag || update.category || 'Milestone'}
             </span>
+            {(update.startDate || update.start_date) && (
+              <span className="text-[10px] font-semibold text-gray-700 bg-gray-100 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                <Calendar className="w-2.5 h-2.5 text-[#6258DB]" />
+                <span>
+                  {new Date(update.startDate || update.start_date!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  {' → '}
+                  {(update.endDate || update.end_date)
+                    ? new Date(update.endDate || update.end_date!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : 'Present'}
+                </span>
+              </span>
+            )}
             <span className="text-[11px] text-gray-400 font-normal">
               · {formatRelativeTime(update.createdAt)}
             </span>
@@ -352,7 +381,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
               <Share2 className="w-3.5 h-3.5 text-gray-400" />
               <span>Copy Link</span>
             </button>
-            {isOwnPost && (
+            {isOwnPost ? (
               <button
                 type="button"
                 onClick={() => {
@@ -365,10 +394,31 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
                 <Trash2 className="w-3.5 h-3.5 text-red-500" />
                 <span>Delete Moment</span>
               </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMenu(false);
+                  setIsReportModalOpen(true);
+                }}
+                className="w-full text-left px-3 py-2 hover:bg-rose-50 rounded-xl text-rose-600 flex items-center gap-2 transition-colors font-medium cursor-pointer"
+              >
+                <Flag className="w-3.5 h-3.5 text-rose-500" />
+                <span>Report Post</span>
+              </button>
             )}
           </div>
         )}
       </div>
+
+      {/* Report Modal */}
+      <ReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        targetType="post"
+        targetId={update.id}
+        targetTitle={update.headline || update.content.slice(0, 40) + '...'}
+      />
     </div>
   );
 
@@ -431,11 +481,23 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
 
-        {/* Top-Left Category Tag */}
-        <div className="absolute top-4 left-4 z-20">
+        {/* Top-Left Category Tag & Date */}
+        <div className="absolute top-4 left-4 z-20 flex items-center gap-2 flex-wrap">
           <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white/95 text-[10.5px] font-extrabold uppercase tracking-wider shadow-sm">
             {update.journeyTag || update.category || 'Portrait moment'}
           </span>
+          {(update.startDate || update.start_date) && (
+            <span className="px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white/90 text-[10px] font-semibold flex items-center gap-1 shadow-sm">
+              <Calendar className="w-2.5 h-2.5" />
+              <span>
+                {new Date(update.startDate || update.start_date!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                {' → '}
+                {(update.endDate || update.end_date)
+                  ? new Date(update.endDate || update.end_date!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                  : 'Present'}
+              </span>
+            </span>
+          )}
         </div>
 
         {/* Top-Right Badges (Video source & duration) */}
@@ -522,17 +584,19 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
               </span>
             </Link>
 
-            <button
-              type="button"
-              onClick={handleToggleFollow}
-              className={`px-3 py-1 rounded-full font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
-                isFollowed
-                  ? 'bg-white/20 backdrop-blur-md text-white border border-white/40'
-                  : 'bg-white text-[#141724] hover:bg-white/90'
-              }`}
-            >
-              {isFollowed ? 'Following' : 'Follow'}
-            </button>
+            {!isOwnPost && (
+              <button
+                type="button"
+                onClick={handleToggleFollow}
+                className={`px-3 py-1 rounded-full font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
+                  isFollowed
+                    ? 'bg-white/20 backdrop-blur-md text-white border border-white/40'
+                    : 'bg-white text-[#141724] hover:bg-white/90'
+                }`}
+              >
+                {isFollowed ? 'Following' : 'Follow'}
+              </button>
+            )}
           </div>
 
           {/* Heading Only (No 2-line snippet text) */}
@@ -920,27 +984,29 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
               </div>
             </Link>
 
-            <button
-              type="button"
-              onClick={handleToggleFollow}
-              className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none flex items-center gap-1.5 backdrop-blur-md ${
-                isFollowed
-                  ? 'bg-emerald-500/95 text-white border border-emerald-300/40'
-                  : 'bg-white hover:bg-white/90 text-[#141724]'
-              }`}
-            >
-              {isFollowed ? (
-                <>
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  <span>Following</span>
-                </>
-              ) : (
-                <>
-                  <Plus className="w-3.5 h-3.5 stroke-[3]" />
-                  <span>Follow</span>
-                </>
-              )}
-            </button>
+            {!isOwnPost && (
+              <button
+                type="button"
+                onClick={handleToggleFollow}
+                className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none flex items-center gap-1.5 backdrop-blur-md ${
+                  isFollowed
+                    ? 'bg-emerald-500/95 text-white border border-emerald-300/40'
+                    : 'bg-white hover:bg-white/90 text-[#141724]'
+                }`}
+              >
+                {isFollowed ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    <span>Following</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                    <span>Follow</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
 

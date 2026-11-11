@@ -12,8 +12,12 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { setStoredAuthToken } from './api/client';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pyvaviomgmbohpbfadbv.supabase.co';
+// Supports both modern Supabase publishable keys (sb_publishable_...) and legacy anon JWT keys
+const rawPublishable = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
+const rawAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
 const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  rawPublishable ||
+  rawAnon ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5dmF2aW9tZ21ib2hwYmZhZGJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MDAwMDAsImV4cCI6MjAyMDMwMDAwMH0.placeholder';
 
 // Singleton Supabase Client

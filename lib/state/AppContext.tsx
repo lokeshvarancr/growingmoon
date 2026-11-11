@@ -6,6 +6,7 @@ import type {
   Comment,
   ConnectionStatus,
   Message,
+  Conversation,
   Notification,
   Milestone,
 } from "@/types";
@@ -15,7 +16,7 @@ import { mockConversations as initialConversations, mockMessages as initialMessa
 import { mockNotifications as initialNotifications } from "@/lib/mock-data/notifications";
 import { mockMilestones as initialMilestones } from "@/lib/mock-data/passports";
 import { generateId } from "@/lib/utils";
-import { feedApi, postsApi, usersApi, notificationsApi, chatApi, socialApi } from "@/lib/api/client";
+import { feedApi, postsApi, usersApi, notificationsApi, chatApi, socialApi, setStoredAuthToken, getStoredAuthToken } from "@/lib/api/client";
 import type { FeedPost } from "@/lib/api/types";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -26,8 +27,13 @@ export type Toast = {
 };
 
 type AppContextType = {
-  // User
+  // User & Authentication
   currentUser: FounderProfile;
+  isAuthenticated: boolean;
+  isAuthLoading: boolean;
+  isLoadingFeed: boolean;
+  refreshFeed: () => Promise<void>;
+  logout: () => Promise<void>;
   updateUser: (updated: Partial<FounderProfile>) => void;
   resetDemoUser: () => void;
 
@@ -46,10 +52,11 @@ type AppContextType = {
   removeConnection: (founderId: string) => void;
 
   // Messages
-  conversations: typeof initialConversations;
-  messages: typeof initialMessages;
+  conversations: Conversation[];
+  messages: Record<string, Message[]>;
   sendMessage: (conversationId: string, content: string) => void;
   createConversation: (recipientId: string, initialMessageText: string) => string;
+  refreshConversations: () => Promise<void>;
 
   // Notifications
   notifications: Notification[];
@@ -93,6 +100,10 @@ function mapFeedPostToJourneyUpdate(p: FeedPost): JourneyUpdate {
     journey_tag: p.journey_tag || undefined,
     content: p.content,
     category: p.category,
+    startDate: p.start_date || undefined,
+    endDate: p.end_date || undefined,
+    start_date: p.start_date || undefined,
+    end_date: p.end_date || undefined,
     createdAt: p.created_at,
     created_at: p.created_at,
     updatedAt: p.updated_at,
@@ -116,35 +127,58 @@ function mapFeedPostToJourneyUpdate(p: FeedPost): JourneyUpdate {
   };
 }
 
+const EMPTY_GUEST_USER: FounderProfile = {
+  id: '',
+  name: 'Explorer',
+  username: '',
+  avatar: 'GM',
+  avatarColor: 'bg-[#ECE9FE] text-[#5546D6]',
+  bio: '',
+  role: 'Explorer',
+  stage: 'Exploring',
+  currentGoal: '',
+  biggestChallenge: '',
+  skillsOffered: [],
+  skillsNeeded: [],
+  interests: [],
+  location: '',
+  joinedDate: new Date().toISOString(),
+  connectionsCount: 0,
+  isDemo: false,
+};
+
+function getCachedUser(): { user: FounderProfile | null; token: string | null } {
+  if (typeof window === "undefined") return { user: null, token: null };
+  try {
+    const raw = localStorage.getItem("gm_user");
+    const token = getStoredAuthToken();
+    if (raw && token) {
+      const parsed = JSON.parse(raw);
+      if (parsed?.id) return { user: parsed, token };
+    }
+  } catch {}
+  return { user: null, token: null };
+}
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  // User
-  const [currentUser, setCurrentUser] = useState<FounderProfile>(DEMO_USER);
+  // User & Authentication (Consistent initial state between SSR & Client Hydration)
+  const [currentUser, setCurrentUser] = useState<FounderProfile>(EMPTY_GUEST_USER);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
-  // Updates (Initialized with 100 rich mock updates)
-  const [updates, setUpdates] = useState<JourneyUpdate[]>(initialUpdates);
+  // Updates (Posts) - Empty by default for closed loop
+  const [updates, setUpdates] = useState<JourneyUpdate[]>([]);
+  const [isLoadingFeed, setIsLoadingFeed] = useState<boolean>(true);
 
-  // Connections (8 active connections matching DEMO_USER.connectionsCount)
-  const [connections, setConnections] = useState<Record<string, ConnectionStatus>>({
-    f1: "connected",
-    f2: "connected",
-    f3: "connected",
-    f5: "connected",
-    f6: "connected",
-    f8: "connected",
-    f10: "connected",
-    f12: "connected",
-    f7: "pending-received",
-    f4: "none",
-    f9: "none",
-    f11: "none",
-  });
+  // Connections
+  const [connections, setConnections] = useState<Record<string, ConnectionStatus>>({});
 
   // Messages
-  const [conversations, setConversations] = useState(initialConversations);
-  const [messages, setMessages] = useState(initialMessages);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [messages, setMessages] = useState<Record<string, Message[]>>({});
 
   // Notifications
-  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // Milestones
   const [milestones, setMilestones] = useState<Milestone[]>(initialMilestones);
@@ -152,93 +186,208 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Toasts
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  // ── Load from localStorage on mount (With auto-migration for 100 posts) ──
+  // ── Sync with Supabase Auth & FastAPI Backend (Closed Loop) ─────
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem("gm_user");
-      if (savedUser) setCurrentUser(JSON.parse(savedUser));
+    let isMounted = true;
 
-      const savedConnections = localStorage.getItem("gm_connections");
-      if (savedConnections) setConnections(JSON.parse(savedConnections));
-
-      const version = localStorage.getItem("gm_data_version");
-      const savedUpdatesRaw = localStorage.getItem("gm_updates");
-
-      if (version === DATA_VERSION && savedUpdatesRaw) {
-        const parsed = JSON.parse(savedUpdatesRaw);
-        // Only use savedUpdates if it is a valid array containing at least all 100 seed posts
-        if (Array.isArray(parsed) && parsed.length >= initialUpdates.length) {
-          setUpdates(parsed);
-          return;
-        }
-      }
-
-      // If version mismatch or stale (< 100 updates) from previous sessions:
-      // Smoothly migrate: keep any user-created posts and preserve bookmarked saves
-      let userCreatedPosts: JourneyUpdate[] = [];
-      const savedPostIds = new Set<string>();
-
-      if (savedUpdatesRaw) {
-        try {
-          const parsed = JSON.parse(savedUpdatesRaw);
-          if (Array.isArray(parsed)) {
-            // Keep user-authored posts (posts created during testing)
-            userCreatedPosts = parsed.filter(
-              (p) => p.authorId === DEMO_USER.id && !initialUpdates.some((iu) => iu.id === p.id)
-            );
-            // Collect any post IDs the user saved
-            parsed.forEach((p) => {
-              if (Array.isArray(p.saves) && p.saves.includes(DEMO_USER.id)) {
-                savedPostIds.add(p.id);
-              }
-            });
-          }
-        } catch {}
-      }
-
-      // Merge: user posts on top + all 100 seed posts with preserved bookmark state
-      const refreshedUpdates = [
-        ...userCreatedPosts,
-        ...initialUpdates.map((u) => {
-          if (savedPostIds.has(u.id)) {
-            const currentSaves = u.saves || [];
-            return currentSaves.includes(DEMO_USER.id)
-              ? u
-              : { ...u, saves: [...currentSaves, DEMO_USER.id] };
-          }
-          return u;
-        }),
-      ];
-
-      setUpdates(refreshedUpdates);
-      localStorage.setItem("gm_data_version", DATA_VERSION);
-      localStorage.setItem("gm_updates", JSON.stringify(refreshedUpdates));
-    } catch {
-      // Ignore localStorage errors (sandbox / disabled)
+    // 1. Instantly hydrate from localStorage on client mount (post-hydration, 0ms)
+    const { user, token: cachedToken } = getCachedUser();
+    if (user && cachedToken && isMounted) {
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      setIsAuthLoading(false);
     }
-  }, []);
 
-  // ── Sync with FastAPI Backend & Supabase Auth ──────────────────
-  useEffect(() => {
-    // 1. Fetch live feed from backend
-    feedApi
-      .getFeed()
-      .then((res) => {
-        if (res && Array.isArray(res.items) && res.items.length > 0) {
-          const liveUpdates = res.items.map(mapFeedPostToJourneyUpdate);
-          setUpdates(liveUpdates);
-        }
-      })
-      .catch((err) => {
-        console.warn('Backend feed unreachable, using cached updates:', err);
-      });
+    const syncUserData = async (sessionUser: any) => {
+      const userMeta = sessionUser?.user_metadata || {};
+      const fallbackName = userMeta.full_name || userMeta.name || sessionUser.email?.split('@')[0] || 'Explorer';
+      const fallbackUsername = userMeta.username || sessionUser.email?.split('@')[0] || 'user';
+      const fallbackAvatar = userMeta.avatar_url || userMeta.picture || undefined;
 
-    // 2. Fetch authenticated user profile
-    usersApi
-      .getMe()
-      .then((me) => {
-        if (me) {
+      const baseProfile: FounderProfile = {
+        id: sessionUser.id,
+        name: fallbackName,
+        username: fallbackUsername,
+        avatar: fallbackName.slice(0, 2).toUpperCase(),
+        avatarImage: fallbackAvatar,
+        avatarColor: 'bg-[#ECE9FE] text-[#5546D6]',
+        bio: userMeta.bio || '',
+        role: userMeta.role_title || 'Builder',
+        stage: 'Building MVP',
+        currentGoal: '',
+        biggestChallenge: '',
+        skillsOffered: [],
+        skillsNeeded: [],
+        interests: [],
+        location: userMeta.location || '',
+        joinedDate: sessionUser.created_at || new Date().toISOString(),
+        connectionsCount: 0,
+        isDemo: false,
+      };
+
+      if (isMounted) {
+        setCurrentUser(baseProfile);
+      }
+
+      // Authoritative profile from backend
+      try {
+        const me = await usersApi.getMe();
+        if (isMounted && me) {
           setCurrentUser({
+            id: me.id,
+            name: me.name,
+            username: me.username,
+            avatar: me.avatar_initials || 'GM',
+            avatarImage: me.avatar_image || fallbackAvatar,
+            avatarColor: me.avatar_color || 'bg-amber-100 text-amber-800',
+            bio: me.bio || '',
+            role: me.role_title || 'Builder',
+            stage: 'Building MVP',
+            currentGoal: 'Building Growing Moon',
+            biggestChallenge: 'Finding early community',
+            skillsOffered: [],
+            skillsNeeded: [],
+            interests: [],
+            location: me.location || 'Bengaluru',
+            joinedDate: me.created_at,
+            connectionsCount: me.connections_count,
+            isDemo: false,
+          });
+        }
+      } catch (err) {
+        // Backend sync pending
+      }
+    };
+
+    const loadAuthenticatedData = async () => {
+      setIsLoadingFeed(true);
+      // 1. Live feed
+      feedApi
+        .getFeed()
+        .then((res) => {
+          if (isMounted && res?.items && Array.isArray(res.items)) {
+            setUpdates(res.items.map(mapFeedPostToJourneyUpdate));
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (isMounted) setIsLoadingFeed(false);
+        });
+
+      // 2. Notifications
+      notificationsApi
+        .getNotifications()
+        .then((data) => {
+          const rawList = data?.items || data?.notifications;
+          if (isMounted && Array.isArray(rawList)) {
+            const mappedNotifications: Notification[] = rawList.map((n: any) => ({
+              id: n.id,
+              actorId: n.actor_id || 'u-system',
+              type: (n.type as any) || 'like',
+              message: n.message,
+              read: n.is_read,
+              createdAt: n.created_at,
+              link: n.link || '/home',
+            }));
+            setNotifications(mappedNotifications);
+          }
+        })
+        .catch(() => {});
+
+      // 3. Conversations (with deduplication by partner user)
+      chatApi
+        .getConversations()
+        .then((convs) => {
+          if (!isMounted) return;
+          if (Array.isArray(convs) && convs.length > 0) {
+            const seenPartnerIds = new Set<string>();
+            const uniqueConvs = convs.filter((c) => {
+              const partnerId = c.other_participant?.id;
+              if (!partnerId) return true;
+              if (seenPartnerIds.has(partnerId)) return false;
+              seenPartnerIds.add(partnerId);
+              return true;
+            });
+
+            const mapped = uniqueConvs.map((c) => ({
+              id: c.id,
+              participantIds: [
+                currentUser.id,
+                c.other_participant ? c.other_participant.id : '',
+              ].filter(Boolean),
+              updatedAt: c.last_message_at || (c as any).created_at || new Date().toISOString(),
+              unreadCount: c.unread_count,
+              otherParticipant: c.other_participant,
+              lastMessage: c.last_message_text
+                ? {
+                    id: `m-${c.id}`,
+                    conversationId: c.id,
+                    senderId: c.last_message_sender_id || '',
+                    content: c.last_message_text,
+                    createdAt: c.last_message_at || new Date().toISOString(),
+                    read: c.last_message_status === 'read',
+                  }
+                : undefined,
+            }));
+            setConversations(mapped);
+          } else {
+            setConversations([]);
+          }
+        })
+        .catch(() => {
+          if (isMounted) setConversations([]);
+        });
+
+      // 4. Social connections
+      socialApi
+        .getConnections()
+        .then((data) => {
+          if (isMounted && data && Array.isArray(data.connections)) {
+            const map: Record<string, ConnectionStatus> = {};
+            for (const item of data.connections) {
+              if (item.status === 'accepted') {
+                map[item.user.id] = 'connected';
+                map[item.user.username] = 'connected';
+              } else if (item.status === 'pending') {
+                const status: ConnectionStatus = item.is_requester ? 'pending-sent' : 'pending-received';
+                map[item.user.id] = status;
+                map[item.user.username] = status;
+              }
+            }
+            setConnections(map);
+          }
+        })
+        .catch(() => {});
+    };
+
+    // ── Backend Session Verification (Instagram-grade Persistent Auth) ──
+    const checkSession = async () => {
+      // 1. Silent token refresh with Supabase if active session exists
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.access_token) {
+          setStoredAuthToken(sessionData.session.access_token);
+        }
+      } catch {}
+
+      const token = getStoredAuthToken();
+      if (!token) {
+        if (isMounted) {
+          setIsAuthenticated(false);
+          setCurrentUser(EMPTY_GUEST_USER);
+          setUpdates([]);
+          setIsAuthLoading(false);
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("gm_user");
+          }
+        }
+        return;
+      }
+
+      try {
+        const me = await usersApi.getMe();
+        if (isMounted && me) {
+          const freshProfile: FounderProfile = {
             id: me.id,
             name: me.name,
             username: me.username,
@@ -257,124 +406,116 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             joinedDate: me.created_at,
             connectionsCount: me.connections_count,
             isDemo: false,
-          });
+          };
+          setIsAuthenticated(true);
+          setCurrentUser(freshProfile);
+          try {
+            localStorage.setItem("gm_user", JSON.stringify(freshProfile));
+          } catch {}
+          loadAuthenticatedData();
         }
-      })
-      .catch(() => {
-        // Unauthenticated or guest mode
-      });
+      } catch (err: any) {
+        const errString = String(err?.message || err);
+        const isNetworkError =
+          errString.includes("Failed to fetch") ||
+          errString.includes("NetworkError") ||
+          errString.includes("network") ||
+          errString.includes("Load failed") ||
+          (typeof navigator !== "undefined" && !navigator.onLine);
 
-    // 3. Fetch notifications
-    notificationsApi
-      .getNotifications()
-      .then((data) => {
-        if (data && Array.isArray(data.notifications) && data.notifications.length > 0) {
-          const mappedNotifications: Notification[] = data.notifications.map((n) => ({
-            id: n.id,
-            actorId: n.actor_id || 'u-system',
-            type: (n.type as any) || 'like',
-            message: n.message,
-            read: n.is_read,
-            createdAt: n.created_at,
-            link: n.link || '/feed',
-          }));
-          setNotifications(mappedNotifications);
-        }
-      })
-      .catch(() => {});
-
-    // 4. Fetch conversations
-    chatApi
-      .getConversations()
-      .then((convs) => {
-        if (Array.isArray(convs) && convs.length > 0) {
-          const mapped = convs.map((c) => ({
-            id: c.id,
-            participantIds: [
-              currentUser.id,
-              c.other_participant ? c.other_participant.id : '',
-            ].filter(Boolean),
-            updatedAt: c.last_message_at || new Date().toISOString(),
-            unreadCount: c.unread_count,
-            lastMessage: c.last_message_text
-              ? {
-                  id: `m-${c.id}`,
-                  conversationId: c.id,
-                  senderId: c.last_message_sender_id || '',
-                  content: c.last_message_text,
-                  createdAt: c.last_message_at || new Date().toISOString(),
-                  read: c.last_message_status === 'read',
-                }
-              : undefined,
-          }));
-          setConversations(mapped);
-        }
-      })
-      .catch(() => {});
-
-    // 5. Fetch live social connections
-    socialApi
-      .getConnections()
-      .then((data) => {
-        if (data && Array.isArray(data.connections)) {
-          const map: Record<string, ConnectionStatus> = {};
-          for (const item of data.connections) {
-            if (item.status === 'accepted') {
-              map[item.user.id] = 'connected';
-              map[item.user.username] = 'connected';
-            } else if (item.status === 'pending') {
-              const status: ConnectionStatus = item.is_requester ? 'pending-sent' : 'pending-received';
-              map[item.user.id] = status;
-              map[item.user.username] = status;
-            }
+        if (isNetworkError) {
+          // Device offline or waking from sleep mode: DO NOT LOG OUT!
+          console.info("Device offline or waking from sleep mode; preserving cached session.");
+          if (isMounted) {
+            setIsAuthenticated(true);
           }
-          setConnections((prev) => ({ ...prev, ...map }));
-        }
-      })
-      .catch(() => {});
-
-    // 6. Auth state listener for seamless reload on login
-    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN') {
-        feedApi.getFeed().then((res) => {
-          if (res?.items?.length) setUpdates(res.items.map(mapFeedPostToJourneyUpdate));
-        }).catch(() => {});
-        socialApi.getConnections().then((data) => {
-          if (data && Array.isArray(data.connections)) {
-            const map: Record<string, ConnectionStatus> = {};
-            for (const item of data.connections) {
-              if (item.status === 'accepted') {
-                map[item.user.id] = 'connected';
-                map[item.user.username] = 'connected';
-              } else if (item.status === 'pending') {
-                const status: ConnectionStatus = item.is_requester ? 'pending-sent' : 'pending-received';
-                map[item.user.id] = status;
-                map[item.user.username] = status;
+        } else if (
+          errString.includes("401") ||
+          errString.includes("Unauthorized") ||
+          errString.includes("token")
+        ) {
+          // Attempt silent session refresh before logging out
+          try {
+            const { data: refreshData, error: refreshErr } = await supabase.auth.refreshSession();
+            if (!refreshErr && refreshData?.session?.access_token) {
+              setStoredAuthToken(refreshData.session.access_token);
+              const retryMe = await usersApi.getMe();
+              if (isMounted && retryMe) {
+                setIsAuthenticated(true);
+                loadAuthenticatedData();
+                return;
               }
             }
-            setConnections((prev) => ({ ...prev, ...map }));
+          } catch {}
+
+          // Truly invalid session after refresh failure
+          if (isMounted) {
+            setStoredAuthToken(null);
+            setIsAuthenticated(false);
+            setCurrentUser(EMPTY_GUEST_USER);
+            setUpdates([]);
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("gm_user");
+            }
           }
-        }).catch(() => {});
-        usersApi.getMe().then((me) => {
-          if (me) {
-            setCurrentUser((prev) => ({
-              ...prev,
-              id: me.id,
-              name: me.name,
-              username: me.username,
-              avatar: me.avatar_initials || 'GM',
-              avatarImage: me.avatar_image || undefined,
-              connectionsCount: me.connections_count,
-            }));
-          }
-        }).catch(() => {});
+        }
+      } finally {
+        if (isMounted) {
+          setIsAuthLoading(false);
+        }
       }
-    });
+    };
+
+    checkSession();
+
+    // Re-verify silently on device wake or network reconnection (e.g. coming out of sleep mode)
+    const handleWakeOrReconnection = () => {
+      if (typeof navigator !== "undefined" && navigator.onLine) {
+        checkSession();
+      }
+    };
+
+    window.addEventListener("online", handleWakeOrReconnection);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        handleWakeOrReconnection();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      authListener?.subscription?.unsubscribe();
+      isMounted = false;
+      window.removeEventListener("online", handleWakeOrReconnection);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
+
+  // ── Logout Handler ─────────────────────────────────────────────
+  const logout = async () => {
+    setStoredAuthToken(null);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("gm_user");
+      localStorage.removeItem("gm_access_token");
+      try {
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith("sb-") || key.startsWith("gm_"))) {
+            localStorage.removeItem(key);
+          }
+        }
+      } catch {}
+    }
+    setIsAuthenticated(false);
+    setCurrentUser(EMPTY_GUEST_USER);
+    setUpdates([]);
+    setNotifications([]);
+    setConversations([]);
+    setConnections({});
+    addToast("Logged out successfully", "info");
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
+  };
 
   const addToast = (message: string, type: Toast["type"] = "info") => {
     const id = generateId();
@@ -397,6 +538,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       } catch {}
       return next;
     });
+    if (updated.id && updated.id !== 'guest') {
+      setIsAuthenticated(true);
+      setIsAuthLoading(false);
+    }
     addToast("Profile preferences updated", "success");
   };
 
@@ -440,6 +585,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         journey_tag: newUpdateData.journeyTag,
         content: newUpdateData.content,
         category: newUpdateData.category || 'All',
+        start_date: (newUpdateData as any).startDate || (newUpdateData as any).start_date,
+        end_date: (newUpdateData as any).endDate || (newUpdateData as any).end_date,
         prompt_question_1: (newUpdateData as any).prompt_question_1,
         prompt_question_2: (newUpdateData as any).prompt_question_2,
         media: newUpdateData.media?.map((m) => ({
@@ -538,7 +685,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const addComment = (updateId: string, content: string) => {
+  const addComment = async (updateId: string, content: string) => {
     const newComment: Comment = {
       id: "c-" + generateId(),
       authorId: currentUser.id,
@@ -556,6 +703,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       });
       return next;
     });
+
+    // Also persist directly to FastAPI / PostgreSQL backend and trigger notification
+    if (updateId && !updateId.startsWith('u-')) {
+      try {
+        await postsApi.addDiscussion(updateId, {
+          content,
+          tag: 'Feedback',
+        });
+      } catch (err) {
+        console.warn("Backend addDiscussion failed:", err);
+      }
+    }
+
     addToast("Comment posted", "success");
   };
 
@@ -636,27 +796,31 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const createConversation = (recipientId: string, initialMessageText: string): string => {
+    // 1. Check if conversation already exists in active state
     const existing = conversations.find((c) =>
-      c.participantIds.includes(recipientId) && c.participantIds.includes(currentUser.id)
+      c.participantIds.includes(recipientId) ||
+      (c.otherParticipant && (c.otherParticipant.id === recipientId || c.otherParticipant.username === recipientId))
     );
     if (existing) {
-      sendMessage(existing.id, initialMessageText);
+      if (initialMessageText && initialMessageText.trim()) {
+        sendMessage(existing.id, initialMessageText);
+      }
       return existing.id;
     }
 
-    const newConvId = "conv-" + generateId();
+    const tempConvId = "conv-" + generateId();
     const newMsg: Message = {
       id: "m-" + generateId(),
-      conversationId: newConvId,
+      conversationId: tempConvId,
       senderId: currentUser.id,
-      content: initialMessageText,
+      content: initialMessageText || "Started conversation",
       createdAt: new Date().toISOString(),
       read: true,
     };
 
     setConversations((prev) => [
       {
-        id: newConvId,
+        id: tempConvId,
         participantIds: [currentUser.id, recipientId],
         updatedAt: newMsg.createdAt,
         unreadCount: 0,
@@ -666,13 +830,91 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     ]);
     setMessages((prev) => ({
       ...prev,
-      [newConvId]: [newMsg],
+      [tempConvId]: [newMsg],
     }));
 
-    // Trigger API creation
-    chatApi.sendMessage(newConvId, initialMessageText).catch(() => {});
+    // 2. Call backend to start or retrieve authoritative conversation
+    chatApi
+      .startConversation(recipientId)
+      .then((serverConv) => {
+        if (serverConv && serverConv.id) {
+          const mapped: Conversation = {
+            id: serverConv.id,
+            participantIds: [
+              currentUser.id,
+              serverConv.other_participant ? serverConv.other_participant.id : recipientId,
+            ],
+            updatedAt: serverConv.last_message_at || (serverConv as any).created_at || new Date().toISOString(),
+            unreadCount: 0,
+            otherParticipant: serverConv.other_participant,
+            lastMessage: serverConv.last_message_text
+              ? {
+                  id: `m-${serverConv.id}`,
+                  conversationId: serverConv.id,
+                  senderId: serverConv.last_message_sender_id || currentUser.id,
+                  content: serverConv.last_message_text,
+                  createdAt: serverConv.last_message_at || new Date().toISOString(),
+                  read: serverConv.last_message_status === "read",
+                }
+              : undefined,
+          };
+          setConversations((prev) => [
+            mapped,
+            ...prev.filter((c) => c.id !== tempConvId && c.id !== serverConv.id),
+          ]);
 
-    return newConvId;
+          if (initialMessageText && initialMessageText.trim()) {
+            sendMessage(serverConv.id, initialMessageText);
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn("Could not start server conversation:", err);
+      });
+
+    return tempConvId;
+  };
+
+  const refreshConversations = async () => {
+    try {
+      const convs = await chatApi.getConversations();
+      if (Array.isArray(convs) && convs.length > 0) {
+        const seenPartnerIds = new Set<string>();
+        const uniqueConvs = convs.filter((c) => {
+          const partnerId = c.other_participant?.id;
+          if (!partnerId) return true;
+          if (seenPartnerIds.has(partnerId)) return false;
+          seenPartnerIds.add(partnerId);
+          return true;
+        });
+
+        const mapped = uniqueConvs.map((c) => ({
+          id: c.id,
+          participantIds: [
+            currentUser.id,
+            c.other_participant ? c.other_participant.id : '',
+          ].filter(Boolean),
+          updatedAt: c.last_message_at || (c as any).created_at || new Date().toISOString(),
+          unreadCount: c.unread_count,
+          otherParticipant: c.other_participant,
+          lastMessage: c.last_message_text
+            ? {
+                id: `m-${c.id}`,
+                conversationId: c.id,
+                senderId: c.last_message_sender_id || '',
+                content: c.last_message_text,
+                createdAt: c.last_message_at || new Date().toISOString(),
+                read: c.last_message_status === 'read',
+              }
+            : undefined,
+        }));
+        setConversations(mapped);
+      } else {
+        setConversations([]);
+      }
+    } catch {
+      setConversations([]);
+    }
   };
 
   // ── Notification Handlers ───────────────────────────────────
@@ -718,10 +960,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     addToast("Milestone removed", "info");
   };
 
+  const refreshFeed = async () => {
+    setIsLoadingFeed(true);
+    try {
+      const res = await feedApi.getFeed();
+      if (res?.items && Array.isArray(res.items)) {
+        setUpdates(res.items.map(mapFeedPostToJourneyUpdate));
+      }
+    } catch {
+      // Ignore
+    } finally {
+      setIsLoadingFeed(false);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
         currentUser,
+        isAuthenticated,
+        isAuthLoading,
+        isLoadingFeed,
+        refreshFeed,
+        logout,
         updateUser,
         resetDemoUser,
         updates,
@@ -738,6 +999,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         messages,
         sendMessage,
         createConversation,
+        refreshConversations,
         notifications,
         unreadNotificationCount,
         markNotificationRead,

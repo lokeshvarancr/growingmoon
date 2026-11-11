@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '@/lib/state/AppContext';
+import { passportsApi, postsApi } from '@/lib/api/client';
 import type { MediaAttachment } from '@/types';
 import {
   X,
@@ -11,16 +12,31 @@ import {
   List,
   Image as ImageIcon,
   Video,
-  FileText,
   Sparkles,
   Bookmark,
   Send,
+  AlertCircle,
+  Calendar,
 } from 'lucide-react';
+
+export type PostEditData = {
+  id: string;
+  headline?: string;
+  content: string;
+  journeyTag?: string;
+  category?: string;
+  startDate?: string;
+  endDate?: string;
+  media?: MediaAttachment[];
+};
 
 type PostComposerModalProps = {
   isOpen: boolean;
   onClose: () => void;
   initialType?: 'text' | 'photo' | 'video' | 'milestone' | 'type' | 'journey';
+  initialJourneyTitle?: string;
+  editPost?: PostEditData | null;
+  onPostUpdated?: (updated: PostEditData) => void;
 };
 
 type UpdateTypeOption = {
@@ -49,52 +65,42 @@ const INITIAL_JOURNEYS: JourneyOption[] = [
   { id: 'j-finance', label: 'Personal finance journey', dotColor: 'bg-[#F59E0B]' },
 ];
 
-const INITIAL_ATTACHMENTS: MediaAttachment[] = [
-  {
-    id: 'att-1',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=400&q=80',
-    alt: 'Whiteboard Prototype Sprint',
-  },
-  {
-    id: 'att-2',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80',
-    alt: 'Dashboard UI Mockup',
-  },
-  {
-    id: 'att-3',
-    type: 'file',
-    url: '#',
-    fileName: 'MVP_Pitch_Deck.pptx',
-    fileSize: '12 MB',
-  },
-];
-
 export default function PostComposerModal({
   isOpen,
   onClose,
   initialType = 'text',
+  initialJourneyTitle,
+  editPost = null,
+  onPostUpdated,
 }: PostComposerModalProps) {
   const { addUpdate, addToast } = useApp();
 
-  // Form states matching media_1793433774084_35e40c29.jpg
+  // Dropdown states with smart defaults
   const [updateTypes, setUpdateTypes] = useState<UpdateTypeOption[]>(INITIAL_UPDATE_TYPES);
   const [selectedUpdateType, setSelectedUpdateType] = useState<string>('Progress update');
   const [isUpdateTypeOpen, setIsUpdateTypeOpen] = useState(false);
 
   const [journeys, setJourneys] = useState<JourneyOption[]>(INITIAL_JOURNEYS);
-  const [selectedJourney, setSelectedJourney] = useState<string>('Building my SaaS product');
+  const [selectedJourney, setSelectedJourney] = useState<string>(
+    initialJourneyTitle || 'Building my SaaS product'
+  );
   const [isJourneyOpen, setIsJourneyOpen] = useState(false);
 
-  const [heading, setHeading] = useState('Finally launched our first prototype');
-  const [summary, setSummary] = useState(
-    'After three weeks of development, our first working prototype is ready for customer testing.'
-  );
+  const [heading, setHeading] = useState('');
 
-  const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
+  // Start Date and End Date for the update
+  const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState<string>('');
+  const [isOngoing, setIsOngoing] = useState<boolean>(true);
+
+  // "Add more details" is dropped up (collapsed) by default
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
   const [detailedDescription, setDetailedDescription] = useState('');
-  const [attachments, setAttachments] = useState<MediaAttachment[]>(INITIAL_ATTACHMENTS);
+  const [attachments, setAttachments] = useState<MediaAttachment[]>([]);
+
+  // Direct video link state
+  const [videoLink, setVideoLink] = useState('');
+  const [videoLinkError, setVideoLinkError] = useState<string | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -105,29 +111,89 @@ export default function PostComposerModal({
   const [isNewJourneyModalOpen, setIsNewJourneyModalOpen] = useState(false);
   const [newJourneyName, setNewJourneyName] = useState('');
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [fileTypeToUpload, setFileTypeToUpload] = useState<'image' | 'video' | 'file'>('image');
+  const imageFileInputRef = useRef<HTMLInputElement>(null);
 
-  // Sync with initialType if opened specifically for photos/milestones/dropdowns
+  // Sync with initialType or editPost when opened
   useEffect(() => {
     if (isOpen) {
-      if (initialType === 'journey') {
-        setIsJourneyOpen(true);
-        setIsUpdateTypeOpen(false);
-      } else if (initialType === 'type') {
-        setIsUpdateTypeOpen(true);
-        setIsJourneyOpen(false);
-      } else if (initialType === 'milestone') {
-        setSelectedUpdateType('Milestone achieved');
-      } else if (initialType === 'photo') {
+      if (editPost) {
+        setHeading(editPost.headline || '');
+        setDetailedDescription(editPost.content || '');
+        if (editPost.journeyTag) {
+          setSelectedJourney(editPost.journeyTag);
+        }
+        if (editPost.category) {
+          setSelectedUpdateType(editPost.category);
+        }
+        if (editPost.startDate) {
+          setStartDate(editPost.startDate.includes('T') ? editPost.startDate.split('T')[0] : editPost.startDate);
+        } else {
+          setStartDate(new Date().toISOString().split('T')[0]);
+        }
+        if (editPost.endDate) {
+          setEndDate(editPost.endDate.includes('T') ? editPost.endDate.split('T')[0] : editPost.endDate);
+          setIsOngoing(false);
+        } else {
+          setEndDate('');
+          setIsOngoing(true);
+        }
+        if (editPost.media && editPost.media.length > 0) {
+          setAttachments(editPost.media);
+        } else {
+          setAttachments([]);
+        }
         setIsDetailsExpanded(true);
-        setTimeout(() => triggerFileInput('image'), 200);
-      } else if (initialType === 'video') {
-        setIsDetailsExpanded(true);
-        setTimeout(() => triggerFileInput('video'), 200);
+      } else {
+        setHeading('');
+        setDetailedDescription('');
+        setAttachments([]);
+        setVideoLink('');
+        setStartDate(new Date().toISOString().split('T')[0]);
+        setEndDate('');
+        setIsOngoing(true);
+        if (initialJourneyTitle) {
+          setSelectedJourney(initialJourneyTitle);
+        }
+      }
+
+      passportsApi
+        .getMyPassports()
+        .then((list) => {
+          if (Array.isArray(list) && list.length > 0) {
+            const mapped = list.map((p, idx) => {
+              const colors = ['bg-[#6258DB]', 'bg-[#10B981]', 'bg-[#06B6D4]', 'bg-[#F59E0B]'];
+              return {
+                id: p.id,
+                label: p.title,
+                dotColor: colors[idx % colors.length],
+              };
+            });
+            setJourneys(mapped);
+            if (!editPost && !initialJourneyTitle) {
+              setSelectedJourney((prev) => (mapped.some((m) => m.label === prev) ? prev : mapped[0].label));
+            }
+          }
+        })
+        .catch(() => {});
+
+      if (!editPost) {
+        if (initialType === 'journey') {
+          setIsJourneyOpen(true);
+          setIsUpdateTypeOpen(false);
+        } else if (initialType === 'type') {
+          setIsUpdateTypeOpen(true);
+          setIsJourneyOpen(false);
+        } else if (initialType === 'milestone') {
+          setSelectedUpdateType('Milestone achieved');
+        } else if (initialType === 'photo') {
+          setIsDetailsExpanded(true);
+          setTimeout(() => triggerImagePicker(), 150);
+        } else if (initialType === 'video') {
+          setIsDetailsExpanded(true);
+        }
       }
     }
-  }, [isOpen, initialType]);
+  }, [isOpen, initialType, editPost, initialJourneyTitle]);
 
   // Handle escape key to close
   useEffect(() => {
@@ -142,32 +208,29 @@ export default function PostComposerModal({
 
   if (!isOpen) return null;
 
-  const triggerFileInput = (type: 'image' | 'video' | 'file') => {
-    setFileTypeToUpload(type);
-    if (fileInputRef.current) {
-      if (type === 'image') {
-        fileInputRef.current.accept = 'image/*';
-      } else if (type === 'video') {
-        fileInputRef.current.accept = 'video/*';
-      } else {
-        fileInputRef.current.accept = '.pdf,.ppt,.pptx,.doc,.docx,.txt,.zip';
-      }
-      fileInputRef.current.click();
+  // Trigger file dialog: strictly image/* files
+  const triggerImagePicker = () => {
+    if (imageFileInputRef.current) {
+      imageFileInputRef.current.click();
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
     const newItems: MediaAttachment[] = [];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+      if (!file.type.startsWith('image/')) {
+        addToast('Only image files are allowed.', 'warning');
+        continue;
+      }
       const objectUrl = URL.createObjectURL(file);
       const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
       newItems.push({
         id: Math.random().toString(36).slice(2),
-        type: fileTypeToUpload,
+        type: 'image',
         url: objectUrl,
         fileName: file.name,
         fileSize: `${sizeMb} MB`,
@@ -176,8 +239,32 @@ export default function PostComposerModal({
     }
 
     setAttachments((prev) => [...prev, ...newItems]);
-    addToast(`${fileTypeToUpload === 'image' ? 'Image' : fileTypeToUpload === 'video' ? 'Video' : 'File'} added!`, 'info');
+    if (newItems.length > 0) {
+      addToast(`${newItems.length} image${newItems.length > 1 ? 's' : ''} added!`, 'info');
+    }
     e.target.value = '';
+  };
+
+  // Video Link validation helper
+  const handleVideoLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setVideoLink(val);
+    setVideoLinkError(null);
+
+    if (!val.trim()) return;
+
+    const socialPattern = /(youtube\.com|youtu\.be|facebook\.com|fb\.watch|instagram\.com|discord\.(com|gg)|twitter\.com|x\.com|tiktok\.com|linkedin\.com)/i;
+    if (socialPattern.test(val)) {
+      setVideoLinkError(
+        'Only Google Drive links are allowed for videos. Social media links (YouTube, Facebook, Instagram, Discord) are not permitted.'
+      );
+      return;
+    }
+
+    const googleDrivePattern = /^https?:\/\/(?:drive|docs)\.google\.com\//i;
+    if (!googleDrivePattern.test(val.trim())) {
+      setVideoLinkError('Please enter a valid Google Drive video link (e.g. https://drive.google.com/...)');
+    }
   };
 
   const removeAttachment = (id: string) => {
@@ -226,31 +313,118 @@ export default function PostComposerModal({
 
   // Post & Save
   const handlePostAndSave = () => {
-    if (!heading.trim() && !summary.trim()) {
-      addToast('Please enter a heading or summary for your update', 'warning');
+    if (!selectedUpdateType) {
+      addToast('Please select the progress update type', 'warning');
       return;
+    }
+    if (!selectedJourney) {
+      addToast('Please select the journey', 'warning');
+      return;
+    }
+    const cleanHeading = heading.trim();
+    if (!cleanHeading) {
+      addToast('Please enter an update heading', 'warning');
+      return;
+    }
+
+    // Validate video link if provided
+    if (videoLink.trim()) {
+      const socialPattern = /(youtube\.com|youtu\.be|facebook\.com|fb\.watch|instagram\.com|discord\.(com|gg)|twitter\.com|x\.com|tiktok\.com|linkedin\.com)/i;
+      if (socialPattern.test(videoLink)) {
+        addToast(
+          'Social media links are not permitted. Only Google Drive links are allowed for videos.',
+          'danger'
+        );
+        return;
+      }
+      const googleDrivePattern = /^https?:\/\/(?:drive|docs)\.google\.com\//i;
+      if (!googleDrivePattern.test(videoLink.trim())) {
+        addToast('Please enter a valid Google Drive video link.', 'warning');
+        return;
+      }
     }
 
     setIsSubmitting(true);
 
     const fullContent = detailedDescription.trim()
-      ? `${summary.trim()}\n\n${detailedDescription.trim()}`
-      : summary.trim();
+      ? `${cleanHeading}\n\n${detailedDescription.trim()}`
+      : cleanHeading;
 
-    setTimeout(() => {
-      addUpdate({
-        headline: heading.trim(),
+    // Prepare attachments: images + video link
+    const finalAttachments = [...attachments];
+    if (videoLink.trim()) {
+      finalAttachments.push({
+        id: 'drive-' + Date.now(),
+        type: 'video',
+        url: videoLink.trim(),
+        fileName: 'Google Drive Video',
+        fileSize: 'Drive Link',
+        alt: 'Google Drive Video Attachment',
+      });
+    }
+
+    if (editPost) {
+      // ── Edit Mode Execution ─────────────────────────────────
+      const isMock = editPost.id.startsWith('t-');
+      const updatedPayload: PostEditData = {
+        id: editPost.id,
+        headline: cleanHeading,
+        content: detailedDescription.trim() || cleanHeading,
         journeyTag: selectedJourney,
         category: selectedUpdateType,
-        oneLineSummary: summary.trim(),
+        startDate: startDate || undefined,
+        endDate: isOngoing ? undefined : (endDate || undefined),
+        media: finalAttachments,
+      };
+
+      if (!isMock) {
+        postsApi
+          .updatePost(editPost.id, {
+            headline: cleanHeading,
+            content: detailedDescription.trim() || cleanHeading,
+            journey_tag: selectedJourney,
+            category: selectedUpdateType,
+            start_date: startDate || undefined,
+            end_date: isOngoing ? undefined : (endDate || undefined),
+          })
+          .then(() => {
+            onPostUpdated?.(updatedPayload);
+            addToast('Journey update saved successfully!', 'success');
+            setIsSubmitting(false);
+            onClose();
+          })
+          .catch((err) => {
+            addToast(err?.message || 'Failed to update post.', 'danger');
+            setIsSubmitting(false);
+          });
+      } else {
+        onPostUpdated?.(updatedPayload);
+        addToast('Journey update saved successfully!', 'success');
+        setIsSubmitting(false);
+        onClose();
+      }
+      return;
+    }
+
+    // ── Create Mode Execution ─────────────────────────────────
+    setTimeout(() => {
+      addUpdate({
+        headline: cleanHeading,
+        journeyTag: selectedJourney || 'Building my SaaS product',
+        category: selectedUpdateType || 'Progress update',
+        oneLineSummary: cleanHeading,
         content: fullContent,
-        media: attachments,
+        startDate: startDate || new Date().toISOString().split('T')[0],
+        endDate: isOngoing ? undefined : (endDate || undefined),
+        start_date: startDate || new Date().toISOString().split('T')[0],
+        end_date: isOngoing ? undefined : (endDate || undefined),
+        media: finalAttachments,
       });
 
       setIsSubmitting(false);
       addToast('Journey update posted to your feed and timeline!', 'success');
       onClose();
-    }, 350);
+    }, 300);
   };
 
   // Save as Draft
@@ -260,14 +434,14 @@ export default function PostComposerModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto select-none">
       {/* ── Backdrop Overlay ────────────────────────────────────── */}
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
         onClick={onClose}
       />
 
-      {/* ── Modal Window (Exact Xerox of media_1793433774084_35e40c29.jpg) ── */}
+      {/* ── Modal Window ────────────────────────────────────────── */}
       <div className="relative bg-white w-full max-w-2xl rounded-[28px] sm:rounded-[32px] shadow-2xl border border-gray-100 flex flex-col max-h-[92vh] overflow-hidden z-10 animate-in zoom-in-95 duration-200">
         
         {/* Modal Scrollable Body */}
@@ -277,10 +451,12 @@ export default function PostComposerModal({
           <div className="flex items-start justify-between mb-5">
             <div>
               <h2 className="text-xl sm:text-[22px] font-bold text-[#141724] tracking-tight">
-                Share a journey update
+                {editPost ? 'Edit journey update' : 'Share a journey update'}
               </h2>
               <p className="text-xs sm:text-[13px] text-gray-500 font-normal mt-0.5">
-                Document your next step
+                {editPost
+                  ? 'Update existing milestone details, media, and learnings'
+                  : 'Document your next step'}
               </p>
             </div>
             <button
@@ -313,11 +489,17 @@ export default function PostComposerModal({
                   }}
                   className="w-full border border-gray-200/90 hover:border-gray-300 rounded-2xl p-2 sm:p-2.5 flex items-center justify-between cursor-pointer bg-white transition-all shadow-2xs text-left"
                 >
-                  <span className="bg-[#EEEDFE] text-[#6258DB] text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5">
-                    {selectedUpdateType}
+                  <span
+                    className={`${
+                      selectedUpdateType
+                        ? 'bg-[#EEEDFE] text-[#6258DB]'
+                        : 'bg-gray-100 text-gray-500'
+                    } text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]`}
+                  >
+                    {selectedUpdateType || 'Select the progress update'}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-gray-600 transition-transform ${
+                    className={`w-4 h-4 text-gray-600 transition-transform flex-shrink-0 ${
                       isUpdateTypeOpen ? 'rotate-180' : ''
                     }`}
                   />
@@ -331,7 +513,7 @@ export default function PostComposerModal({
                       onClick={() => setIsUpdateTypeOpen(false)}
                     />
                     <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in zoom-in-95">
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 max-h-56 overflow-y-auto">
                         {updateTypes.map((type) => {
                           const isSelected = selectedUpdateType === type.label;
                           return (
@@ -404,11 +586,17 @@ export default function PostComposerModal({
                   }}
                   className="w-full border border-gray-200/90 hover:border-gray-300 rounded-2xl p-2 sm:p-2.5 flex items-center justify-between cursor-pointer bg-white transition-all shadow-2xs text-left"
                 >
-                  <span className="bg-[#EEEDFE] text-[#6258DB] text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]">
-                    {selectedJourney}
+                  <span
+                    className={`${
+                      selectedJourney
+                        ? 'bg-[#EEEDFE] text-[#6258DB]'
+                        : 'bg-gray-100 text-gray-500'
+                    } text-xs font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 truncate max-w-[85%]`}
+                  >
+                    {selectedJourney || 'Select the journey'}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-gray-600 transition-transform ${
+                    className={`w-4 h-4 text-gray-600 transition-transform flex-shrink-0 ${
                       isJourneyOpen ? 'rotate-180' : ''
                     }`}
                   />
@@ -422,7 +610,7 @@ export default function PostComposerModal({
                       onClick={() => setIsJourneyOpen(false)}
                     />
                     <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in zoom-in-95">
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 max-h-56 overflow-y-auto">
                         {journeys.map((j) => {
                           const isSelected = selectedJourney === j.label;
                           return (
@@ -472,6 +660,59 @@ export default function PostComposerModal({
 
             </div>
 
+            {/* ── 2B. Timeline Dates: Start Date & End Date ────────── */}
+            <div className="bg-[#FAF9F6] rounded-2xl p-3 sm:p-3.5 border border-gray-100">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#6258DB]" />
+                  <span>Update Timeline (Dates)</span>
+                </label>
+                <label className="inline-flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-gray-600 select-none">
+                  <input
+                    type="checkbox"
+                    checked={isOngoing}
+                    onChange={(e) => {
+                      setIsOngoing(e.target.checked);
+                      if (e.target.checked) setEndDate('');
+                    }}
+                    className="w-3.5 h-3.5 rounded text-[#6258DB] focus:ring-[#6258DB] border-gray-300"
+                  />
+                  <span>Currently ongoing (To: Present)</span>
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Start Date */}
+                <div>
+                  <span className="text-[11px] font-medium text-gray-500 mb-1 block">
+                    From Date <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs text-gray-800 focus:outline-none focus:border-[#6258DB] focus:ring-1 focus:ring-[#6258DB] shadow-2xs font-medium"
+                  />
+                </div>
+
+                {/* End Date */}
+                <div>
+                  <span className="text-[11px] font-medium text-gray-500 mb-1 block">
+                    To Date {isOngoing ? '(Ongoing → Present)' : ''}
+                  </span>
+                  <input
+                    type="date"
+                    disabled={isOngoing}
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className={`w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-xs text-gray-800 focus:outline-none focus:border-[#6258DB] focus:ring-1 focus:ring-[#6258DB] shadow-2xs font-medium ${
+                      isOngoing ? 'opacity-50 cursor-not-allowed bg-gray-50 text-gray-400' : ''
+                    }`}
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* ── 3. ROW 2: Heading * ───────────────────────────────── */}
             <div>
               <label className="text-xs font-semibold text-gray-700 mb-1.5 block">
@@ -483,8 +724,8 @@ export default function PostComposerModal({
                   maxLength={100}
                   value={heading}
                   onChange={(e) => setHeading(e.target.value)}
-                  placeholder="Finally launched our first prototype"
-                  className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs"
+                  placeholder="e.g. Finally launched our first working prototype"
+                  className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs font-bold"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-gray-400 font-normal pointer-events-none">
                   {heading.length}/100
@@ -492,27 +733,28 @@ export default function PostComposerModal({
               </div>
             </div>
 
-            {/* ── 4. ROW 3: One line summary * ─────────────────────── */}
+            {/* ── 4. ROW 3: Description ─────────────────────────────── */}
             <div>
               <label className="text-xs font-semibold text-gray-700 mb-1.5 block">
-                One line summary <span className="text-red-500">*</span>
+                Description
               </label>
               <div className="relative">
-                <input
-                  type="text"
-                  maxLength={150}
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
-                  placeholder="After three weeks of development, our first working prototype is ready for customer testing."
-                  className="w-full px-4 py-3 pr-16 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all shadow-2xs"
+                <textarea
+                  rows={3}
+                  maxLength={1500}
+                  value={detailedDescription}
+                  onChange={(e) => setDetailedDescription(e.target.value)}
+                  placeholder="Share a small description about what happened, what you learned, or what's next..."
+                  className="w-full p-3.5 pb-6 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 resize-none transition-all shadow-2xs"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-gray-400 font-normal pointer-events-none">
-                  {summary.length}/150
+                <span className="absolute right-3.5 bottom-2.5 text-[10px] text-gray-400 font-normal pointer-events-none">
+                  {detailedDescription.length}/1500
                 </span>
               </div>
             </div>
 
-            {/* ── 5. ROW 4: Collapsible "Add more details (optional)" ── */}
+            {/* ── 5. ROW 4: Collapsible "Add media attachments (optional)" ── */}
+            {/* Dropped up (collapsed) by default, only drops down when clicking arrow */}
             <div className="rounded-2xl border border-gray-200/90 bg-white overflow-hidden shadow-2xs transition-all">
               {/* Collapsible Header */}
               <button
@@ -526,10 +768,10 @@ export default function PostComposerModal({
                   </div>
                   <div>
                     <span className="text-xs sm:text-sm font-bold text-[#141724] block">
-                      Add more details (optional)
+                      Add media attachments (optional)
                     </span>
                     <span className="text-[11px] text-gray-500 font-normal mt-0.5 block">
-                      Write a detailed description and add attachments.
+                      Attach screenshots, images, or paste your Google Drive video link.
                     </span>
                   </div>
                 </div>
@@ -540,132 +782,87 @@ export default function PostComposerModal({
                 )}
               </button>
 
-              {/* Collapsible Content */}
+              {/* Collapsible Content - only displayed when expanded */}
               {isDetailsExpanded && (
-                <div className="px-4 pb-4 pt-1 space-y-4 border-t border-gray-100 animate-in fade-in duration-150">
-                  {/* Detailed description */}
+                <div className="px-4 pb-4 pt-2 space-y-4 border-t border-gray-100 animate-in fade-in duration-150">
+                  {/* 1. Images attachment */}
                   <div>
-                    <label className="text-xs font-semibold text-gray-700 block mb-1.5">
-                      Detailed description
-                    </label>
-                    <div className="relative">
-                      <textarea
-                        rows={3}
-                        maxLength={2000}
-                        value={detailedDescription}
-                        onChange={(e) => setDetailedDescription(e.target.value)}
-                        placeholder="Share what happened, what you learned, challenges, or what comes next..."
-                        className="w-full p-3.5 pb-6 rounded-2xl border border-gray-200/90 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 resize-none transition-all shadow-2xs"
-                      />
-                      <span className="absolute right-3.5 bottom-2.5 text-[10px] text-gray-400 font-normal pointer-events-none">
-                        {detailedDescription.length}/2000
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-xs font-semibold text-gray-700">
+                        Images
+                      </label>
+                      <span className="text-[11px] text-gray-400">
+                        Attach screenshots, mockups, or photos
                       </span>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={triggerImagePicker}
+                      className="border border-gray-200/90 hover:border-gray-300 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3 text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50/80 transition-all cursor-pointer shadow-2xs group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ImageIcon className="w-4 h-4 text-[#6258DB]" />
+                        <span>Add images</span>
+                      </div>
+                      <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[11px] text-gray-500 group-hover:border-gray-400">
+                        +
+                      </span>
+                    </button>
+
+                    {/* Attached Images Preview Row */}
+                    {attachments.filter((a) => a.type === 'image').length > 0 && (
+                      <div className="flex items-center gap-2.5 mt-2.5 overflow-x-auto pb-1 scrollbar-thin">
+                        {attachments
+                          .filter((a) => a.type === 'image')
+                          .map((att) => (
+                            <div
+                              key={att.id}
+                              className="relative flex-shrink-0 group rounded-xl overflow-hidden border border-gray-200 shadow-2xs bg-gray-50 w-20 h-14"
+                            >
+                              <img
+                                src={att.url}
+                                alt={att.alt || 'attachment'}
+                                className="w-full h-full object-cover"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeAttachment(att.id)}
+                                className="absolute top-1 right-1 w-4.5 h-4.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center text-[10px] transition-transform active:scale-90 cursor-pointer shadow-xs"
+                                title="Remove image"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
 
-                  {/* Attachments Group */}
+                  {/* 2. Direct Video Link input: "Please paste the video link if you have any" */}
                   <div>
-                    <label className="text-xs font-semibold text-gray-700 block mb-2">
-                      Attachments
+                    <label className="text-xs font-semibold text-gray-700 block mb-1.5">
+                      Video Link
                     </label>
-                    
-                    {/* 3 Action Buttons */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                      {/* 1. Add images */}
-                      <button
-                        type="button"
-                        onClick={() => triggerFileInput('image')}
-                        className="border border-gray-200/90 hover:border-gray-300 rounded-xl px-3.5 py-2.5 flex items-center justify-between text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50/80 transition-all cursor-pointer shadow-2xs group"
-                      >
-                        <div className="flex items-center gap-2">
-                          <ImageIcon className="w-4 h-4 text-gray-500 group-hover:text-gray-700" />
-                          <span>Add images</span>
-                        </div>
-                        <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[11px] text-gray-500 group-hover:border-gray-400">
-                          +
-                        </span>
-                      </button>
-
-                      {/* 2. Add videos */}
-                      <button
-                        type="button"
-                        onClick={() => triggerFileInput('video')}
-                        className="border border-gray-200/90 hover:border-gray-300 rounded-xl px-3.5 py-2.5 flex items-center justify-between text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50/80 transition-all cursor-pointer shadow-2xs group"
-                      >
-                        <div className="flex items-center gap-2">
-                          <Video className="w-4 h-4 text-gray-500 group-hover:text-gray-700" />
-                          <span>Add videos</span>
-                        </div>
-                        <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[11px] text-gray-500 group-hover:border-gray-400">
-                          +
-                        </span>
-                      </button>
-
-                      {/* 3. Add files */}
-                      <button
-                        type="button"
-                        onClick={() => triggerFileInput('file')}
-                        className="border border-gray-200/90 hover:border-gray-300 rounded-xl px-3.5 py-2.5 flex items-center justify-between text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50/80 transition-all cursor-pointer shadow-2xs group"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <FileText className="w-4 h-4 text-gray-500 group-hover:text-gray-700 flex-shrink-0" />
-                          <span className="truncate">Add files (PDF, PPT, etc.)</span>
-                        </div>
-                        <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[11px] text-gray-500 group-hover:border-gray-400 flex-shrink-0 ml-1">
-                          +
-                        </span>
-                      </button>
+                    <div className="relative">
+                      <Video className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <input
+                        type="url"
+                        value={videoLink}
+                        onChange={handleVideoLinkChange}
+                        placeholder="Please paste the video link if you have any"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#6258DB] focus:ring-2 focus:ring-[#6258DB]/15 transition-all"
+                      />
                     </div>
-
-                    {/* Attached Items Preview Row */}
-                    {attachments.length > 0 && (
-                      <div className="flex items-center gap-2.5 mt-3 overflow-x-auto pb-1 scrollbar-thin">
-                        {attachments.map((att) => (
-                          <div
-                            key={att.id}
-                            className="relative flex-shrink-0 group rounded-xl overflow-hidden border border-gray-200 shadow-2xs bg-gray-50"
-                          >
-                            {att.type === 'file' ? (
-                              <div className="flex items-center gap-2.5 p-2 bg-[#FFF6EE] border border-[#FDE0C5] rounded-xl pr-8 min-w-[190px]">
-                                <div className="w-8 h-8 rounded-lg bg-[#FFEDE0] text-[#E06414] flex items-center justify-center flex-shrink-0">
-                                  <FileText className="w-4 h-4 stroke-[2]" />
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <span className="text-[11px] font-bold text-[#141724] block truncate">
-                                    {att.fileName || 'MVP_Pitch_Deck.pptx'}
-                                  </span>
-                                  <span className="text-[10px] text-gray-400 block">
-                                    {att.fileSize || '12 MB'}
-                                  </span>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="w-20 h-14 relative bg-gray-100">
-                                <img
-                                  src={att.url}
-                                  alt={att.alt || 'attachment'}
-                                  className="w-full h-full object-cover"
-                                />
-                                {att.type === 'video' && (
-                                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white">
-                                    <Video className="w-4 h-4" />
-                                  </div>
-                                )}
-                              </div>
-                            )}
-
-                            {/* Circular Dark Remove Button (Matches Screenshot) */}
-                            <button
-                              type="button"
-                              onClick={() => removeAttachment(att.id)}
-                              className="absolute top-1 right-1 w-4.5 h-4.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center text-[10px] transition-transform active:scale-90 cursor-pointer shadow-xs"
-                              title="Remove attachment"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        ))}
-                      </div>
+                    {videoLinkError ? (
+                      <p className="text-[11px] text-rose-600 mt-1.5 flex items-center gap-1.5 leading-tight">
+                        <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{videoLinkError}</span>
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-gray-400 mt-1">
+                        Only Google Drive video links are supported. Social media links are not permitted.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -709,8 +906,22 @@ export default function PostComposerModal({
                 disabled={isSubmitting}
                 className="bg-[#6258DB] hover:bg-[#5247CE] text-white px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm hover:shadow transition-all cursor-pointer active:scale-95 disabled:opacity-50"
               >
-                <Send className="w-3.5 h-3.5 rotate-45 -translate-y-0.5" />
-                <span>Post & Save</span>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Saving...</span>
+                  </>
+                ) : editPost ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Save Changes</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5 rotate-45 -translate-y-0.5" />
+                    <span>Post & Save</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -718,11 +929,12 @@ export default function PostComposerModal({
         </div>
       </div>
 
-      {/* Hidden File Input for Attachments */}
+      {/* Hidden File Input for STRICTLY images */}
       <input
         type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
+        ref={imageFileInputRef}
+        onChange={handleImageFileChange}
+        accept="image/*"
         className="hidden"
         multiple
       />
@@ -757,13 +969,13 @@ export default function PostComposerModal({
               <button
                 type="button"
                 onClick={() => setIsNewTypeModalOpen(false)}
-                className="px-3 py-1.5 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold"
+                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold cursor-pointer"
               >
                 Add type
               </button>
@@ -802,13 +1014,13 @@ export default function PostComposerModal({
               <button
                 type="button"
                 onClick={() => setIsNewJourneyModalOpen(false)}
-                className="px-3 py-1.5 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold"
+                className="px-4 py-1.5 rounded-full bg-[#6258DB] hover:bg-[#5247CE] text-white text-xs font-bold cursor-pointer"
               >
                 Create journey
               </button>

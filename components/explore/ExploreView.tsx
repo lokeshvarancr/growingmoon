@@ -1,8 +1,10 @@
 'use client';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AppShell from '@/components/shared/AppShell';
-import { feedApi } from '@/lib/api/client';
+import AestheticLoader from '@/components/shared/AestheticLoader';
+import { feedApi, socialApi } from '@/lib/api/client';
+import { useApp } from '@/lib/state/AppContext';
 import {
   Search,
   SlidersHorizontal,
@@ -25,6 +27,7 @@ export type ExploreCard = {
   bannerUrl: string;
   titleLead: string;
   titleMain: string;
+  authorId?: string;
   authorName: string;
   authorAvatar: string;
   authorUsername: string;
@@ -412,6 +415,7 @@ const BASE_EXPLORE_STORIES: Array<Omit<MobileFeedItem, 'id' | 'format'>> = [
 export default function ExploreView() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { currentUser, addToast } = useApp();
   const urlQuery = searchParams?.get('q') || '';
 
   const [activeTab, setActiveTab] = useState<string>('for-you');
@@ -423,68 +427,134 @@ export default function ExploreView() {
   const [liveStories, setLiveStories] = useState<MobileFeedItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasLoadedBackend, setHasLoadedBackend] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // Fetch live backend posts directly from passport_updates
+  // Helper mapper for feed posts -> explore cards
+  const mapPostToExploreCard = (post: any): ExploreCard => ({
+    id: post.id,
+    badge: post.journey_tag || post.category,
+    badgeIcon:
+      post.category?.toLowerCase() === 'building'
+        ? '🚀'
+        : post.category?.toLowerCase() === 'learning'
+        ? '📖'
+        : '✨',
+    badgeColor: 'bg-[#181528]/75 text-white border-white/20',
+    bannerUrl:
+      post.media?.[0]?.url ||
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+    titleLead: post.headline ? 'Milestone:' : 'Journey:',
+    titleMain: post.headline || post.journey_tag || 'Progress Log',
+    authorId: post.author?.id || post.author_id,
+    authorName: post.author?.name || 'Community Member',
+    authorAvatar:
+      post.author?.avatar_image ||
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+    authorUsername: post.author?.username || 'member',
+    heading: post.content ? post.content.slice(0, 140) + (post.content.length > 140 ? '...' : '') : '',
+    emoji: '✨',
+    actionLabel: 'View Milestone',
+    tags: [post.category, post.journey_tag || 'Journey'].filter(Boolean),
+    category: (post.category?.toLowerCase() as any) || 'building',
+  });
+
+  const mapPostToStory = (post: any, idx: number): MobileFeedItem => {
+    const formats: MobileCardFormat[] = ['tall-hero', 'top-image', 'white-minimal', 'video'];
+    return {
+      id: post.id,
+      format: formats[idx % formats.length],
+      title: post.headline || post.journey_tag || 'Community Milestone',
+      subtitle: post.content.slice(0, 80) + (post.content.length > 80 ? '...' : ''),
+      badge: post.journey_tag || post.category,
+      badgeIcon:
+        post.category?.toLowerCase() === 'building'
+          ? '🚀'
+          : post.category?.toLowerCase() === 'learning'
+          ? '📖'
+          : '✨',
+      imageUrl:
+        post.media?.[0]?.url ||
+        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+      authorName: post.author?.name || 'Community Member',
+      authorAvatar:
+        post.author?.avatar_image ||
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      authorUsername: post.author?.username || 'member',
+      category: (post.category?.toLowerCase() as any) || 'building',
+      videoDuration: post.media?.[0]?.media_type === 'video' ? '0:30' : undefined,
+    };
+  };
+
+  // Helper to deduplicate incoming raw posts against existing cards
+  const filterUniquePosts = (rawItems: any[], existingCards: ExploreCard[]): any[] => {
+    const existingIds = new Set(existingCards.map((c) => c.id));
+    const seenContent = new Set(
+      existingCards.map((c) => `${c.authorUsername}__${c.titleMain}__${c.heading.slice(0, 100)}`.toLowerCase().trim())
+    );
+
+    const unique: any[] = [];
+    for (const item of rawItems) {
+      if (!item || !item.id) continue;
+      if (existingIds.has(item.id)) continue;
+
+      const authorHandle = item.author?.username || item.author_id || 'member';
+      const title = item.headline || item.journey_tag || '';
+      const text = item.content || '';
+      const signature = `${authorHandle}__${title}__${text.slice(0, 100)}`.toLowerCase().trim();
+
+      if (signature.length > 5 && seenContent.has(signature)) {
+        continue;
+      }
+
+      existingIds.add(item.id);
+      if (signature.length > 5) {
+        seenContent.add(signature);
+      }
+      unique.push(item);
+    }
+    return unique;
+  };
+
+  // Fetch initial batch of maximum 30 feeds directly from passport_updates
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
+    setHasMore(true);
 
     const categoryParam = activeTab === 'all' || activeTab === 'for-you' ? undefined : activeTab;
 
     feedApi
-      .getFeed(undefined, 50, categoryParam, searchQuery)
+      .getExploreFeed(undefined, 30, categoryParam, searchQuery, 0)
       .then((res) => {
         if (!isMounted) return;
         if (res?.items && Array.isArray(res.items)) {
-          const mappedCards: ExploreCard[] = res.items.map((post) => ({
-            id: post.id,
-            badge: post.journey_tag || post.category,
-            badgeIcon: post.category?.toLowerCase() === 'building' ? '🚀' : post.category?.toLowerCase() === 'learning' ? '📖' : '✨',
-            badgeColor: 'bg-[#181528]/75 text-white border-white/20',
-            bannerUrl:
-              post.media?.[0]?.url ||
-              'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
-            titleLead: post.headline ? 'Milestone:' : 'Journey:',
-            titleMain: post.headline || post.journey_tag || 'Progress Log',
-            authorName: post.author.name,
-            authorAvatar:
-              post.author.avatar_image ||
-              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
-            authorUsername: post.author.username,
-            heading: post.content.slice(0, 140) + (post.content.length > 140 ? '...' : ''),
-            emoji: '✨',
-            actionLabel: 'View Milestone',
-            tags: [post.category, post.journey_tag || 'Journey'].filter(Boolean),
-            category: (post.category.toLowerCase() as any) || 'building',
-          }));
-
-          const formats: MobileCardFormat[] = ['tall-hero', 'top-image', 'white-minimal', 'video'];
-          const mappedStories: MobileFeedItem[] = res.items.map((post, idx) => ({
-            id: post.id,
-            format: formats[idx % formats.length],
-            title: post.headline || post.journey_tag || 'Community Milestone',
-            subtitle: post.content.slice(0, 80) + (post.content.length > 80 ? '...' : ''),
-            badge: post.journey_tag || post.category,
-            badgeIcon: post.category?.toLowerCase() === 'building' ? '🚀' : post.category?.toLowerCase() === 'learning' ? '📖' : '✨',
-            imageUrl:
-              post.media?.[0]?.url ||
-              'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
-            authorName: post.author.name,
-            authorAvatar:
-              post.author.avatar_image ||
-              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-            authorUsername: post.author.username,
-            category: (post.category.toLowerCase() as any) || 'building',
-            videoDuration: post.media?.[0]?.media_type === 'video' ? '0:30' : undefined,
-          }));
+          const uniqueItems = filterUniquePosts(res.items, []);
+          const mappedCards: ExploreCard[] = uniqueItems.map(mapPostToExploreCard);
+          const mappedStories: MobileFeedItem[] = uniqueItems.map(mapPostToStory);
 
           setLiveCards(mappedCards);
           setLiveStories(mappedStories);
           setHasLoadedBackend(true);
+          // Backend has_more flag or items remaining
+          const moreAvailable = Boolean(res.has_more ?? (res.items.length >= 30));
+          setHasMore(moreAvailable && uniqueItems.length > 0);
+        } else {
+          setLiveCards([]);
+          setLiveStories([]);
+          setHasLoadedBackend(true);
+          setHasMore(false);
         }
       })
       .catch((err) => {
         console.warn('Backend explore feed unreachable:', err);
+        if (isMounted) {
+          setLiveCards([]);
+          setLiveStories([]);
+          setHasLoadedBackend(true);
+          setHasMore(false);
+        }
       })
       .finally(() => {
         if (isMounted) setIsLoading(false);
@@ -495,17 +565,106 @@ export default function ExploreView() {
     };
   }, [activeTab, searchQuery]);
 
-  const handleToggleFollow = (e: React.MouseEvent, cardId: string) => {
+  // Infinite Scroll: Load More feeds as the user scrolls
+  const handleLoadMore = useCallback(async () => {
+    if (isLoading || isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+
+    const currentOffset = liveCards.length;
+    const categoryParam = activeTab === 'all' || activeTab === 'for-you' ? undefined : activeTab;
+    const seenIdsParam = liveCards.map((c) => c.id).join(',');
+
+    try {
+      const res = await feedApi.getExploreFeed(undefined, 30, categoryParam, searchQuery, currentOffset, seenIdsParam);
+      if (res?.items && Array.isArray(res.items) && res.items.length > 0) {
+        let addedCount = 0;
+
+        setLiveCards((prev) => {
+          const uniqueItems = filterUniquePosts(res.items, prev);
+          addedCount = uniqueItems.length;
+          if (addedCount === 0) return prev;
+          const nextCards = uniqueItems.map(mapPostToExploreCard);
+          return [...prev, ...nextCards];
+        });
+
+        setLiveStories((prev) => {
+          const existingIds = new Set(prev.map((s) => s.id));
+          const uniqueStories = res.items.filter((item: any) => item.id && !existingIds.has(item.id));
+          if (uniqueStories.length === 0) return prev;
+          const nextStories = uniqueStories.map((post: any, i: number) => mapPostToStory(post, prev.length + i));
+          return [...prev, ...nextStories];
+        });
+
+        // If no new unique items could be added, or backend reports no more, stop pagination
+        const moreAvailable = Boolean(res.has_more ?? (res.items.length >= 30));
+        if (addedCount === 0 || !moreAvailable) {
+          setHasMore(false);
+        } else {
+          setHasMore(true);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.warn('Error loading more explore feeds:', err);
+      setHasMore(false);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoading, isLoadingMore, hasMore, liveCards, activeTab, searchQuery]);
+
+  // Observer for Sentinel infinite scrolling
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading && !isLoadingMore) {
+          handleLoadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [handleLoadMore, hasMore, isLoading, isLoadingMore]);
+
+  const handleToggleFollow = async (e: React.MouseEvent, card: ExploreCard) => {
     e.stopPropagation();
-    setFollowedCards((prev) => ({
-      ...prev,
-      [cardId]: !prev[cardId],
-    }));
+    const isCurrentlyFollowed = Boolean(
+      followedCards[card.id] || (card.authorId && followedCards[card.authorId])
+    );
+    const nextState = !isCurrentlyFollowed;
+
+    setFollowedCards((prev) => {
+      const updated = { ...prev, [card.id]: nextState };
+      if (card.authorId) updated[card.authorId] = nextState;
+      return updated;
+    });
+
+    if (card.authorId) {
+      try {
+        if (nextState) {
+          await socialApi.followUser(card.authorId);
+          addToast(`Now following ${card.authorName}`, 'success');
+        } else {
+          await socialApi.unfollowUser(card.authorId);
+          addToast(`Unfollowed ${card.authorName}`, 'info');
+        }
+      } catch (err) {
+        console.warn('Failed to update follow in database:', err);
+      }
+    }
   };
 
-  // Filter cards by category & search query (Desktop)
+  // Filter cards by category & search query (Desktop) - ZERO hardcoded mock fallback
   const filteredCards = useMemo(() => {
-    let result = hasLoadedBackend ? liveCards : EXPLORE_CARDS;
+    let result = liveCards;
 
     // Category filter
     if (activeTab !== 'for-you' && activeTab !== 'all') {
@@ -536,15 +695,9 @@ export default function ExploreView() {
     return result;
   }, [hasLoadedBackend, liveCards, activeTab, searchQuery, selectedTagFilter]);
 
-  // Split filtered items into two balanced masonry columns
+  // Split filtered items into two balanced masonry columns (Zero mock preloading)
   const { col1Items, col2Items } = useMemo(() => {
-    let baseList: MobileFeedItem[] = hasLoadedBackend
-      ? liveStories
-      : BASE_EXPLORE_STORIES.map((s, idx) => ({
-          ...s,
-          id: `static-story-${idx}`,
-          format: (['tall-hero', 'top-image', 'white-minimal', 'video'] as MobileCardFormat[])[idx % 4],
-        }));
+    let baseList: MobileFeedItem[] = liveStories;
 
     if (activeTab !== 'for-you' && activeTab !== 'all') {
       baseList = baseList.filter((item) => item.category.toLowerCase() === activeTab.toLowerCase());
@@ -880,16 +1033,14 @@ export default function ExploreView() {
           </button>
         </div>
 
-        {/* ── 4A. MOBILE & TABLET EDITORIAL MASONRY (0 Gap Flush Flow, Soft Modern Corner Radius, Direct Match to Target UI) ── */}
+        {/* ── 4A. MOBILE & TABLET EDITORIAL MASONRY ── */}
         <div className="block lg:hidden -mx-3 sm:-mx-5 lg:mx-0 px-1 sm:px-1.5">
           {isLoading ? (
-            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 items-start">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="w-full rounded-[20px] bg-gray-100 animate-pulse border border-black/[0.05] aspect-[3/4]"
-                />
-              ))}
+            <div className="py-12 bg-white rounded-3xl border border-black/[0.04] shadow-xs">
+              <AestheticLoader
+                title="Exploring community journeys..."
+                subtitle="Loading initial 30 milestones from builders and learners ahead of you."
+              />
             </div>
           ) : col1Items.length > 0 || col2Items.length > 0 ? (
             <div className="grid grid-cols-2 gap-2 sm:gap-2.5 items-start">
@@ -935,18 +1086,24 @@ export default function ExploreView() {
 
         {/* ── 4B. DESKTOP CARDS GRID (Active on Desktop >= lg) ── */}
         {isLoading ? (
-          <div className="hidden lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div
-                key={i}
-                className="h-[460px] rounded-2xl bg-gray-100 animate-pulse border border-gray-100"
-              />
-            ))}
+          <div className="hidden lg:block py-16 bg-white rounded-3xl border border-black/[0.04] shadow-xs">
+            <AestheticLoader
+              title="Exploring community journeys..."
+              subtitle="Loading initial 30 milestones from builders and learners ahead of you."
+            />
           </div>
         ) : filteredCards.length > 0 ? (
           <div className="hidden lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3">
             {filteredCards.map((card) => {
-              const isFollowed = !!followedCards[card.id];
+              const isFollowed = Boolean(
+                followedCards[card.id] || (card.authorId && followedCards[card.authorId])
+              );
+              const isOwnCard = Boolean(
+                currentUser?.id &&
+                  (card.authorId === currentUser.id ||
+                    (currentUser.username &&
+                      card.authorUsername.toLowerCase() === currentUser.username.toLowerCase()))
+              );
 
               const handleCardClick = () => {
                 if (card.id && !card.id.startsWith('e-')) {
@@ -1044,18 +1201,20 @@ export default function ExploreView() {
                         </span>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={(e) => handleToggleFollow(e, card.id)}
-                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer flex-shrink-0 ${
-                          isFollowed
-                            ? 'bg-[#6258DB] text-white hover:bg-[#5246D2]'
-                            : 'bg-[#F0EFFE] text-[#6258DB] hover:bg-[#E4E1FE]'
-                        }`}
-                      >
-                        <UserPlus className="w-3.5 h-3.5 stroke-[2.2]" />
-                        <span>{isFollowed ? 'Following' : 'Follow +'}</span>
-                      </button>
+                      {!isOwnCard && (
+                        <button
+                          type="button"
+                          onClick={(e) => handleToggleFollow(e, card)}
+                          className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer flex-shrink-0 ${
+                            isFollowed
+                              ? 'bg-[#6258DB] text-white hover:bg-[#5246D2]'
+                              : 'bg-[#F0EFFE] text-[#6258DB] hover:bg-[#E4E1FE]'
+                          }`}
+                        >
+                          <UserPlus className="w-3.5 h-3.5 stroke-[2.2]" />
+                          <span>{isFollowed ? 'Following' : 'Follow +'}</span>
+                        </button>
+                      )}
                     </div>
 
                     {/* Row 2: Purple Accent Bar + Two-Line Heading */}
@@ -1116,6 +1275,21 @@ export default function ExploreView() {
             </div>
           </div>
         )}
+
+        {/* ── 5. INFINITE SCROLL SENTINEL & LOADING MORE ───────── */}
+        <div ref={sentinelRef} className="py-8 flex flex-col items-center justify-center text-center">
+          {isLoadingMore && (
+            <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
+              <div className="w-4 h-4 rounded-full border-2 border-[#6258DB] border-t-transparent animate-spin" />
+              <span>Fetching more journey updates...</span>
+            </div>
+          )}
+          {!hasMore && !isLoading && (liveCards.length > 0 || liveStories.length > 0) && (
+            <p className="text-xs text-gray-400 font-medium">
+              You&apos;ve reached the end of current journeys ✨
+            </p>
+          )}
+        </div>
 
       </div>
 
