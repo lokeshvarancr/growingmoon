@@ -1,0 +1,33 @@
+{
+  "summary": "Frontend-only retest of the iteration_3 fixes (desktop 1920x1080 and mobile 390x844, light and dark mode). All 4 iteration_3 issues are FIXED. (1) Peach is gone: a source grep for FFF3E2/F6CFA6/F7D3AE/FFF6EA/FFF6E8/F6D9B9/E9A877 returns nothing, and a scan of computed styles (including ::before/::after) on /, the not-found page, /home, /profile/you, /passport/you and /explore found 0 peach elements. The teal moon gradient (#F3FBF9/#BFEDE4) is present, .gm-moon computes to radial #F3FBF9 -> #BFEDE4 -> #3DB6A4, and the profile SVG fill is #F3FBF9. (2) Dark neutrals are now teal: body is rgb(10,15,14) with text rgb(230,241,238). The home 'No saved milestones yet' card (bg-gray-50/60) is rgba(28,40,38,0.6) and the profile 'Set Focus Waypoints' section (bg-gray-50/70) is rgba(28,40,38,0.7), so they are dark teal cards, not cream. (3) Dark CTAs (New Journey, Create Your First Journey, Add Update, Add First Update, Post Update, mobile FAB, Follow, Passport, Share a Milestone) render the #2DD4BF -> #5EEAD4 gradient with text #04211E. (4) The former black-ink CTAs (composer Post Update and '+', View Profile arrow, Builders ahead arrow, home 'For you' chip, landing Get Started and Start your journey, logged-out TopBar Sign Up, post-card Follow and Passport, Explore icon button) all compute to linear-gradient(90deg, #0B4F4A -> #14B8A6) with white text in light mode. Regressions pass: arjun_sharma third-person copy vs owner copy on /profile/you, QR modal Escape, lightbox Escape on /updates/u3, mobile Goals inputs 44px, Add Goal disabled, the account-menu theme toggle, the mobile bottom nav, the teal nav pill and tabs, and the landing layout. One new dark-mode contrast bug was found in the home composer type pills.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Home inline composer - quick type pills (Progress/Milestone/Challenge/Lesson)", "issue": "In DARK mode the active pill uses 'bg-gm-ink text-white'. gm-ink becomes light rgb(230,241,238) in dark mode, so the result is white text on a near-white pill and the label is unreadable (confirmed by screenshot and computed styles). Fix: use bg-gm-accent text-white (the gradient, which gets dark text in dark mode) or text-gm-paper. File: app/home/page.tsx:751.", "selector": "app/home/page.tsx inline composer type pill (active)", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "TopBar logo (dark mode, all pages)", "issues": ["The logo moon's crescent mask uses the ink colour, which turns light in dark mode. The logo therefore looks like an almost solid pale disk with only a faint crescent, which loses the moon shape. Consider a dark mask colour in dark mode."]},
+      {"screen": "/explore category chips", "issues": ["The active 'For you' chip is still bg-gm-ink: black in light mode and a light flat chip in dark mode. On /home the active 'For you' chip is now the teal gradient, so the two pages are inconsistent."]},
+      {"screen": "Floating 'Suggest Feature' pill (feature-suggestion-fab)", "issues": ["Still a flat bg-gm-ink: black in light mode and a near-white pill in dark mode. It is not part of the teal CTA system. Minor."]},
+      {"screen": "Login/Register submit buttons, auth callback, messages empty-state button", "issues": ["These still use bg-gm-ink (black) primary buttons: app/login/page.tsx:246, app/register/page.tsx:267, app/auth/callback/page.tsx:229, app/messages/page.tsx:595. They were not in this round's scope, but they are inconsistent with the gradient primary CTA rule."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix the dark-mode unreadable active composer type pill at app/home/page.tsx:751. Replace 'bg-gm-ink text-white' with 'bg-gm-accent text-white' or 'bg-gm-ink text-gm-paper'.",
+    "Optional: make the Explore active category chip match the home chip (gradient).",
+    "Optional: switch the login/register/messages/auth-callback primary buttons from bg-gm-ink to bg-gm-accent text-white for CTA consistency.",
+    "Optional: keep the TopBar logo crescent mask dark in dark mode."
+  ],
+  "critical_code_review_comments": [
+    "Any 'bg-gm-ink text-white' combination breaks in dark mode, because ink inverts to light while text-white stays white. Audit and swap these to text-gm-paper. The home composer pills are one confirmed instance.",
+    "app/profile/[username]/page.tsx is over 2000 lines and should be split (carried over from earlier iterations)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "~96% (all 4 iteration_3 issues plus the CTA consistency fixes verified; 1 new medium dark-mode contrast bug)"},
+  "seed_data_creation": "None persisted. 'Reset Demo Data to Initial State' (in-memory demo data) was clicked to view the /updates/u1 and /updates/u3 post cards. A 'TEST_ draft' composer text was typed but not posted.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Use the localStorage bypass from /app/memory/test_credentials.md and set gm_theme='dark' or 'light' before navigating. The composer opens by clicking the text 'What did you ship, learn, or struggle with today?'. Post cards need Settings > Reset Demo Data, then window.next.router.push('/updates/u1'). The mobile FAB gradient is on a child element of [data-testid=mobile-nav-create-post]. Verified this round: peach removal, dark teal neutrals and gray/xx cards, dark CTA text #04211E, all listed CTAs are gradient, and the regressions."
+}

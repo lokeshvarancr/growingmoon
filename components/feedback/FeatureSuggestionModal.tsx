@@ -173,7 +173,7 @@ export default function FeatureSuggestionModal({ isOpen, onClose }: FeatureSugge
             onClick={() => setActiveTab('submit')}
             className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               activeTab === 'submit'
-                ? 'bg-gm-ink text-white shadow-xs'
+                ? 'bg-gm-accent text-white shadow-xs'
                 : 'text-gray-500 hover:text-black'
             }`}
           >

@@ -748,7 +748,7 @@ export default function HomePage() {
                       onClick={() => setInlineType(t)}
                       className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer whitespace-nowrap ${
                         inlineType === t
-                          ? 'bg-gm-ink text-white shadow-2xs'
+                          ? 'bg-gm-accent text-white shadow-2xs'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200/70'
                       }`}
                     >
