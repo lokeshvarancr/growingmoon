@@ -438,7 +438,7 @@ export default function HomePage() {
             {/* View Profile Button */}
             <Link
               href={`/profile/${currentUser.username}`}
-              className="w-9 h-9 rounded-full bg-gm-ink text-gm-paper hover:bg-gm-accent flex items-center justify-center transition-colors active:scale-95"
+              className="w-9 h-9 rounded-full bg-gm-accent text-white flex items-center justify-center transition-colors active:scale-95"
               title="View Profile"
             >
               <ArrowRight className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -524,7 +524,7 @@ export default function HomePage() {
                     className="flex items-center gap-3 group relative cursor-pointer"
                   >
                     {/* Hollow node circle */}
-                    <div className="w-3.5 h-3.5 rounded-full bg-gm-ink z-10 flex-shrink-0 ring-4 ring-gm-surface overflow-hidden relative after:absolute after:inset-0 after:rounded-full after:bg-gradient-to-br after:from-[#FFF3E2] after:to-gm-accent after:translate-x-[35%] group-hover:after:translate-x-0 after:transition-transform after:duration-500" />
+                    <div className="w-3.5 h-3.5 rounded-full bg-gm-ink z-10 flex-shrink-0 ring-4 ring-gm-surface overflow-hidden relative after:absolute after:inset-0 after:rounded-full after:bg-gradient-to-br after:from-[#F3FBF9] after:to-gm-accent after:translate-x-[35%] group-hover:after:translate-x-0 after:transition-transform after:duration-500" />
                     {/* Icon in light purple circle */}
                     <div className="w-8 h-8 rounded-full bg-gm-accent-soft flex items-center justify-center text-gm-accent flex-shrink-0 group-hover:scale-105 transition-transform">
                       <Icon className="w-4 h-4 stroke-[2]" />
@@ -570,7 +570,7 @@ export default function HomePage() {
           </h3>
           <Link
             href="/discover"
-            className="w-9 h-9 rounded-full bg-gm-ink text-gm-paper hover:bg-gm-accent flex items-center justify-center transition-colors flex-shrink-0"
+            className="w-9 h-9 rounded-full bg-gm-accent text-white flex items-center justify-center transition-colors flex-shrink-0"
             title="Discover more people"
           >
             <ArrowRight className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -687,7 +687,7 @@ export default function HomePage() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`whitespace-nowrap px-4 sm:px-5 h-10 rounded-full text-[13px] transition-all active:scale-95 cursor-pointer select-none ${
                   isActive
-                    ? 'bg-gm-ink text-gm-paper font-semibold shadow-float'
+                    ? 'bg-gm-accent text-white font-semibold shadow-float'
                     : 'text-gray-600 hover:text-gm-ink font-medium bg-gm-ink/[0.04] hover:bg-gm-ink/[0.08]'
                 }`}
               >
@@ -714,7 +714,7 @@ export default function HomePage() {
             </span>
 
             {/* Right Action Button */}
-            <div className="w-11 h-11 rounded-full bg-gm-ink text-gm-paper flex items-center justify-center flex-shrink-0 group-hover:rotate-90 group-hover:bg-gm-accent transition-all duration-500">
+            <div className="w-11 h-11 rounded-full bg-gm-accent text-white flex items-center justify-center flex-shrink-0 group-hover:rotate-90 transition-all duration-500">
               <Plus className="w-4 h-4 stroke-[2.5]" />
             </div>
           </div>
@@ -913,7 +913,7 @@ export default function HomePage() {
                   type="button"
                   onClick={handleInlinePostSubmit}
                   disabled={!inlineHeading.trim() || isInlineSubmitting}
-                  className="bg-gm-ink hover:bg-gm-accent disabled:opacity-40 text-gm-paper font-semibold text-[13px] px-5 h-10 rounded-full active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="bg-gm-accent disabled:opacity-40 text-white font-semibold text-[13px] px-5 h-10 rounded-full active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5 rotate-45 -translate-y-0.5" />
                   <span>Post Update</span>

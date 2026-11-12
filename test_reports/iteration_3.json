@@ -1,0 +1,40 @@
+{
+  "summary": "Frontend-only test of the teal recolour + 3 bug fixes (desktop 1920x1080 and mobile 390x844, light + dark mode). All 3 bug fixes from iteration_2 PASS: (1) /profile/arjun_sharma shows third-person copy (\"Arjun Sharma hasn't added an introduction yet.\", \"...any interests yet.\", \"Arjun's Journeys\", \"Arjun Sharma hasn't started a journey yet.\") and /profile/you keeps the owner copy (Add Introduction, Add Interests, My Journeys, Create Your First Journey); (2) the mobile Goals title input is 44px tall (w=324); (3) the QR modal closes on Escape. Teal tokens work: the accent is rgb(11,79,74), the page background is rgb(250,250,248), and primary CTAs (Follow on profile, New Journey, Create Your First Journey, Add Update, Add First Update, Add Goal, Share Milestone, mobile FAB) render linear-gradient(90deg, #0B4F4A -> #14B8A6) and shift to #073B37 -> #0B4F4A on hover. The active TopBar pill, the Passport tab pill and the mobile profile-avatar ring are teal. Dark mode switches the accent to #2DD4BF. Regressions all pass: QR copy link + toast, lightbox Escape on /updates/u3, Add Goal disabled state, account menu, mobile nav. Several leftover warm/peach colours, some CTAs that are still black, and dark-mode contrast problems remain (see issues).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Moon orb / logo gradients (all pages)", "issue": "The peach/orange gradient from-[#FFF3E2] via-[#F6CFA6] (and #FFF6EA/#F7D3AE) is still rendered. Computed backgroundImage is rgb(246,207,166), hue 31 (orange family). It appears in the TopBar logo moon (span.inset-[22%]) on EVERY page, the landing hero orb, the landing CTA orb and testimonial avatars, the passport hero corner orb, the onboarding orb, the home timeline dots and not-found. The .gm-moon class in globals.css:172 also still uses #FFF6E8/#F6D9B9/#E9A877. Files: app/page.tsx:39,53,192,266; app/not-found.tsx:20; app/onboarding/page.tsx:134; app/home/page.tsx:527; components/passport/JourneyPassportView.tsx:649,899; app/profile/[username]/page.tsx:837 (fill #FFF3E2); app/globals.css:172.", "selector": ".bg-gradient-to-br.from-\\[\\#FFF3E2\\]", "priority": "HIGH"},
+      {"component": "Dark mode - light grey dashed empty-state cards", "issue": "In dark mode, bg-gray-50/70 and bg-gray-50/60 are NOT overridden (only the exact .bg-gray-50 is). They render rgba(250,247,241,0.7), which makes bright cream boxes on a near-black page with unreadable teal/light text. Seen in the profile 'Set up to 3 waypoints / Set Focus Waypoints' section and the home 'No saved milestones yet' card. Add html.dark overrides for the bg-gray-50/xx (and bg-gray-100/xx) opacity variants.", "selector": "section.bg-gray-50\\/70, div.bg-gray-50\\/60", "priority": "HIGH"},
+      {"component": "Dark mode - primary gradient buttons", "issue": "White text (#FFF) on a #2DD4BF -> #5EEAD4 gradient is about 1.9:1 contrast (fails WCAG). Affects New Journey, Create Your First Journey, Add Update, Add First Update and the FAB. Use dark text (e.g. #04211E) on bright teal in dark mode, or use deeper gradient stops.", "selector": "html.dark .bg-gm-accent.text-white", "priority": "MEDIUM"},
+      {"component": "Dark mode base neutrals still warm", "issue": "html.dark body is background #121110 with colour #F0EBE2, and the grey overrides use the warm palette (#24221F, #D4CBBC, #A79E90). These still read as warm/brown, while the token --gm-ivory is teal-black #0A0F0E. Nav text, search icon and secondary text compute to rgb(212,203,188) and rgb(167,158,144), hue about 37. Update to teal-tinted neutrals in globals.css html.dark block (lines ~265-300).", "selector": "html.dark body", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/home composer + feed cards", "issues": ["The composer 'Post Update' submit button is still bg-gm-ink (black) with a flat hover:bg-gm-accent. It is NOT the requested gradient, although the review request lists composer submit buttons as gradient CTAs.", "The inline composer '+' button, the 'For you' chip, the 'Builders ahead' and profile arrow buttons are black ink.", "Post card 'Follow' and 'Passport' buttons are black ink, while the profile Follow is a teal gradient, so CTA styling is inconsistent.", "Landing header 'Get Started' is black ink, not gradient."]},
+      {"screen": "Post card / misc", "issues": ["The 'Fueled' reaction button (bg-amber-100, border-amber-300) and the default author avatars (bg-amber-100 text-amber-800, e.g. 'RV') are still amber/yellow. This is warm colour outside the teal palette (JourneyPostCard.tsx:70,198,298; app/updates/[id]/page.tsx:43; passport/[username]/page.tsx:37). Amber flame/sparkle icons in notifications, activity and profile are probably acceptable as semantic colours, but the user asked for no orange."]},
+      {"screen": "/profile/arjun_sharma (non-owner)", "issues": ["The empty journeys subtext still uses second person ('Journeys communicate what you are working towards...'). Minor copy issue."]},
+      {"screen": "Home left card", "issues": ["The avatar fallback shows 'YD' while the user's avatar initials are 'AD' (minor, pre-existing)."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Replace every peach moon gradient (from-[#FFF3E2] via-[#F6CFA6] / #F7D3AE / #FFF6EA, plus .gm-moon #E9A877, and the SVG fill #FFF3E2 on profile) with a teal or neutral moon gradient. The TopBar logo orb on every page is the most visible one.",
+    "Add html.dark overrides for the bg-gray-50/60, bg-gray-50/70 (and other /xx opacity) variants. They currently render as cream boxes in dark mode (profile Focus Waypoints, home Saved Milestones empty state).",
+    "Fix dark mode CTA contrast: white text on the #2DD4BF -> #5EEAD4 gradient is about 1.9:1.",
+    "Recolour the html.dark body background/text and the warm grey overrides (#121110, #F0EBE2, #24221F, #D4CBBC, #A79E90) to teal-tinted neutrals.",
+    "Make the composer 'Post Update' button (and ideally the post-card Follow) use the bg-gm-accent text-white gradient, for consistency with the requested CTA style.",
+    "Optionally recolour the amber 'Fueled' button and the amber default avatar colour to teal/sage."
+  ],
+  "critical_code_review_comments": [
+    "tailwind.config.ts still maps gray/slate to the warmGray scale (#FAF7F1, #F3EEE5...), so bg-gray-50/100 surfaces are cream-tinted instead of teal-neutral. This conflicts with the 'white/very light teal-tinted' requirement.",
+    "The gradient override `.bg-gm-accent.text-white` relies on both classes being present. Buttons using bg-gm-accent with other text colours, or hover:bg-gm-accent, stay flat.",
+    "In dark mode --gm-teal-growth-rgb equals --gm-accent-deep-rgb (94 234 212), so the hover gradient goes lighter rather than darker.",
+    "app/profile/[username]/page.tsx is more than 2000 lines and should be split."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (no backend in repo)", "frontend": "~80% (all 3 bug fixes + nav/CTA gradients + regressions pass; leftover peach gradients and dark-mode contrast issues fail the colour-system requirement)"},
+  "seed_data_creation": "None. 'Reset Demo Data to Initial State' (in-memory demo data, as instructed) was clicked to view /updates/u3. A TEST_ composer draft was typed but not posted.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Use the localStorage bypass from /app/memory/test_credentials.md. The dark toggle is [data-testid=topbar-theme-toggle] inside the account menu (clicking the 'Switch Appearance' label alone does nothing), or set localStorage gm_theme='dark'. The browser tool rewrites screenshot paths containing expressions, so use static filenames. Verified passing: owner/non-owner copy, mobile goal input 44px, QR Escape, QR copy toast, lightbox Escape, gradient + hover on .bg-gm-accent.text-white, teal nav pill, Passport tab pill, mobile ring. Retest: peach orb removal, dark-mode gray-50/xx cards, dark CTA contrast, composer Post Update gradient."
+}

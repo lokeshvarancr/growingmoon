@@ -834,7 +834,7 @@ export default function FounderProfilePage() {
           {/* Crescent Moon */}
           <path
             d="M 285 24 A 10 10 0 1 0 293 38 A 12 12 0 1 1 285 24 Z"
-            fill="#FFF3E2"
+            fill="#F3FBF9"
             opacity="0.95"
           />
           {/* Back Dune */}

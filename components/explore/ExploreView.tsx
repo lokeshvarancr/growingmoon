@@ -1026,7 +1026,7 @@ export default function ExploreView() {
           <button
             type="button"
             onClick={() => setIsFilterModalOpen(true)}
-            className="w-10 h-10 mb-1 rounded-full bg-gm-ink text-gm-paper hover:bg-gm-accent transition-all cursor-pointer flex-shrink-0 active:scale-95 flex items-center justify-center"
+            className="w-10 h-10 mb-1 rounded-full bg-gm-accent text-white transition-all cursor-pointer flex-shrink-0 active:scale-95 flex items-center justify-center"
             title="Filters"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 stroke-[2]" />

@@ -11,7 +11,7 @@ type EmptyStateProps = {
 };
 
 const actionClass =
-  'inline-flex items-center justify-center bg-gm-ink hover:bg-gm-accent text-gm-paper text-[13px] font-semibold px-5 h-11 rounded-full transition-colors';
+  'inline-flex items-center justify-center bg-gm-accent text-white text-[13px] font-semibold px-5 h-11 rounded-full transition-colors';
 
 export default function EmptyState({ icon, title, description, actionLabel, actionHref, onAction }: EmptyStateProps) {
   return (

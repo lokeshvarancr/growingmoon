@@ -17,7 +17,7 @@ export default function NotFound() {
         transition={{ type: 'spring', stiffness: 160, damping: 16 }}
         className="relative w-20 h-20 rounded-full bg-gm-ink flex items-center justify-center mx-auto mb-8 overflow-hidden"
       >
-        <span className="absolute inset-[24%] rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent" />
+        <span className="absolute inset-[24%] rounded-full bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent" />
         <span className="absolute inset-[24%] rounded-full bg-gm-ink translate-x-[45%]" />
       </motion.div>
 
@@ -32,7 +32,7 @@ export default function NotFound() {
       <div className="relative flex flex-wrap items-center justify-center gap-3">
         <Link
           href="/home"
-          className="inline-flex items-center gap-1.5 bg-gm-ink hover:bg-gm-accent text-gm-paper text-sm font-semibold px-6 h-12 rounded-full transition-colors"
+          className="inline-flex items-center gap-1.5 bg-gm-accent text-white text-sm font-semibold px-6 h-12 rounded-full transition-colors"
           data-testid="not-found-return-feed"
         >
           <span>Return to Feed</span>

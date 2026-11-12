@@ -19,7 +19,7 @@ export default function AuthFrame({ tagline, children }: { tagline: string; chil
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
             className="relative w-[62%] aspect-square rounded-full overflow-hidden shadow-[0_0_160px_-20px_rgb(var(--gm-accent-rgb)/0.6)]"
           >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#FFF6EA] via-[#F7D3AE] to-gm-accent" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent" />
             <motion.div
               initial={{ x: '0%' }}
               animate={{ x: '38%' }}

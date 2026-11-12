@@ -169,7 +169,7 @@ h3.font-black, h3.font-extrabold, h3.font-bold {
 .gm-moon {
   position: relative;
   border-radius: 9999px;
-  background: radial-gradient(circle at 35% 30%, #FFF6E8 0%, #F6D9B9 45%, #E9A877 100%);
+  background: radial-gradient(circle at 35% 30%, #F3FBF9 0%, #BFEDE4 45%, #3DB6A4 100%);
   overflow: hidden;
 }
 .gm-moon::after {
@@ -244,7 +244,7 @@ html.dark {
   --gm-paper-rgb: 10 15 14;
   --gm-surface-rgb: 18 26 25;
   --gm-accent-rgb: 45 212 191;
-  --gm-accent-deep-rgb: 94 234 212;
+  --gm-accent-deep-rgb: 13 148 136;
   --gm-accent-soft-rgb: 15 46 42;
   --gm-accent-line-rgb: 40 71 66;
   --gm-teal-growth-rgb: 94 234 212;
@@ -262,33 +262,42 @@ html.dark {
 }
 
 html.dark body {
-  background-color: #121110;
-  color: #F0EBE2;
+  background-color: #0A0F0E;
+  color: #E6F1EE;
 }
 html.dark body::before { opacity: 0.12; mix-blend-mode: screen; }
 
 html.dark .bg-gm-paper\/95 {
-  background-color: rgba(18, 17, 16, 0.9) !important;
+  background-color: rgba(10, 15, 14, 0.9) !important;
 }
 
 html.dark .bg-gray-50,
 html.dark .bg-gray-100 {
-  background-color: #24221F !important;
+  background-color: #1C2A27 !important;
 }
+
+html.dark .bg-gray-50\/50 { background-color: rgba(28, 40, 38, 0.5) !important; }
+html.dark .bg-gray-50\/60 { background-color: rgba(28, 40, 38, 0.6) !important; }
+html.dark .bg-gray-50\/70 { background-color: rgba(28, 40, 38, 0.7) !important; }
+html.dark .bg-gray-50\/80 { background-color: rgba(28, 40, 38, 0.8) !important; }
+html.dark .bg-gray-100\/60 { background-color: rgba(34, 48, 45, 0.6) !important; }
+html.dark .bg-gray-100\/70 { background-color: rgba(34, 48, 45, 0.7) !important; }
+html.dark .bg-gray-100\/80 { background-color: rgba(34, 48, 45, 0.8) !important; }
+html.dark .bg-gray-100\/90 { background-color: rgba(34, 48, 45, 0.9) !important; }
 
 html.dark .text-gray-800,
 html.dark .text-gray-900 {
-  color: #F0EBE2 !important;
+  color: #E6F1EE !important;
 }
 
 html.dark .text-gray-600,
 html.dark .text-gray-700 {
-  color: #D4CBBC !important;
+  color: #B9CCC7 !important;
 }
 
 html.dark .text-gray-500,
 html.dark .text-gray-400 {
-  color: #A79E90 !important;
+  color: #8FA5A0 !important;
 }
 
 html.dark .border-gray-100,
@@ -296,5 +305,10 @@ html.dark .border-gray-200,
 html.dark .border-black\/\[0\.04\],
 html.dark .border-black\/\[0\.05\],
 html.dark .border-black\/\[0\.06\] {
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(230, 241, 238, 0.08) !important;
+}
+
+/* Dark mode: keep CTA gradient text readable on bright teal */
+html.dark .bg-gm-accent.text-white {
+  color: #04211E;
 }

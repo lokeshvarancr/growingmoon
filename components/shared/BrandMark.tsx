@@ -7,7 +7,7 @@ export default function BrandMark({ size = 'md', showWord = true, sub }: BrandMa
   return (
     <span className="flex items-center gap-2.5 group select-none">
       <span className={`${dim} relative flex-shrink-0 rounded-full bg-gm-ink flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:rotate-[-18deg]`}>
-        <span className="absolute inset-[22%] rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent" />
+        <span className="absolute inset-[22%] rounded-full bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent" />
         <span className="absolute inset-[22%] rounded-full bg-gm-ink translate-x-[38%] -translate-y-[8%] transition-transform duration-700 group-hover:translate-x-[58%]" />
       </span>
       {showWord && (

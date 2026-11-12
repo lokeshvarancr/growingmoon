@@ -217,7 +217,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           className={`px-4 sm:px-5 h-9 rounded-full font-semibold text-xs transition-all active:scale-95 cursor-pointer flex-shrink-0 select-none ${
             isFollowed
               ? 'bg-transparent border border-gm-ink/15 text-gray-700'
-              : 'bg-gm-ink hover:bg-gm-accent text-gm-paper'
+              : 'bg-gm-accent text-white'
           }`}
         >
           {isFollowed ? 'Following' : 'Follow'}
@@ -329,7 +329,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       {/* Card 3: Passport */}
       <Link
         href={`/passport/${author.username}`}
-        className="h-11 px-3 rounded-full transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 bg-gm-ink hover:bg-gm-accent border border-transparent text-gm-paper"
+        className="h-11 px-3 rounded-full transition-all active:scale-95 cursor-pointer select-none flex items-center justify-center gap-1.5 sm:gap-2 bg-gm-accent border border-transparent text-white"
         title="Open author's complete Journey Passport"
       >
         <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5] flex-shrink-0" />

@@ -148,7 +148,7 @@ export default function TopBar() {
             </Link>
             <Link
               href={pathname ? `/register?redirect=${encodeURIComponent(pathname)}` : '/register'}
-              className="px-5 h-10 inline-flex items-center rounded-full text-[13px] font-semibold bg-gm-ink hover:bg-gm-accent text-gm-paper transition-colors"
+              className="px-5 h-10 inline-flex items-center rounded-full text-[13px] font-semibold bg-gm-accent text-white transition-colors"
               data-testid="topbar-signup-link"
             >
               Sign Up

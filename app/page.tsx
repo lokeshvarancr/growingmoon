@@ -36,7 +36,7 @@ function Phase({ fill, size = 44 }: { fill: number; size?: number }) {
   return (
     <span className="relative inline-block rounded-full overflow-hidden bg-[#2A2925]" style={{ width: size, height: size }}>
       <span
-        className="absolute inset-0 rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent"
+        className="absolute inset-0 rounded-full bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent"
         style={{ clipPath: `inset(0 0 0 ${(1 - fill) * 100}%)` }}
       />
     </span>
@@ -50,7 +50,7 @@ function HeroMoon() {
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-[8%] rounded-full overflow-hidden bg-gradient-to-br from-[#FFF6EA] via-[#F7D3AE] to-gm-accent shadow-[0_60px_120px_-40px_rgb(var(--gm-accent-rgb)/0.65)]"
+        className="absolute inset-[8%] rounded-full overflow-hidden bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent shadow-[0_60px_120px_-40px_rgb(var(--gm-accent-rgb)/0.65)]"
       >
         <motion.div
           initial={{ x: '0%' }}
@@ -95,7 +95,7 @@ export default function LandingPage() {
             <Link href="/login" className="text-gm-midnight px-4 h-10 inline-flex items-center rounded-full hover:bg-gm-ink/5 transition-colors" data-testid="landing-nav-sign-in">
               Sign In
             </Link>
-            <Link href="/register" className="bg-gm-ink text-gm-paper hover:bg-gm-accent pl-5 pr-4 h-10 rounded-full transition-colors inline-flex items-center gap-1.5 group" data-testid="landing-nav-get-started">
+            <Link href="/register" className="bg-gm-accent text-white pl-5 pr-4 h-10 rounded-full transition-colors inline-flex items-center gap-1.5 group" data-testid="landing-nav-get-started">
               <span>Get Started</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -189,7 +189,7 @@ export default function LandingPage() {
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-8 border-b border-white/10 mb-10">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent text-[#16161A] font-semibold text-lg flex items-center justify-center font-display">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent text-[#16161A] font-semibold text-lg flex items-center justify-center font-display">
                   AS
                 </div>
                 <div>
@@ -263,7 +263,7 @@ export default function LandingPage() {
             whileHover={{ y: -4 }}
             className="md:col-span-7 bg-gm-surface rounded-[28px] p-7 sm:p-10 shadow-card-hover relative overflow-hidden"
           >
-            <div aria-hidden className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent opacity-40" />
+            <div aria-hidden className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent opacity-40" />
             <span className="relative text-[11px] font-semibold text-gm-accent uppercase tracking-[0.18em] block mb-3">Growing Moon</span>
             <h3 className="relative text-3xl font-medium text-gm-midnight mb-7">Evidence of Real Movement</h3>
             <ul className="relative space-y-4 text-[15px] text-gm-midnight">

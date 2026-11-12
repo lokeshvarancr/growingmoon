@@ -131,7 +131,7 @@ export default function OnboardingPage() {
               >
                 {n <= step && (
                   <span
-                    className="absolute inset-0 bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent transition-all duration-700"
+                    className="absolute inset-0 bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent transition-all duration-700"
                     style={{ clipPath: `inset(0 0 0 ${(1 - n / 4) * 100}%)` }}
                   />
                 )}

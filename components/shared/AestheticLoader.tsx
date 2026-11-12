@@ -11,7 +11,7 @@ type AestheticLoaderProps = {
 export function MoonPhase({ px = 44 }: { px?: number }) {
   return (
     <span
-      className="relative inline-block rounded-full overflow-hidden bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent shadow-[0_0_40px_-6px_rgb(var(--gm-accent-rgb)/0.6)]"
+      className="relative inline-block rounded-full overflow-hidden bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent shadow-[0_0_40px_-6px_rgb(var(--gm-accent-rgb)/0.6)]"
       style={{ width: px, height: px }}
       aria-hidden
     >

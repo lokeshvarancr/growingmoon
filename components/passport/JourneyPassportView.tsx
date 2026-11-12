@@ -646,7 +646,7 @@ export default function JourneyPassportView({
         {/* ── 1. HERO CARD: Midnight Navy Card (Exact Xerox) ─────── */}
         <div className="bg-[#16161A] text-white rounded-[36px] p-6 sm:p-10 shadow-card-hover relative overflow-hidden animate-slide-up">
           {/* Subtle radial decorative sheen */}
-          <div aria-hidden className="absolute -top-24 -right-24 w-80 h-80 rounded-full overflow-hidden pointer-events-none opacity-90"><div className="absolute inset-0 bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent" /><div className="absolute inset-0 rounded-full bg-[#16161A] translate-x-[-30%] translate-y-[22%]" /></div>
+          <div aria-hidden className="absolute -top-24 -right-24 w-80 h-80 rounded-full overflow-hidden pointer-events-none opacity-90"><div className="absolute inset-0 bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent" /><div className="absolute inset-0 rounded-full bg-[#16161A] translate-x-[-30%] translate-y-[22%]" /></div>
           <div aria-hidden className="absolute -top-10 right-10 w-96 h-96 rounded-full bg-gm-accent/20 blur-[100px] pointer-events-none" />
 
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-5">
@@ -896,7 +896,7 @@ export default function JourneyPassportView({
                         aria-hidden
                       >
                         <span
-                          className={`absolute inset-0 ${item.dotColor} bg-gradient-to-br from-[#FFF3E2] via-[#F6CFA6] to-gm-accent`}
+                          className={`absolute inset-0 ${item.dotColor} bg-gradient-to-br from-[#F3FBF9] via-[#BFEDE4] to-gm-accent`}
                           style={{ clipPath: `inset(0 0 0 ${Math.round((index / Math.max(displayedTimelineItems.length, 1)) * 85)}%)` }}
                         />
                       </div>
