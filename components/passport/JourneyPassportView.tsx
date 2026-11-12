@@ -808,7 +808,7 @@ export default function JourneyPassportView({
                   onClick={() => setActiveTab(tab.id as typeof activeTab)}
                   className={`text-[13px] px-5 h-10 rounded-full font-semibold transition-all relative cursor-pointer select-none ${
                     isActive
-                      ? 'bg-gm-ink text-gm-paper shadow-float'
+                      ? 'bg-gm-accent text-white shadow-float'
                       : 'text-gray-500 hover:text-gm-ink'
                   }`}
                 >
@@ -1015,7 +1015,7 @@ export default function JourneyPassportView({
 
         {/* TAB 2: ABOUT (Simplified Content Presentation - Clean readable text with author Edit option) */}
         {activeTab === 'about' && (
-          <div className="py-2 max-w-2xl animate-fade-in space-y-4">
+          <div className="py-2 max-w-3xl animate-fade-in space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-gm-ink">
@@ -1063,7 +1063,7 @@ export default function JourneyPassportView({
 
         {/* TAB 3: GOALS & MILESTONES (Separate Dedicated Table, Strikethrough & Completed Button) */}
         {activeTab === 'goals' && (
-          <div className="py-2 max-w-2xl space-y-5 animate-fade-in">
+          <div className="py-2 max-w-3xl space-y-5 animate-fade-in">
             {/* Header with Title & Manage action */}
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
@@ -1104,7 +1104,7 @@ export default function JourneyPassportView({
                     value={inlineNewGoalTitle}
                     onChange={(e) => setInlineNewGoalTitle(e.target.value)}
                     placeholder="e.g. Launch Beta to 100 users, Validate with 15 founders..."
-                    className="flex-1 min-w-0 px-4 h-11 rounded-full border border-gray-200 bg-white text-sm focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
+                    className="sm:flex-1 min-w-0 px-4 h-11 rounded-full border border-gray-200 bg-white text-sm focus:outline-none focus:border-gm-accent focus:ring-2 focus:ring-gm-accent/20"
                     required
                   />
                   <input

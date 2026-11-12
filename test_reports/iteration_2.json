@@ -1,0 +1,42 @@
+{
+  "summary": "Frontend-only regression retest of the 5 fixes from iteration_1, plus a quick smoke test. Run with Playwright on the public preview URL at 1920, 768 and 390, using the localStorage auth bypass. All 5 fixes are verified. (1) Lightbox on /updates/u3: overlay rect is top=0, full viewport (1920x1080 and 390x844), marginTop 0px. It closes via Escape, X and backdrop at both sizes. u1 is a video post and u2 has no images, so neither opens the image lightbox. (2) FAB: at 768 and 1920 the Suggest Feature FAB overlaps no main button, link or input when scrolled to the bottom of /updates/new, /profile/arjun_sharma, /home and /passport/you. The Post & Save button is clear. The landing page has no FAB. (3) Passport Goals 'Add Goal' button is fully visible inside the form at 1920, 768 and 390. It is disabled until a title is typed, then enabled. The date placeholder is no longer truncated. (4) The Profile About card has no purple colours (computed-style scan of main found none); the decoration is now ember. (5) /discover at 390: the Filters button sits 8px right of the pill scroller, does not overlap the pills, gets the click, and opens the Filter Explore modal (also at 768). Smoke test passed: landing hero/CTA/footer, /login inputs, /home inline composer, the 'More options...' full composer modal, the account menu (Your Profile, My Activities, Settings, Help & Support, Switch Appearance, Log Out), the mobile bottom nav (/home, /explore, /updates/new, /notifications, /profile/you), profile QR modal, the more menu with Copy Profile Link and Message Member (goes to /messages?user=arjun_sharma), and the 404 links (/home, /discover). No JS pageerrors. One new minor layout bug and a few small notes are below.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Passport Goals add-goal form (mobile 390)",
+        "issue": "The goal title input collapses to 20px height instead of 44px (h-11) at <640px. RCA: the input has `flex-1` inside a `flex flex-col sm:flex-row` container. In column direction, flex-1 (flex-basis 0%) overrides the height, so the input shrinks to text height and looks like a thin strip. Fix: change the title input class from `flex-1` to `sm:flex-1` (or add `flex-none sm:flex-1`). File: components/passport/JourneyPassportView.tsx, around line 1102.",
+        "selector": "input[placeholder^='e.g. Launch Beta']",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "Profile QR modal",
+        "issue": "Pressing Escape does not close the QR modal; only X and the backdrop work. This is inconsistent with the lightbox, which now supports Esc.",
+        "selector": "QR Code button > modal",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/passport/you Goals tab (1920/768)", "issues": ["The Goals & Milestones section (header, add form, empty state) is narrower than the hero card and tab row above it: it ends at x=872 vs 950 at 1920, and 696 vs 744 at 768. The right edges do not line up."]},
+      {"screen": "Full composer modal (More options)", "issues": ["The From/To Date fields use the native browser date picker (input type=date), which is inconsistent with the redesigned UI. Likely pre-existing."]},
+      {"screen": "/profile/arjun_sharma (viewing another user)", "issues": ["Owner-oriented copy shows on someone else's profile: 'My Journeys', 'Your journeys will appear here...', and 'Tell us a little about yourself'. Pre-existing content."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "JourneyPassportView.tsx: change the goal title input `flex-1` to `sm:flex-1` so it keeps its h-11 height on mobile",
+    "Optional: add an Escape-key close to the Profile QR modal",
+    "Optional: align the Goals tab content width with the hero/tab row"
+  ],
+  "critical_code_review_comments": [
+    "Lightbox now uses !mt-0 and an Escape keydown handler. This works, but createPortal would be more robust for every overlay rendered inside space-y-* parents (thread sheet, report modal).",
+    "AppShell adds pb-28 on its wrapper, but main computed paddingBottom is 0. The spacing comes from the wrapper, which is fine."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "95% (5/5 regression fixes verified; smoke 100%; 1 new minor mobile layout bug)"},
+  "seed_data_creation": "None. Clicked 'Reset Demo Data' in /settings, which only loads in-memory mock data, to view the post cards. TEST_goal was typed into the goal input but never submitted.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Production-mode Next.js; the backend is down, so loading/empty states are expected. Auth: set localStorage gm_user and gm_access_token (see /app/memory/test_credentials.md). Post images live only on u3 (u1 is a video, u2 has no media), via /settings Reset Demo Data then window.next.router.push. Mobile nav uses /explore, desktop uses /discover. The preview showed a transient 'This page couldn't load' right after a frontend restart; a retry worked."
+}

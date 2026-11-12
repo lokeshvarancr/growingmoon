@@ -17,17 +17,17 @@ const warmGray = {
 };
 
 const ember = {
-  50: "#FDF3EE",
-  100: "#FBE4D8",
-  200: "#F6C6AF",
-  300: "#F0A281",
-  400: "#E97A52",
-  500: "#E2552C",
-  600: "#C9431D",
-  700: "#A63418",
-  800: "#842B17",
-  900: "#6B2516",
-  950: "#3A1008",
+  50: "#EFFAF8",
+  100: "#D6F2EC",
+  200: "#AEE4DA",
+  300: "#7CD1C2",
+  400: "#3DB6A4",
+  500: "#14B8A6",
+  600: "#0F6F63",
+  700: "#0B4F4A",
+  800: "#073B37",
+  900: "#04211E",
+  950: "#021210",
 };
 
 const config: Config = {
@@ -68,6 +68,7 @@ const config: Config = {
           paper:          rgb("--gm-paper-rgb"),
           moss:           rgb("--gm-moss-rgb"),
           surface:        rgb("--gm-surface-rgb"),
+          "teal-growth":  rgb("--gm-teal-growth-rgb"),
         },
       },
       fontFamily: {

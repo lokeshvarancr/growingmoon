@@ -458,6 +458,16 @@ export default function FounderProfilePage() {
     };
   }, [username, currentUser.username]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isQrModalOpen) {
+        setIsQrModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isQrModalOpen]);
+
   const founder = liveProfile || mockFounder;
 
   // ── Error State (Genuinely Failed Fetch, Not Empty Profile) ────
@@ -781,7 +791,9 @@ export default function FounderProfilePage() {
         ) : (
           <div className="relative z-10 py-2">
             <p className="text-xs text-gray-400 leading-relaxed italic">
-              Tell us a little about yourself. Add an introduction to make your profile yours.
+              {isOwner
+                ? 'Tell us a little about yourself. Add an introduction to make your profile yours.'
+                : `${profileName || 'This founder'} hasn't added an introduction yet.`}
             </p>
             {isOwner && (
               <button
@@ -806,16 +818,16 @@ export default function FounderProfilePage() {
           <defs>
             <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
-              <stop offset="50%" stopColor="#FBE4D8" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#F6C6AF" stopOpacity="0.7" />
+              <stop offset="50%" stopColor="#D6ECE8" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#B9D6CF" stopOpacity="0.7" />
             </linearGradient>
             <linearGradient id="duneGrad1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#FBE4D8" />
-              <stop offset="100%" stopColor="#F0A281" />
+              <stop offset="0%" stopColor="#D6ECE8" />
+              <stop offset="100%" stopColor="#3DB6A4" />
             </linearGradient>
             <linearGradient id="duneGrad2" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#F6C6AF" />
-              <stop offset="100%" stopColor="#E2552C" />
+              <stop offset="0%" stopColor="#7CD1C2" />
+              <stop offset="100%" stopColor="#0B4F4A" />
             </linearGradient>
           </defs>
           <rect width="320" height="120" fill="url(#skyGrad)" />
@@ -884,7 +896,9 @@ export default function FounderProfilePage() {
       {interests.length === 0 ? (
         <div className="py-6 text-center">
           <p className="text-xs text-gray-400 leading-relaxed italic">
-            Add your interests to help others discover what you enjoy.
+            {isOwner
+              ? 'Add your interests to help others discover what you enjoy.'
+              : `${profileName || 'This founder'} hasn't added any interests yet.`}
           </p>
           {isOwner && (
             <button
@@ -895,7 +909,7 @@ export default function FounderProfilePage() {
                 setInterestsError(null);
                 setIsEditInterestsOpen(true);
               }}
-              className="mt-3 inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-gm-accent-soft hover:bg-[#E0DEFD] text-xs font-bold text-gm-accent transition-all cursor-pointer"
+              className="mt-3 inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-gm-accent-soft hover:bg-[#C2E6DF] text-xs font-bold text-gm-accent transition-all cursor-pointer"
             >
               <Plus className="w-3 h-3" />
               <span>Add Interests</span>
@@ -1228,7 +1242,7 @@ export default function FounderProfilePage() {
                 <div className="absolute left-28 sm:left-32 top-8 z-10 select-none">
                   <div className="relative w-20 h-20 flex items-center justify-center">
                     <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-600/30 to-indigo-500/20 blur-xl scale-125" />
-                    <div className="relative z-10 w-16 h-16 rounded-full bg-gradient-to-br from-[#9D88FF] via-[#6B4EFF] to-[#341B9A] shadow-[0_10px_25px_rgba(107,78,255,0.45)] overflow-hidden">
+                    <div className="relative z-10 w-16 h-16 rounded-full bg-gradient-to-br from-[#5EEAD4] via-[#14B8A6] to-[#0B4F4A] shadow-[0_10px_25px_rgba(11,79,74,0.45)] overflow-hidden">
                       <div className="absolute top-1 left-2 w-7 h-5 rounded-full bg-white/40 blur-xs" />
                     </div>
                     <svg
@@ -1433,7 +1447,7 @@ export default function FounderProfilePage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-baseline gap-2.5">
               <h2 className="font-serif text-[26px] sm:text-[32px] font-bold text-gm-ink">
-                My Journeys
+                {isOwner ? 'My Journeys' : `${(profileName || 'Their').split(' ')[0]}'s Journeys`}
               </h2>
               <span className="text-xs text-gray-400 font-medium">
                 {journeysList.length} {journeysList.length === 1 ? 'journey' : 'journeys'}
@@ -1459,7 +1473,9 @@ export default function FounderProfilePage() {
                 <Compass className="w-6 h-6 stroke-[1.8]" />
               </div>
               <h3 className="text-sm sm:text-base font-bold text-gm-ink">
-                Your journeys will appear here once you create or join one.
+                {isOwner
+                  ? 'Your journeys will appear here once you create or join one.'
+                  : `${profileName || 'This founder'} hasn't started a journey yet.`}
               </h3>
               <p className="text-xs text-gray-500 mt-1 max-w-md mx-auto leading-relaxed font-normal">
                 Journeys communicate what you are working towards over time — from building projects to skills, career pivots, and personal growth.
@@ -1653,7 +1669,7 @@ export default function FounderProfilePage() {
                             <Link
                               key={post.id}
                               href={`/updates/${post.id}`}
-                              className="w-[260px] sm:w-[280px] h-[210px] flex-shrink-0 snap-start rounded-2xl relative overflow-hidden group/card shadow-2xs hover:shadow-md transition-all border border-gm-accent/15 bg-gradient-to-br from-gm-paper via-white to-[#F5F3FF] p-4 flex flex-col justify-between"
+                              className="w-[260px] sm:w-[280px] h-[210px] flex-shrink-0 snap-start rounded-2xl relative overflow-hidden group/card shadow-2xs hover:shadow-md transition-all border border-gm-accent/15 bg-gradient-to-br from-gm-paper via-white to-[#EAF6F3] p-4 flex flex-col justify-between"
                             >
                               {/* Top Header Info */}
                               <div>

@@ -45,7 +45,7 @@ function NavItem({ href, active, title, label, icon: Icon, className = '', ariaL
       {active && (
         <motion.span
           layoutId="gm-nav-pill"
-          className="absolute inset-0 rounded-full bg-gm-ink"
+          className="absolute inset-0 rounded-full bg-gm-accent"
           transition={{ type: 'spring', stiffness: 420, damping: 34 }}
         />
       )}

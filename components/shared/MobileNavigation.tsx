@@ -76,7 +76,7 @@ export default function MobileNavigation() {
         </Tab>
 
         <Tab href={`/profile/${currentUser.username}`} active={isProfile} label="Your Profile">
-          <span className={`rounded-full p-[2px] transition-colors ${isProfile ? 'bg-gm-ink' : 'bg-transparent'}`}>
+          <span className={`rounded-full p-[2px] transition-colors ${isProfile ? 'bg-gm-accent' : 'bg-transparent'}`}>
             {currentUser.avatarImage ? (
               <img
                 src={currentUser.avatarImage}

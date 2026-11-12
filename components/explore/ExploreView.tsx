@@ -1169,9 +1169,9 @@ export default function ExploreView() {
                         />
                         <defs>
                           <linearGradient id="neon-wave" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#E2552C" />
-                            <stop offset="0.5" stopColor="#A855F7" />
-                            <stop offset="1" stopColor="#EC4899" />
+                            <stop stopColor="#0B4F4A" />
+                            <stop offset="0.5" stopColor="#14B8A6" />
+                            <stop offset="1" stopColor="#5EEAD4" />
                           </linearGradient>
                         </defs>
                       </svg>
@@ -1208,7 +1208,7 @@ export default function ExploreView() {
                           className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer flex-shrink-0 ${
                             isFollowed
                               ? 'bg-gm-accent text-white hover:bg-gm-accent-deep'
-                              : 'bg-gm-accent-soft text-gm-accent hover:bg-[#E4E1FE]'
+                              : 'bg-gm-accent-soft text-gm-accent hover:bg-[#C2E6DF]'
                           }`}
                         >
                           <UserPlus className="w-3.5 h-3.5 stroke-[2.2]" />
