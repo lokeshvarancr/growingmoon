@@ -617,12 +617,12 @@ export default function ExploreView() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/25 pointer-events-none" />
 
             {/* Top Badge */}
-            <div className="relative z-10 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold">
-                <span>{item.badgeIcon}</span>
-                <span>{item.badge}</span>
+            <div className="relative z-10 flex items-center justify-between gap-1.5 min-w-0">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold min-w-0 overflow-hidden">
+                <span className="flex-shrink-0">{item.badgeIcon}</span>
+                <span className="truncate">{item.badge}</span>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-semibold">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-semibold flex-shrink-0 whitespace-nowrap">
                 <Video className="w-2.5 h-2.5" />
                 <span>Video</span>
               </span>
@@ -808,14 +808,20 @@ export default function ExploreView() {
                   
                   {/* ── Top Half: Hero Image with Floating Badges & Serif Overlay (Tall aspect ratio) ── */}
                   <div className="relative h-80 sm:h-[370px] xl:h-[400px] w-full overflow-hidden bg-slate-900 flex-shrink-0">
-                    {/* Hero Image */}
-                    <img
-                      src={card.bannerUrl}
-                      alt={card.titleMain}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
+                    {/* Hero: real media, or a typographic teal gradient for text-only posts (never a misleading stock photo) */}
+                    {card.mediaCount > 0 ? (
+                      <img
+                        src={card.bannerUrl}
+                        alt={card.titleMain}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gm-accent via-gm-accent-deep to-[#04211E] flex items-center justify-center">
+                        <span className="text-5xl opacity-90">{card.emoji}</span>
+                      </div>
+                    )}
 
                     {/* Floating Top-Right Category Badge + Media Indicators */}
                     <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5">

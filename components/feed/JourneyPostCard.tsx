@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { JourneyUpdate } from '@/types';
 import { getFounderById } from '@/lib/mock-data/founders';
@@ -55,6 +55,8 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
   );
   const [showMenu, setShowMenu] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isClamped, setIsClamped] = useState(false);
+  const contentRef = useRef<HTMLParagraphElement>(null);
 
   const isSaved = update.is_saved_by_me || (update.saves || []).includes(currentUser.id);
   const isOwnPost = update.authorId === currentUser.id;
@@ -81,6 +83,17 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
       }
     }
   }
+
+  // Only show "Read more" when the text is actually visually clamped —
+  // a character-count heuristic disagrees with line-clamp on narrow screens.
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const measure = () => setIsClamped(el.scrollHeight > el.clientHeight + 1);
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [displayContent, isExpanded]);
 
   // Clamping heading for text-only posts to maximum 5-7 words so it never wraps to 4 lines on mobile
   if (isTextOnly && displayHeadline) {
@@ -186,13 +199,14 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
 
       <div className="mt-2">
         <p
+          ref={contentRef}
           className={`text-sm sm:text-[15px] text-gray-600 leading-relaxed font-normal ${
             !isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'
           }`}
         >
           {displayContent}
         </p>
-        {displayContent && displayContent.length > 140 && (
+        {displayContent && (isClamped || isExpanded) && (
           <button
             type="button"
             data-testid="post-expand-toggle"
@@ -213,8 +227,8 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           </button>
         )}
 
-        {/* Milestone & date-range chip */}
-        {(update.journeyTag || update.category) && (
+        {/* Milestone & date-range chip (skip if the headline already repeats this tag) */}
+        {(update.journeyTag || update.category) && displayHeadline !== (update.journeyTag || update.category) && (
           <div className="flex items-center gap-2 mt-4 flex-wrap">
             <span className="text-[10px] font-extrabold text-gm-accent bg-gm-accent-soft border border-gm-accent-line px-2.5 py-1 rounded-md uppercase tracking-wider">
               {update.journeyTag || update.category || 'Milestone'}
@@ -284,7 +298,10 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         title="Open author's complete Journey Passport"
       >
         <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5] flex-shrink-0" />
-        <span className="text-[13px] font-semibold truncate">Passport</span>
+        <span className="text-[13px] font-semibold truncate">
+          <span className="sm:hidden">Open</span>
+          <span className="hidden sm:inline">Passport</span>
+        </span>
       </Link>
     </div>
   );
@@ -302,7 +319,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           <MessageSquare className="w-3.5 h-3.5 text-gm-accent group-hover:scale-110 transition-transform" />
           <span>Community Thread</span>
           <span className="text-gray-400 font-normal text-[11px]">
-            ({update.comments?.length || 0})
+            ({update.comments?.length ?? update.comments_count ?? 0})
           </span>
         </div>
         <span className="text-[11px] font-bold text-gm-accent group-hover:underline flex items-center gap-1">
@@ -311,7 +328,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         </span>
       </button>
 
-      <div className="relative hidden lg:block">
+      <div className="relative">
         <button
           type="button"
           onClick={(e) => {

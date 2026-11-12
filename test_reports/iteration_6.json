@@ -1,0 +1,52 @@
+{
+  "summary": "Frontend-only retest of the iteration_5 fixes. I used a temporary /app/temp-media-qa route that rendered JourneyPostCard with synthetic TEST_ posts (3, 4, 5 and 6 images, mixed image+video, short, medium and long captions) plus context posts u2, u4 and u13 seeded via resetDemoUser. The route was deleted afterwards and the frontend rebuilt (/temp-media-qa now returns 404). I tested /explore by intercepting the live backend with Playwright page.route and serving mock FeedPost JSON (/app/tests/mock_feed.py plus a YouTube post with no thumbnail). All 6 requested fixes are verified PASS. I found 1 new medium bug: at 390px a caption of 90-140 characters is cut off by line-clamp-2 with an ellipsis, but no Read more button appears, so the rest of the text can't be read.",
+  "verified_pass": [
+    "MultiImageGrid at 1920, 768 and 390 widths: every tile's getBoundingClientRect stays inside its aspect-ratio box for the 3-image, 4-image, 5-image, 6-image and mixed grids. For example, at 1920 the box is 568x320, the hero 339x320 and the supporting tiles 225x104. At 390 the box is 326x204. 4-image shows 4 tiles with no badge. 5-image shows 4 tiles with exactly '+1' on the last one. 6-image shows exactly '+2'. Mixed: 3 tiles inside the box; tapping the video tile opens the viewer at '2 of 3' with an iframe.",
+    "FullscreenMediaViewer: the computed background is rgba(14,13,12,0.92), so the backdrop is visibly dark (screenshot). It is portaled as a direct child of document.body, z-index is 50, and elementFromPoint hits it. body.style.overflow is 'hidden' while open; a mouse wheel did not change scrollY. It is restored to '' after closing with Escape and with the close button. Also verified at 390px.",
+    "Explore video posters: on desktop and mobile both video cards use https://img.youtube.com/vi/<id>/hqdefault.jpg with naturalWidth 480. One card had a thumbnail_url and the other used the YouTube-id fallback. No img src points at a watch?v= URL, and there are 0 broken images.",
+    "Explore purple leftover: no element computes to rgb(139,92,246). The accent bars are rgb(11,79,74) (gm-accent).",
+    "Explore in-card buttons: the mobile 'Explore' badge, desktop 'Follow +' and 'View Milestone' all have a 6px radius (rounded-md). The page-level category chips are still 9999px pills.",
+    "JourneyPostCard: deleting your own post (u13) shows exactly 1 toast, 'Update deleted', and the card is removed. Unsaving shows 'Removed from your bookmarks' and saving shows 'Post saved to your bookmarks'; the button label flips each time. Community Thread shows (0) for zero comments and (2) for the mock posts. Read more is absent for 19 and 115 character captions at 1920 and present for 269 characters. The journeyTag and date-range chip now render on media posts too. ReportModal closes on Escape."
+  ],
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "https://growingmoonbackend.onrender.com/api/feed*", "issue": "Still returns 500. This is pre-existing, outside the repo and out of scope; it was mocked for this test."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "JourneyPostCard caption Read more",
+        "issue": "The toggle only renders when content.length > 140, but the paragraph is always line-clamp-2. At 390px, 2 lines hold about 90 characters. A 115-character caption was measured with scrollHeight 68 and clientHeight 46: it is truncated with an ellipsis and has no Read more, so the rest of the text can't be read on mobile. Fix: detect real overflow (a ref plus scrollHeight > clientHeight, checked on resize), or apply line-clamp-2 only when the toggle is shown.",
+        "selector": "[data-testid='post-expand-toggle'] / JourneyPostCard.tsx lines 188-195",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "JourneyPostCard text-only post with no headline", "issues": ["The headline falls back to journeyTag ('TEST journey'), and the new chip directly below repeats the same journeyTag. Consider hiding the chip when the headline equals journeyTag."]},
+      {"screen": "JourneyPostCard at 390px", "issues": ["The 'Passport' action label truncates to 'Passpo...' in the three-button action bar."]},
+      {"screen": "Explore mobile video cards (390px)", "issues": ["The journey badge ('TEST journey') wraps to 2 lines inside the pill and crowds the 'Video' badge. The title of the second video card is truncated under the floating Suggest Feature FAB."]},
+      {"screen": "Explore desktop", "issues": ["Carried over from iteration_5: text-only posts still show a stock Unsplash hero image."]}
+    ]
+  },
+  "test_report_links": ["/app/tests/mock_feed.py"],
+  "action_items": [
+    "Make 'Read more' appear whenever the caption is actually clamped (measure overflow) rather than only when content.length > 140, because 90-140 character captions are cut off with no toggle on mobile.",
+    "Optional polish: avoid the duplicate journeyTag (headline fallback plus chip), stop the Passport label truncating at 390px, and stop the Explore mobile video badge wrapping."
+  ],
+  "critical_code_review_comments": [
+    "JourneyPostCard: the Community Thread count uses update.comments?.length only. Backend FeedPost objects carry comments_count without a comments array, so real backend posts will always show (0). Use update.comments?.length ?? update.comments_count ?? 0.",
+    "JourneyPostCard: the post menu (Copy Link, Delete, Report) is 'hidden lg:block', so mobile and tablet users cannot delete or report posts from the card.",
+    "AppContext.deleteUpdate only removes the post from local state and calls no API, so the delete will not persist against the real backend.",
+    "ExploreView.tsx is 1051 lines and should be split. Explore cards still have no data-testid attributes."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "All 6 requested fixes verified (100%); 1 new medium bug found"},
+  "seed_data_creation": "None persisted. Synthetic TEST_ posts existed only in the temp route, which is deleted. resetDemoUser was run in the test browser's localStorage only.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "To test cards, recreate the app/temp-media-qa page: render JourneyPostCard for synthetic posts plus useApp().updates, with a button that calls resetDemoUser. Then restart the frontend, which runs next build and takes about 3 minutes. For /explore, page.route '**/growingmoonbackend.onrender.com/**' and fulfill /api/feed with mock_feed.BODY. The post menu is desktop-only (lg). u13 is authored by demo, so it can be used for the delete test; u2 starts saved.",
+  "rca of the issue": "Read more bug: the heuristic is length-based (140 characters), but the visual clamp is width-dependent (2 lines), so the two disagree on narrow viewports."
+}
