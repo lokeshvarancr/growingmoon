@@ -192,7 +192,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
         >
           {displayContent}
         </p>
-        {displayContent && (
+        {displayContent && displayContent.length > 140 && (
           <button
             type="button"
             data-testid="post-expand-toggle"
@@ -213,8 +213,8 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           </button>
         )}
 
-        {/* Milestone chip for text-only cards */}
-        {isTextOnly && (
+        {/* Milestone & date-range chip */}
+        {(update.journeyTag || update.category) && (
           <div className="flex items-center gap-2 mt-4 flex-wrap">
             <span className="text-[10px] font-extrabold text-gm-accent bg-gm-accent-soft border border-gm-accent-line px-2.5 py-1 rounded-md uppercase tracking-wider">
               {update.journeyTag || update.category || 'Milestone'}
@@ -302,7 +302,7 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
           <MessageSquare className="w-3.5 h-3.5 text-gm-accent group-hover:scale-110 transition-transform" />
           <span>Community Thread</span>
           <span className="text-gray-400 font-normal text-[11px]">
-            ({update.comments?.length || 24})
+            ({update.comments?.length || 0})
           </span>
         </div>
         <span className="text-[11px] font-bold text-gm-accent group-hover:underline flex items-center gap-1">
@@ -346,7 +346,6 @@ export default function JourneyPostCard({ update }: JourneyPostCardProps) {
                 onClick={() => {
                   deleteUpdate(update.id);
                   setShowMenu(false);
-                  addToast('Journey moment deleted', 'info');
                 }}
                 data-testid="post-menu-delete"
                 className="w-full text-left px-3 py-2 hover:bg-red-50 rounded-md text-red-600 flex items-center gap-2 transition-colors font-medium cursor-pointer"

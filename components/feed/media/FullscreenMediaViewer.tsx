@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import type { MediaAttachment } from '@/types';
 import { detectVideoProvider, getEmbedUrl, getVideoPosterUrl } from './mediaHelpers';
@@ -18,6 +19,14 @@ export default function FullscreenMediaViewer({ media, startIndex, onClose }: Pr
   const current = media[index];
 
   useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowLeft') setIndex((i) => (i - 1 + media.length) % media.length);
@@ -32,10 +41,10 @@ export default function FullscreenMediaViewer({ media, startIndex, onClose }: Pr
   const provider = isVideo ? detectVideoProvider(current.url) : 'file';
   const embedUrl = isVideo ? getEmbedUrl(current.url, provider) : null;
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 !mt-0 bg-[#0E0D0C]/92 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in"
+      className="fixed inset-0 z-50 !mt-0 bg-[#0E0D0C]/[0.92] backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in"
       role="dialog"
       aria-modal="true"
       data-testid="media-viewer-modal"
@@ -142,6 +151,7 @@ export default function FullscreenMediaViewer({ media, startIndex, onClose }: Pr
           <ChevronRight className="w-5 h-5" />
         </button>
       )}
-    </div>
+    </div>,
+    document.body
   );
 }

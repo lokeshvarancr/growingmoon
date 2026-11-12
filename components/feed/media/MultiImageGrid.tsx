@@ -21,14 +21,14 @@ function Tile({
     <div
       onClick={onClick}
       data-testid={testId}
-      className="relative h-full w-full overflow-hidden bg-gray-100 cursor-pointer group/tile"
+      className="relative h-full w-full min-h-0 overflow-hidden bg-gray-100 cursor-pointer group/tile"
     >
       <img
         src={src}
         alt={m.alt || 'Post media'}
         loading="lazy"
         decoding="async"
-        className="w-full h-full object-cover group-hover/tile:scale-[1.03] transition-transform duration-500"
+        className="absolute inset-0 w-full h-full object-cover group-hover/tile:scale-[1.03] transition-transform duration-500"
       />
       {isVideo && !badge && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/15">
@@ -67,7 +67,7 @@ export default function MultiImageGrid({ media, onOpenViewer }: Props) {
           bothPortrait ? 'aspect-[4/3] sm:aspect-[16/11]' : 'aspect-[16/10]'
         }`}
       >
-        <div className={`grid gap-1 h-full ${mixed ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-2'}`}>
+        <div className={`grid gap-1 h-full min-h-0 ${mixed ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-2'}`}>
           {media.map((m, i) => (
             <Tile key={m.id || i} m={m} onClick={() => onOpenViewer(i)} testId={`media-grid-tile-${i}`} />
           ))}
@@ -81,9 +81,9 @@ export default function MultiImageGrid({ media, onOpenViewer }: Props) {
     const others = media.map((_, i) => i).filter((i) => i !== heroIdx);
     return (
       <div className="mt-4 rounded-lg overflow-hidden aspect-[16/10] sm:aspect-[16/9] w-full">
-        <div className="grid grid-cols-2 gap-1 h-full">
+        <div className="grid grid-cols-2 gap-1 h-full min-h-0">
           <Tile m={media[heroIdx]} onClick={() => onOpenViewer(heroIdx)} testId={`media-grid-tile-${heroIdx}`} />
-          <div className="grid grid-rows-2 gap-1 h-full">
+          <div className="grid grid-rows-2 gap-1 h-full min-h-0">
             {others.map((i) => (
               <Tile key={media[i].id || i} m={media[i]} onClick={() => onOpenViewer(i)} testId={`media-grid-tile-${i}`} />
             ))}
@@ -102,11 +102,11 @@ export default function MultiImageGrid({ media, onOpenViewer }: Props) {
 
   return (
     <div className="mt-4 rounded-lg overflow-hidden aspect-[16/10] sm:aspect-[16/9] w-full">
-      <div className="grid grid-cols-5 gap-1 h-full">
-        <div className="col-span-3 h-full">
+      <div className="grid grid-cols-5 gap-1 h-full min-h-0">
+        <div className="col-span-3 h-full min-h-0">
           <Tile m={media[heroIdx]} onClick={() => onOpenViewer(heroIdx)} testId={`media-grid-tile-${heroIdx}`} />
         </div>
-        <div className="col-span-2 grid grid-rows-3 gap-1 h-full">
+        <div className="col-span-2 grid grid-rows-3 gap-1 h-full min-h-0">
           {remainingIdxs.map((i, idx) => (
             <Tile
               key={media[i].id || i}

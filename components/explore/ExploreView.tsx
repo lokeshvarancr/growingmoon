@@ -16,6 +16,7 @@ import {
   Video,
   Images,
 } from 'lucide-react';
+import { getVideoPosterUrl } from '@/components/feed/media/mediaHelpers';
 
 export type ExploreCard = {
   id: string;
@@ -101,8 +102,10 @@ export default function ExploreView() {
         : '✨',
     badgeColor: 'bg-gm-ink/75 text-white border-white/20',
     bannerUrl:
-      post.media?.[0]?.url ||
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+      post.media?.[0]?.media_type === 'video'
+        ? getVideoPosterUrl({ url: post.media[0].url, thumbnail: post.media[0].thumbnail_url })
+        : post.media?.[0]?.url ||
+          'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
     titleLead: post.headline ? 'Milestone:' : 'Journey:',
     titleMain: post.headline || post.journey_tag || 'Progress Log',
     authorId: post.author?.id || post.author_id,
@@ -144,8 +147,10 @@ export default function ExploreView() {
           ? '📖'
           : '✨',
       imageUrl:
-        post.media?.[0]?.url ||
-        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+        post.media?.[0]?.media_type === 'video'
+          ? getVideoPosterUrl({ url: post.media[0].url, thumbnail: post.media[0].thumbnail_url })
+          : post.media?.[0]?.url ||
+            'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
       authorName: post.author?.name || 'Community Member',
       authorAvatar:
         post.author?.avatar_image ||
@@ -452,7 +457,7 @@ export default function ExploreView() {
                 <h3 className="text-white font-black text-sm sm:text-base leading-snug drop-shadow-sm line-clamp-2">
                   {item.title}
                 </h3>
-                <div className="w-6 h-[2.5px] bg-[#8B5CF6] rounded-full" />
+                <div className="w-6 h-[2.5px] bg-gm-accent rounded-full" />
                 <p className="text-white/85 text-[10.5px] sm:text-xs font-normal leading-relaxed line-clamp-2">
                   {item.subtitle}
                 </p>
@@ -473,7 +478,7 @@ export default function ExploreView() {
                     {item.authorName.split(' ')[0]}
                   </span>
                 </div>
-                <span className="inline-flex items-center gap-1 bg-white text-gm-ink font-black text-[10.5px] px-3 py-1.5 rounded-full shadow-xs group-hover:bg-white/90 group-hover:scale-[1.02] active:scale-95 transition-all">
+                <span className="inline-flex items-center gap-1 bg-white text-gm-ink font-black text-[10.5px] px-3 py-1.5 rounded-md shadow-xs group-hover:bg-white/90 group-hover:scale-[1.02] active:scale-95 transition-all">
                   <span>Explore</span>
                   <ArrowRight className="w-3 h-3 text-gm-accent stroke-[2.5]" />
                 </span>
@@ -873,7 +878,7 @@ export default function ExploreView() {
                         <button
                           type="button"
                           onClick={(e) => handleToggleFollow(e, card)}
-                          className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer flex-shrink-0 ${
+                          className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer flex-shrink-0 ${
                             isFollowed
                               ? 'bg-gm-accent text-white hover:bg-gm-accent-deep'
                               : 'bg-gm-accent-soft text-gm-accent hover:bg-[#C2E6DF]'
@@ -900,7 +905,7 @@ export default function ExploreView() {
                         e.stopPropagation();
                         handleCardClick();
                       }}
-                      className="w-full py-2.5 px-4 rounded-full bg-gm-accent-soft hover:bg-gm-accent text-gm-accent hover:text-white font-extrabold text-xs sm:text-[13px] flex items-center justify-center gap-1.5 transition-all shadow-xs group/btn cursor-pointer active:scale-98"
+                      className="w-full py-2.5 px-4 rounded-md bg-gm-accent-soft hover:bg-gm-accent text-gm-accent hover:text-white font-extrabold text-xs sm:text-[13px] flex items-center justify-center gap-1.5 transition-all shadow-xs group/btn cursor-pointer active:scale-98"
                     >
                       <span className="truncate">{card.actionLabel}</span>
                       <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform flex-shrink-0" />

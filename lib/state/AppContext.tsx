@@ -649,23 +649,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleSave = async (updateId: string) => {
+    const target = updates.find((u) => u.id === updateId);
+    const currentSaves = target?.saves || [];
+    const hasSaved = target?.is_saved_by_me || currentSaves.includes(currentUser.id);
+    const nextSaved = !hasSaved;
+
     setUpdates((prev) =>
       prev.map((u) => {
         if (u.id !== updateId) return u;
-        const currentSaves = u.saves || [];
-        const hasSaved = u.is_saved_by_me || currentSaves.includes(currentUser.id);
-        const nextSaved = !hasSaved;
+        const saves = u.saves || [];
         return {
           ...u,
           is_saved_by_me: nextSaved,
           saves_count: nextSaved ? (u.saves_count || 0) + 1 : Math.max(0, (u.saves_count || 1) - 1),
           saves: nextSaved
-            ? [...currentSaves, currentUser.id]
-            : currentSaves.filter((id) => id !== currentUser.id),
+            ? [...saves, currentUser.id]
+            : saves.filter((id) => id !== currentUser.id),
         };
       })
     );
-    addToast("Post saved to your bookmarks", "info");
+    addToast(nextSaved ? "Post saved to your bookmarks" : "Removed from your bookmarks", "info");
 
     try {
       const res = await postsApi.toggleSave(updateId);
