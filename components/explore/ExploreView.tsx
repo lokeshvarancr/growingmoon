@@ -13,10 +13,8 @@ import {
   UserPlus,
   X,
   Play,
-  Pause,
-  Volume2,
-  VolumeX,
   Video,
+  Images,
 } from 'lucide-react';
 
 export type ExploreCard = {
@@ -36,146 +34,9 @@ export type ExploreCard = {
   actionLabel: string;
   tags: string[];
   category: 'building' | 'learning' | 'career' | 'creativity' | 'fitness' | 'lifestyle';
+  mediaCount: number;
+  isVideo: boolean;
 };
-
-const EXPLORE_CARDS: ExploreCard[] = [
-  {
-    id: 'e-2',
-    badge: 'Learning',
-    badgeIcon: '🎸',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Learning',
-    titleMain: 'Acoustic Guitar',
-    authorName: 'Meera Pillai',
-    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'meera_pillai',
-    heading: 'Finally able to transition between open chords without pausing the tempo.',
-    emoji: '🎸',
-    actionLabel: "View Meera's Guitar Journey",
-    tags: ['Music', 'Acoustic', 'Beginner'],
-    category: 'learning',
-  },
-  {
-    id: 'e-1',
-    badge: 'Building',
-    badgeIcon: '🚀',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Validating',
-    titleMain: 'Startup MVP',
-    authorName: 'Arjun Sharma',
-    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'arjun_sharma',
-    heading: 'Finished 5 deep discovery interviews and identified core onboarding bottlenecks.',
-    emoji: '🚀',
-    actionLabel: "View Arjun's Journey",
-    tags: ['Projects', 'MVP', 'User Research'],
-    category: 'building',
-  },
-  {
-    id: 'e-3',
-    badge: 'Creative',
-    badgeIcon: '📷',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Exploring',
-    titleMain: 'Street Photography',
-    authorName: 'Diya Nair',
-    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'diya_nair',
-    heading: 'Capturing raw, unscripted city life in high contrast monochrome shadows.',
-    emoji: '📷',
-    actionLabel: "View Diya's Photo Journey",
-    tags: ['Photography', 'Monochrome', 'Visual Art'],
-    category: 'creativity',
-  },
-  {
-    id: 'e-4',
-    badge: 'Education',
-    badgeIcon: '📚',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Preparing for',
-    titleMain: 'GRE Examination',
-    authorName: 'Vishal Kumar',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'vishal_kumar',
-    heading: 'Starting a rigorous 90-day study plan focused on quantitative reasoning.',
-    emoji: '📚',
-    actionLabel: "View Vishal's Study Journey",
-    tags: ['Education', 'GRE', 'Study Cohort'],
-    category: 'learning',
-  },
-  {
-    id: 'e-5',
-    badge: 'Fitness',
-    badgeIcon: '🏃',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1483721074573-500b58e7f1f3?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Training for',
-    titleMain: 'Half Marathon',
-    authorName: 'Ananya Rao',
-    authorAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'ananya_rao',
-    heading: 'Week 3 complete: Ran 8km at steady 5:30 pace feeling noticeably stronger.',
-    emoji: '🏃',
-    actionLabel: "View Ananya's Running Journey",
-    tags: ['Running', 'Discipline', 'Fitness'],
-    category: 'fitness',
-  },
-  {
-    id: 'e-6',
-    badge: 'Career',
-    badgeIcon: '💼',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Switching to',
-    titleMain: 'Product Leadership',
-    authorName: 'Rahul Menon',
-    authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'rahul_menon',
-    heading: 'Deconstructing consumer habit loops and building my first public product tear-down.',
-    emoji: '💼',
-    actionLabel: "View Rahul's Product Journey",
-    tags: ['Career Switch', 'Product Strategy', 'Mentorship'],
-    category: 'career',
-  },
-  {
-    id: 'e-7',
-    badge: 'Lifestyle',
-    badgeIcon: '🥗',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Exploring',
-    titleMain: 'Mediterranean Diet',
-    authorName: 'Sneha Iyer',
-    authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'sneha_iyer',
-    heading: 'Exploring high-protein Mediterranean recipes for sustained daily mental clarity.',
-    emoji: '🥗',
-    actionLabel: "View Sneha's Wellness Journey",
-    tags: ['Cooking', 'Wellness', 'Nutrition'],
-    category: 'lifestyle',
-  },
-  {
-    id: 'e-8',
-    badge: 'Creative',
-    badgeIcon: '✏️',
-    badgeColor: 'bg-gm-ink/75 text-white border-white/20',
-    bannerUrl: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80',
-    titleLead: 'Practising',
-    titleMain: 'Digital Illustration',
-    authorName: 'Karan Verma',
-    authorAvatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80',
-    authorUsername: 'karan_verma',
-    heading: 'Daily rendering drills exploring lighting, textures, and 3D character form.',
-    emoji: '✏️',
-    actionLabel: "View Karan's Art Journey",
-    tags: ['Art', 'Design', '3D Illustration'],
-    category: 'creativity',
-  },
-];
 
 const CATEGORIES = [
   { id: 'for-you', label: 'For you ✨' },
@@ -206,211 +67,8 @@ export type MobileFeedItem = {
   authorAvatar: string;
   authorUsername: string;
   category: 'building' | 'learning' | 'career' | 'creativity' | 'fitness' | 'lifestyle';
-  videoDuration?: string;
+  mediaCount?: number;
 };
-
-const BASE_EXPLORE_STORIES: Array<Omit<MobileFeedItem, 'id' | 'format'>> = [
-  // ── Block 1: Matching Image 1 Reference Directly ──
-  {
-    title: 'Learning Acoustic Guitar',
-    subtitle: 'Finally transitioning between chords smoothly.',
-    badge: 'Learning',
-    badgeIcon: '📖',
-    imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Meera Pillai',
-    authorAvatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'meera_pillai',
-    category: 'learning',
-  },
-  {
-    title: 'Building My First Startup',
-    subtitle: 'Just onboarded our first users.',
-    badge: 'Building',
-    badgeIcon: '🚀',
-    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Arjun Sharma',
-    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'arjun_sharma',
-    category: 'building',
-  },
-  {
-    title: 'Hiking Across the Hills',
-    subtitle: 'Creating an intentional, high-altitude endurance trail benchmark.',
-    badge: 'Travel',
-    badgeIcon: '⛰️',
-    videoDuration: '0:24',
-    imageUrl: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Ananya Rao',
-    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'ananya_rao',
-    category: 'lifestyle',
-  },
-  {
-    title: 'Application to Oxford',
-    subtitle: 'Shortlisting programs and refining my SOP.',
-    badge: 'Education',
-    badgeIcon: '📚',
-    authorName: 'Vishal Kumar',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'vishal_kumar',
-    category: 'learning',
-  },
-  {
-    title: 'Building a Study System',
-    subtitle: 'Creating a distraction-free routine.',
-    badge: 'Learning',
-    badgeIcon: '🧠',
-    authorName: 'Devika Patel',
-    authorAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'devika_patel',
-    category: 'learning',
-  },
-  {
-    title: 'Learning Digital Art',
-    subtitle: 'Exploring portrait styles and color techniques.',
-    badge: 'Creativity',
-    badgeIcon: '🎨',
-    imageUrl: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Diya Nair',
-    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'diya_nair',
-    category: 'creativity',
-  },
-
-  // ── Block 2: Fitness, Career & Lifestyle ──
-  {
-    title: 'Training for Half Marathon',
-    subtitle: 'Week 5 complete: 12km tempo run at 5:15 pace with zero knee fatigue.',
-    badge: 'Fitness',
-    badgeIcon: '🏃',
-    imageUrl: 'https://images.unsplash.com/photo-1483721074573-500b58e7f1f3?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Rohan Gupta',
-    authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'rohan_gupta',
-    category: 'fitness',
-  },
-  {
-    title: 'Switching to Product Leadership',
-    subtitle: 'Deconstructing B2B user loops and writing public product teardowns.',
-    badge: 'Career',
-    badgeIcon: '💼',
-    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Rahul Menon',
-    authorAvatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'rahul_menon',
-    category: 'career',
-  },
-  {
-    title: 'Specialty Coffee Brewing',
-    subtitle: 'Dialing in 93°C extraction on washed Ethiopian heirloom beans.',
-    badge: 'Coffee',
-    badgeIcon: '☕',
-    videoDuration: '0:35',
-    imageUrl: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Rohan Sen',
-    authorAvatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'rohan_sen',
-    category: 'lifestyle',
-  },
-  {
-    title: 'Mediterranean Nutrition & Focus',
-    subtitle: 'Clean meal prep bowls for sustained cognitive stamina all day.',
-    badge: 'Lifestyle',
-    badgeIcon: '🥗',
-    authorName: 'Sneha Iyer',
-    authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'sneha_iyer',
-    category: 'lifestyle',
-  },
-  {
-    title: '3D Character Sculpting',
-    subtitle: 'Daily hard-surface topology drills with Blender geometry nodes.',
-    badge: 'Creative',
-    badgeIcon: '✏️',
-    authorName: 'Karan Verma',
-    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'karan_verma',
-    category: 'creativity',
-  },
-  {
-    title: 'Japanese Joinery Craft',
-    subtitle: 'Hand-cutting mortise and tenon cedar connections without glue or nails.',
-    badge: 'Craft',
-    badgeIcon: '🪵',
-    imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Aditi Bose',
-    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'aditi_bose',
-    category: 'creativity',
-  },
-
-  // ── Block 3: Engineering, Art & Deep Focus ──
-  {
-    title: 'Micro-SaaS to 1K Users',
-    subtitle: 'Shipped production Stripe webhooks and telemetry dashboards.',
-    badge: 'Building',
-    badgeIcon: '⚡',
-    imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Devika Patel',
-    authorAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'devika_patel',
-    category: 'building',
-  },
-  {
-    title: 'Minimalist Urban Photography',
-    subtitle: 'Documenting architectural shadows and raw street light in Mumbai.',
-    badge: 'Creative',
-    badgeIcon: '📷',
-    imageUrl: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Kabir Joshi',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'kabir_joshi',
-    category: 'creativity',
-  },
-  {
-    title: 'Deep Focus Coding Session',
-    subtitle: 'Zero distraction 4-hour sprint building offline sync engine.',
-    badge: 'Building',
-    badgeIcon: '🎧',
-    videoDuration: '0:42',
-    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Arjun Sharma',
-    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'arjun_sharma',
-    category: 'building',
-  },
-  {
-    title: 'Mastering TypeScript Generics',
-    subtitle: 'Deconstructing type-level state machines and discriminated unions.',
-    badge: 'Coding',
-    badgeIcon: '💻',
-    authorName: 'Vishal Kumar',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'vishal_kumar',
-    category: 'learning',
-  },
-  {
-    title: 'Olympic Weightlifting Drills',
-    subtitle: 'Perfecting bar path acceleration and triple extension.',
-    badge: 'Fitness',
-    badgeIcon: '🏋️',
-    authorName: 'Rohan Gupta',
-    authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'rohan_gupta',
-    category: 'fitness',
-  },
-  {
-    title: 'Night Sky Astrophotography',
-    subtitle: 'Stacking 120 deep-sky exposures to capture the Orion Nebula.',
-    badge: 'Photography',
-    badgeIcon: '🌌',
-    imageUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80',
-    authorName: 'Meera Pillai',
-    authorAvatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80',
-    authorUsername: 'meera_pillai',
-    category: 'creativity',
-  },
-];
 
 export default function ExploreView() {
   const router = useRouter();
@@ -458,13 +116,24 @@ export default function ExploreView() {
     actionLabel: 'View Milestone',
     tags: [post.category, post.journey_tag || 'Journey'].filter(Boolean),
     category: (post.category?.toLowerCase() as any) || 'building',
+    mediaCount: post.media?.length || 0,
+    isVideo: Boolean(post.media?.some((m: any) => m.media_type === 'video')),
   });
 
+  // Content-aware format: the card format reflects what the post actually
+  // contains rather than cycling blindly — video posts always get the video
+  // treatment, text-only posts get the typography-first card.
   const mapPostToStory = (post: any, idx: number): MobileFeedItem => {
-    const formats: MobileCardFormat[] = ['tall-hero', 'top-image', 'white-minimal', 'video'];
+    const mediaCount = post.media?.length || 0;
+    const hasVideo = Boolean(post.media?.some((m: any) => m.media_type === 'video'));
+    let format: MobileCardFormat;
+    if (hasVideo) format = 'video';
+    else if (mediaCount === 0) format = 'white-minimal';
+    else format = idx % 2 === 0 ? 'tall-hero' : 'top-image';
+
     return {
       id: post.id,
-      format: formats[idx % formats.length],
+      format,
       title: post.headline || post.journey_tag || 'Community Milestone',
       subtitle: post.content.slice(0, 80) + (post.content.length > 80 ? '...' : ''),
       badge: post.journey_tag || post.category,
@@ -483,7 +152,7 @@ export default function ExploreView() {
         'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
       authorUsername: post.author?.username || 'member',
       category: (post.category?.toLowerCase() as any) || 'building',
-      videoDuration: post.media?.[0]?.media_type === 'video' ? '0:30' : undefined,
+      mediaCount,
     };
   };
 
@@ -753,21 +422,28 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-slate-950 aspect-[3/4.5] sm:aspect-[3/4.2] flex flex-col justify-between p-3.5 sm:p-4 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
+            className="w-full relative rounded-lg overflow-hidden bg-slate-950 aspect-[3/4.5] sm:aspect-[3/4.2] flex flex-col justify-between p-3.5 sm:p-4 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
           >
             <img
               src={item.imageUrl || 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80'}
               alt={item.title}
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-black/15 pointer-events-none" />
 
-            {/* Top Category Badge */}
-            <div className="relative z-10 self-start">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold tracking-wide">
+            {/* Top Category Badge + Media Count */}
+            <div className="relative z-10 self-start flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black/55 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold tracking-wide">
                 <span>{item.badgeIcon}</span>
                 <span>{item.badge}</span>
               </span>
+              {(item.mediaCount || 0) > 1 && (
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-black/55 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold">
+                  1/{item.mediaCount}
+                </span>
+              )}
             </div>
 
             {/* Bottom Content */}
@@ -812,20 +488,27 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full bg-white rounded-[24px] sm:rounded-[28px] shadow-card overflow-hidden flex flex-col justify-between group cursor-pointer select-none hover:shadow-card-hover hover:-translate-y-1 transition-all duration-500"
+            className="w-full bg-white rounded-lg shadow-card overflow-hidden flex flex-col justify-between group cursor-pointer select-none hover:shadow-card-hover hover:-translate-y-1 transition-all duration-500"
           >
             {/* Top Image */}
             <div className="relative h-24 sm:h-28 w-full overflow-hidden bg-slate-900 flex-shrink-0">
               <img
                 src={item.imageUrl || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'}
                 alt={item.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-              <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold">
+              <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold">
                 <span>{item.badgeIcon}</span>
                 <span>{item.badge}</span>
               </span>
+              {(item.mediaCount || 0) > 1 && (
+                <span className="absolute top-2 right-2 inline-flex items-center px-1.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold">
+                  1/{item.mediaCount}
+                </span>
+              )}
             </div>
 
             {/* Content */}
@@ -869,7 +552,7 @@ export default function ExploreView() {
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full bg-white rounded-[24px] sm:rounded-[28px] shadow-card p-3.5 flex flex-col justify-between group cursor-pointer select-none hover:shadow-card-hover hover:-translate-y-1 transition-all duration-500"
+            className="w-full bg-white rounded-lg shadow-card p-3.5 flex flex-col justify-between group cursor-pointer select-none hover:shadow-card-hover hover:-translate-y-1 transition-all duration-500"
           >
             <div className="space-y-1.5">
               <div className="flex items-center gap-1">
@@ -909,51 +592,49 @@ export default function ExploreView() {
           </div>
         );
 
-      // 4. Interactive Video Card: Rich video thumbnail with frosted Play/Pause, duration badge, progress bar & audio toggle
+      // 4. Honest video card: thumbnail + clear Play indicator. Nothing here
+      // implies playback is already happening — matches the "no autoplay,
+      // explicit play on interaction" rule used across the feed.
       case 'video':
         return (
           <div
             key={item.id}
             onClick={handleCardClick}
-            className="w-full relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-slate-950 aspect-[16/11] sm:aspect-[16/10] flex flex-col justify-between p-3 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
+            className="w-full relative rounded-lg overflow-hidden bg-slate-950 aspect-[16/11] sm:aspect-[16/10] flex flex-col justify-between p-3 text-white shadow-xs group cursor-pointer select-none border border-black/[0.08]"
           >
             <img
               src={item.imageUrl || 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80'}
               alt={item.title}
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/25 pointer-events-none" />
 
-            {/* Top Badges */}
+            {/* Top Badge */}
             <div className="relative z-10 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold">
                 <span>{item.badgeIcon}</span>
                 <span>{item.badge}</span>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-semibold">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-semibold">
                 <Video className="w-2.5 h-2.5" />
-                <span>{item.videoDuration || '0:24'}</span>
+                <span>Video</span>
               </span>
             </div>
 
-            {/* Center Play Button */}
+            {/* Center Play Indicator */}
             <div className="relative z-10 self-center">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/30 backdrop-blur-md border border-white/40 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-white/40 transition-all">
-                <Pause className="w-3.5 h-3.5 fill-current" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-gm-ink flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-white transition-all">
+                <Play className="w-3.5 h-3.5 fill-current translate-x-0.5" />
               </div>
             </div>
 
-            {/* Bottom Title, Progress bar & Audio Icon */}
-            <div className="relative z-10 space-y-1">
+            {/* Bottom Title */}
+            <div className="relative z-10">
               <h3 className="text-white font-extrabold text-[11px] sm:text-xs leading-tight drop-shadow-sm truncate">
                 {item.title}
               </h3>
-              <div className="flex items-center justify-between gap-2 pt-0.5">
-                <div className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden">
-                  <div className="w-2/5 h-full bg-[#A855F7] rounded-full" />
-                </div>
-                <Volume2 className="w-3 h-3 text-white/80 flex-shrink-0" />
-              </div>
             </div>
           </div>
         );
@@ -1036,7 +717,7 @@ export default function ExploreView() {
         {/* ── 4A. MOBILE & TABLET EDITORIAL MASONRY ── */}
         <div className="block lg:hidden -mx-3 sm:-mx-5 lg:mx-0 px-1 sm:px-1.5">
           {isLoading ? (
-            <div className="py-12 bg-white rounded-3xl shadow-card">
+            <div className="py-12 bg-white rounded-lg shadow-card">
               <AestheticLoader
                 title="Exploring community journeys..."
                 subtitle="Loading initial 30 milestones from builders and learners ahead of you."
@@ -1054,8 +735,8 @@ export default function ExploreView() {
               </div>
             </div>
           ) : (
-            <div className="p-8 text-center bg-white rounded-[20px] shadow-card">
-              <div className="w-10 h-10 rounded-full bg-purple-50 text-gm-accent flex items-center justify-center mx-auto mb-2 text-lg">
+            <div className="p-8 text-center bg-white rounded-lg shadow-card">
+              <div className="w-10 h-10 rounded-full bg-gm-accent-soft text-gm-accent flex items-center justify-center mx-auto mb-2 text-lg">
                 🌱
               </div>
               <p className="text-xs font-bold text-gm-ink">No journey updates found</p>
@@ -1086,7 +767,7 @@ export default function ExploreView() {
 
         {/* ── 4B. DESKTOP CARDS GRID (Active on Desktop >= lg) ── */}
         {isLoading ? (
-          <div className="hidden lg:block py-16 bg-white rounded-3xl shadow-card">
+          <div className="hidden lg:block py-16 bg-white rounded-lg shadow-card">
             <AestheticLoader
               title="Exploring community journeys..."
               subtitle="Loading initial 30 milestones from builders and learners ahead of you."
@@ -1117,64 +798,51 @@ export default function ExploreView() {
                 <div
                   key={card.id}
                   onClick={handleCardClick}
-                  className="bg-white rounded-xl sm:rounded-2xl border border-black/[0.06] shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer group select-none relative"
+                  className="bg-white rounded-lg border border-black/[0.06] shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer group select-none relative"
                 >
                   
-                  {/* ── Top Half: Hero Image with Floating Badge & Serif Overlay (Tall aspect ratio) ── */}
-                  <div className="relative h-80 sm:h-[370px] xl:h-[400px] w-full overflow-hidden bg-slate-900 flex-shrink-0 rounded-t-xl sm:rounded-t-2xl">
+                  {/* ── Top Half: Hero Image with Floating Badges & Serif Overlay (Tall aspect ratio) ── */}
+                  <div className="relative h-80 sm:h-[370px] xl:h-[400px] w-full overflow-hidden bg-slate-900 flex-shrink-0">
                     {/* Hero Image */}
                     <img
                       src={card.bannerUrl}
                       alt={card.titleMain}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
 
-                    {/* Floating Top-Right Category Badge */}
-                    <div className="absolute top-3.5 right-3.5 bg-gm-ink/75 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 border border-white/20">
-                      <span>{card.badgeIcon}</span>
-                      <span>{card.badge}</span>
+                    {/* Floating Top-Right Category Badge + Media Indicators */}
+                    <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5">
+                      {card.isVideo && (
+                        <span className="bg-black/70 backdrop-blur-md text-white text-[11px] font-semibold w-7 h-7 rounded-md shadow-sm flex items-center justify-center border border-white/20">
+                          <Play className="w-3 h-3 fill-current" />
+                        </span>
+                      )}
+                      {card.mediaCount > 1 && (
+                        <span className="bg-black/70 backdrop-blur-md text-white text-[11px] font-semibold px-2 h-7 rounded-md shadow-sm flex items-center gap-1 border border-white/20">
+                          <Images className="w-3 h-3" />
+                          <span>{card.mediaCount}</span>
+                        </span>
+                      )}
+                      <div className="bg-gm-ink/75 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-sm flex items-center gap-1.5 border border-white/20">
+                        <span>{card.badgeIcon}</span>
+                        <span>{card.badge}</span>
+                      </div>
                     </div>
 
                     {/* Gradient shade over bottom of image */}
                     <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/85 via-black/45 to-transparent pointer-events-none" />
 
-                    {/* Bottom-Left Overlaid Title & Neon Wave */}
+                    {/* Bottom-Left Overlaid Title */}
                     <div className="absolute bottom-3.5 left-4 right-4 z-10">
                       <span className="block font-serif italic text-lg sm:text-xl text-white/95 font-normal leading-tight drop-shadow-md">
                         {card.titleLead}
                       </span>
-                      
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <h2 className="font-serif italic font-bold text-3xl sm:text-[27px] text-white leading-tight drop-shadow-md">
-                          {card.titleMain}
-                        </h2>
 
-                        {/* Animated Equalizer soundwave bars */}
-                        <div className="inline-flex items-end gap-[2px] h-4 mb-1">
-                          <span className="w-[2.5px] h-2 bg-white/90 rounded-full animate-pulse" />
-                          <span className="w-[2.5px] h-3.5 bg-white/90 rounded-full" />
-                          <span className="w-[2.5px] h-2.5 bg-white/90 rounded-full" />
-                          <span className="w-[2.5px] h-4 bg-white/90 rounded-full" />
-                          <span className="w-[2.5px] h-1.5 bg-white/90 rounded-full" />
-                        </div>
-                      </div>
-
-                      {/* Elegant Flowing Neon Wave Line */}
-                      <svg viewBox="0 0 200 16" className="w-36 h-2.5 mt-1" fill="none">
-                        <path
-                          d="M2 10 Q 40 18, 90 8 T 198 6"
-                          stroke="url(#neon-wave)"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                        />
-                        <defs>
-                          <linearGradient id="neon-wave" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#0B4F4A" />
-                            <stop offset="0.5" stopColor="#14B8A6" />
-                            <stop offset="1" stopColor="#5EEAD4" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                      <h2 className="font-serif italic font-bold text-3xl sm:text-[27px] text-white leading-tight drop-shadow-md">
+                        {card.titleMain}
+                      </h2>
                     </div>
 
                   </div>
@@ -1194,7 +862,7 @@ export default function ExploreView() {
                         <img
                           src={card.authorAvatar}
                           alt={card.authorName}
-                          className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-100 flex-shrink-0 shadow-xs"
+                          className="w-10 h-10 rounded-full object-cover ring-2 ring-gm-accent-line flex-shrink-0 shadow-xs"
                         />
                         <span className="font-extrabold text-sm sm:text-[15px] text-gm-ink truncate tracking-tight hover:underline">
                           {card.authorName}
@@ -1245,8 +913,8 @@ export default function ExploreView() {
             })}
           </div>
         ) : (
-          <div className="hidden lg:block p-12 text-center bg-white rounded-3xl shadow-card">
-            <div className="w-12 h-12 rounded-full bg-purple-50 text-gm-accent flex items-center justify-center mx-auto mb-3 text-xl">
+          <div className="hidden lg:block p-12 text-center bg-white rounded-lg shadow-card">
+            <div className="w-12 h-12 rounded-full bg-gm-accent-soft text-gm-accent flex items-center justify-center mx-auto mb-3 text-xl">
               🌱
             </div>
             <p className="text-base font-bold text-gm-ink">No journey updates found</p>
